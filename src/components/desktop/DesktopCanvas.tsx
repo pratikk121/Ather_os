@@ -124,18 +124,20 @@ export const DesktopCanvas: React.FC = () => {
       {/* Desktop Physical Workspace with Interactive Icons & Floating Windows */}
       <main className="relative flex-1 w-full h-full overflow-hidden p-3">
         {/* Desktop Shortcut Column */}
-        <div className="absolute top-2 left-2 flex flex-col flex-wrap max-h-[calc(100vh-120px)] gap-1.5 z-0">
-          {DESKTOP_SHORTCUTS.map((item) => (
-            <DesktopIcon
-              key={item.id}
-              id={item.id}
-              label={item.label}
-              iconType={item.iconType}
-              isSelected={selectedIconId === item.id}
-              onSelect={(id) => setSelectedIconId(id)}
-            />
-          ))}
-        </div>
+        {settings.showDesktopIcons && (
+          <div className="absolute top-2 left-2 flex flex-col flex-wrap max-h-[calc(100vh-120px)] gap-1.5 z-0">
+            {DESKTOP_SHORTCUTS.map((item) => (
+              <DesktopIcon
+                key={item.id}
+                id={item.id}
+                label={item.label}
+                iconType={item.iconType}
+                isSelected={selectedIconId === item.id}
+                onSelect={(id) => setSelectedIconId(id)}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Windows Layer */}
         {windows.files.isOpen && (

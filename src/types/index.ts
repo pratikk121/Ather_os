@@ -113,14 +113,24 @@ export interface Habit {
   streak: number;
 }
 
-// System Settings Types
+// System Settings & Personalization Types
+export type ThemePreset = 'monochrome' | 'cyberpunk' | 'emerald' | 'solar' | 'arctic' | 'nebula' | 'custom';
+export type AccentColor = 'silver' | 'cyan' | 'emerald' | 'amber' | 'purple' | 'rose';
+export type WallpaperTheme = 'obsidian' | 'monochrome' | 'silver' | 'carbon' | 'graphite' | 'aurora' | 'nebula' | 'cyberpunk' | 'deepsea' | 'minimal';
+export type GlassMaterial = 'thin' | 'regular' | 'heavy' | 'frosted';
+
 export interface SystemSettings {
-  wallpaper: 'obsidian' | 'monochrome' | 'silver' | 'carbon' | 'graphite' | 'aurora' | 'nebula' | 'cyberpunk' | 'deepsea' | 'minimal';
-  glassMaterial: 'thin' | 'regular' | 'heavy' | 'frosted';
+  wallpaper: WallpaperTheme;
+  themePreset: ThemePreset;
+  accentColor: AccentColor;
+  glassMaterial: GlassMaterial;
   chromaticAberration: number;
   dynamicLighting: boolean;
   dropletMerge: boolean;
   audioReactiveEnv: boolean;
+  dockAutoHide: 'smart' | 'never';
+  dockMagnification: number;
+  showDesktopIcons: boolean;
   companionUrl: string;
   isCompanionConnected: boolean;
 }
