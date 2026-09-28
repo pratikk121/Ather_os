@@ -126,7 +126,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
           onMouseDown={handleMouseDownHeader}
           className="h-10 px-4 flex items-center justify-between border-b border-white/10 select-none cursor-grab active:cursor-grabbing bg-white/[0.04]"
         >
-          {/* Monochromatic Window Controls */}
+          {/* Liquid Jewel Window Controls */}
           <div className="flex items-center space-x-2">
             <button
               type="button"
@@ -135,7 +135,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 closeWindow(window.id);
               }}
               aria-label={`Close ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
+              className="w-3.5 h-3.5 rounded-full bg-rose-500/80 hover:bg-rose-500 border border-rose-400 text-rose-950 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-rose-400 transition shadow-[0_0_6px_rgba(244,63,94,0.4)]"
               title="Close"
             >
               <X className="w-2.5 h-2.5 text-current opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -147,7 +147,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 minimizeWindow(window.id);
               }}
               aria-label={`Minimize ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
+              className="w-3.5 h-3.5 rounded-full bg-amber-500/80 hover:bg-amber-500 border border-amber-400 text-amber-950 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-amber-400 transition shadow-[0_0_6px_rgba(245,158,11,0.4)]"
               title="Minimize"
             >
               <Minus className="w-2.5 h-2.5 text-current opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -159,7 +159,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 maximizeWindow(window.id);
               }}
               aria-label={`Maximize ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
+              className="w-3.5 h-3.5 rounded-full bg-emerald-500/80 hover:bg-emerald-500 border border-emerald-400 text-emerald-950 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-emerald-400 transition shadow-[0_0_6px_rgba(16,185,129,0.4)]"
               title="Maximize"
             >
               <Square className="w-2 h-2 text-current opacity-0 group-hover:opacity-100 transition-opacity" />

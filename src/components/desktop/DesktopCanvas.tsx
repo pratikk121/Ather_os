@@ -77,16 +77,16 @@ export const DesktopCanvas: React.FC = () => {
   };
 
   const wallpapers: Record<string, string> = {
-    obsidian: 'from-black via-zinc-950 to-neutral-950',
-    monochrome: 'from-zinc-950 via-zinc-900 to-black',
-    silver: 'from-zinc-900 via-neutral-900 to-slate-950',
-    carbon: 'from-[#0c0c0e] via-[#141417] to-[#080809]',
-    graphite: 'from-neutral-950 via-zinc-900 to-black',
-    aurora: 'from-[#022c22] via-[#064e3b] to-[#021c17]',
-    nebula: 'from-[#2e1065] via-[#3b0764] to-[#0f0728]',
-    cyberpunk: 'from-[#4c0519] via-[#2e1065] to-[#082f49]',
-    deepsea: 'from-[#082f49] via-[#0c4a6e] to-[#02131e]',
-    minimal: 'from-black via-zinc-950 to-black',
+    obsidian: 'from-[#0b0c10] via-[#1f2833] to-[#0b0c10]',
+    monochrome: 'from-[#121214] via-[#1a1a24] to-[#09090b]',
+    silver: 'from-[#1c1d22] via-[#2a2c35] to-[#121316]',
+    carbon: 'from-[#18181b] via-[#27272a] to-[#0f0f11]',
+    graphite: 'from-[#141416] via-[#22232a] to-[#0e0e10]',
+    aurora: 'from-[#042f2e] via-[#065f46] to-[#022c22]',
+    nebula: 'from-[#311042] via-[#4c1d95] to-[#1e1b4b]',
+    cyberpunk: 'from-[#581c87] via-[#831843] to-[#0c4a6e]',
+    deepsea: 'from-[#0c4a6e] via-[#0369a1] to-[#082f49]',
+    minimal: 'from-[#18181b] via-[#09090b] to-[#18181b]',
   };
 
   const getAmbientColors = () => {
@@ -95,48 +95,49 @@ export const DesktopCanvas: React.FC = () => {
 
     if (preset === 'cyberpunk' || accent === 'rose' || (preset === 'custom' && accent === 'cyan')) {
       return {
-        s1: 'bg-cyan-500/[0.18]',
-        s2: 'bg-pink-500/[0.16]',
-        s3: 'bg-purple-600/[0.18]',
+        s1: 'bg-cyan-500/[0.22]',
+        s2: 'bg-pink-500/[0.20]',
+        s3: 'bg-purple-600/[0.22]',
       };
     }
     if (preset === 'emerald' || accent === 'emerald') {
       return {
-        s1: 'bg-emerald-400/[0.18]',
-        s2: 'bg-teal-500/[0.16]',
-        s3: 'bg-green-600/[0.14]',
+        s1: 'bg-emerald-400/[0.22]',
+        s2: 'bg-teal-500/[0.20]',
+        s3: 'bg-green-600/[0.18]',
       };
     }
     if (preset === 'solar' || accent === 'amber') {
       return {
-        s1: 'bg-amber-400/[0.18]',
-        s2: 'bg-orange-500/[0.16]',
-        s3: 'bg-rose-600/[0.14]',
+        s1: 'bg-amber-400/[0.22]',
+        s2: 'bg-orange-500/[0.20]',
+        s3: 'bg-rose-600/[0.18]',
       };
     }
     if (preset === 'arctic' || (preset === 'custom' && accent === 'cyan')) {
       return {
-        s1: 'bg-sky-400/[0.18]',
-        s2: 'bg-blue-500/[0.16]',
-        s3: 'bg-cyan-300/[0.14]',
+        s1: 'bg-sky-400/[0.22]',
+        s2: 'bg-blue-500/[0.20]',
+        s3: 'bg-cyan-300/[0.18]',
       };
     }
     if (preset === 'nebula' || accent === 'purple') {
       return {
-        s1: 'bg-purple-500/[0.20]',
-        s2: 'bg-indigo-500/[0.18]',
-        s3: 'bg-fuchsia-600/[0.16]',
+        s1: 'bg-purple-500/[0.24]',
+        s2: 'bg-indigo-500/[0.22]',
+        s3: 'bg-fuchsia-600/[0.20]',
       };
     }
     return {
-      s1: 'bg-white/[0.05]',
-      s2: 'bg-zinc-300/[0.04]',
-      s3: 'bg-white/[0.03]',
+      s1: 'bg-cyan-500/[0.08]',
+      s2: 'bg-purple-500/[0.06]',
+      s3: 'bg-white/[0.04]',
     };
   };
 
   const ambient = getAmbientColors();
   const isAudioPulsing = settings.audioReactiveEnv && isPlaying;
+  const hasActiveWindows = Object.values(windows).some((w) => w.isOpen && !w.isMinimized);
 
   return (
     <div
@@ -146,7 +147,7 @@ export const DesktopCanvas: React.FC = () => {
         if (contextMenu.isOpen) setContextMenu({ ...contextMenu, isOpen: false });
       }}
       className={`relative w-screen h-screen overflow-hidden bg-gradient-to-br ${
-        wallpapers[settings.wallpaper] || wallpapers.obsidian
+        wallpapers[settings.wallpaper] || wallpapers.cyberpunk
       } text-zinc-100 flex flex-col justify-between select-none transition-colors duration-500`}
     >
       {/* Dynamic Theme & Audio-Reactive Ambient Fluid Light Spheres */}
@@ -173,6 +174,52 @@ export const DesktopCanvas: React.FC = () => {
 
       {/* Desktop Physical Workspace with Interactive Icons & Floating Windows */}
       <main className="relative flex-1 w-full h-full overflow-hidden p-3">
+        {/* Ambient Spatial Centerpiece (Displayed when all windows are minimized or closed) */}
+        {!hasActiveWindows && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 pb-12">
+            <div className="pointer-events-auto flex flex-col items-center gap-4 text-center max-w-sm p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/15 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+              <div className="flex flex-col items-center">
+                <span className="text-3xl font-extrabold font-mono tracking-tight text-white drop-shadow-md">
+                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+                <span className="text-xs font-semibold text-zinc-300 mt-1 uppercase tracking-wider font-mono">
+                  {new Date().toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}
+                </span>
+              </div>
+
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+              <p className="text-[11px] text-zinc-400">
+                All windows minimized. Click any dock icon or press <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-white font-mono text-[10px]">⌘K</kbd> to launch.
+              </p>
+
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => useWindowStore.getState().openWindow('terminal')}
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-sm"
+                >
+                  Terminal
+                </button>
+                <button
+                  type="button"
+                  onClick={() => useWindowStore.getState().openWindow('notes')}
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-sm"
+                >
+                  Notes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => useWindowStore.getState().openWindow('settings')}
+                  className="px-3 py-1.5 rounded-xl bg-cyan-500/25 hover:bg-cyan-500/35 border border-cyan-400/50 text-xs text-cyan-200 font-semibold transition hover:scale-105 shadow-md"
+                >
+                  Personalize
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Desktop Shortcut Column */}
         {settings.showDesktopIcons && (
           <div className="absolute top-2 left-2 flex flex-col flex-wrap max-h-[calc(100vh-120px)] gap-1.5 z-0">

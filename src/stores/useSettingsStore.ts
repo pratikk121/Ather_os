@@ -181,7 +181,7 @@ export const useSettingsStore = create<SettingsStoreState>()(
       resetToDefaults: () => set({ settings: DEFAULT_SETTINGS }),
     }),
     {
-      name: 'aetheros-settings',
+      name: 'aetheros-settings-v3',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ settings: state.settings }),
     }
