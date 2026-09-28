@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { SystemSettings, ThemePreset, AccentColor } from '../types';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { SystemSettings, ThemePreset, AccentColor, WallpaperTheme, GlassMaterial } from '../types';
 
 interface SettingsStoreState {
   settings: SystemSettings;
@@ -8,8 +9,8 @@ interface SettingsStoreState {
 
   setThemePreset: (preset: ThemePreset) => void;
   setAccentColor: (accentColor: AccentColor) => void;
-  setWallpaper: (wallpaper: SystemSettings['wallpaper']) => void;
-  setGlassMaterial: (material: SystemSettings['glassMaterial']) => void;
+  setWallpaper: (wallpaper: WallpaperTheme) => void;
+  setGlassMaterial: (material: GlassMaterial) => void;
   setChromaticAberration: (val: number) => void;
   setDockAutoHide: (mode: 'smart' | 'never') => void;
   setDockMagnification: (scale: number) => void;
@@ -28,7 +29,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
   themePreset: 'monochrome',
   accentColor: 'silver',
   glassMaterial: 'regular',
-  chromaticAberration: 0.22,
+  chromaticAberration: 0.15,
   dynamicLighting: true,
   audioReactiveEnv: true,
   dropletMerge: true,
@@ -47,8 +48,8 @@ export const THEME_PRESET_CONFIGS: Record<
     themePreset: 'monochrome',
     wallpaper: 'obsidian',
     accentColor: 'silver',
-    glassMaterial: 'regular',
-    chromaticAberration: 0.15,
+    glassMaterial: 'heavy',
+    chromaticAberration: 0.12,
     dynamicLighting: true,
   },
   cyberpunk: {
@@ -61,10 +62,10 @@ export const THEME_PRESET_CONFIGS: Record<
   },
   emerald: {
     themePreset: 'emerald',
-    wallpaper: 'deepsea',
+    wallpaper: 'aurora',
     accentColor: 'emerald',
     glassMaterial: 'thin',
-    chromaticAberration: 0.2,
+    chromaticAberration: 0.22,
     dynamicLighting: true,
   },
   solar: {
@@ -96,84 +97,93 @@ export const THEME_PRESET_CONFIGS: Record<
   },
 };
 
-export const useSettingsStore = create<SettingsStoreState>((set) => ({
-  settings: DEFAULT_SETTINGS,
-  isCommandPaletteOpen: false,
-  lightPosition: { x: 50, y: 50 },
+export const useSettingsStore = create<SettingsStoreState>()(
+  persist(
+    (set) => ({
+      settings: DEFAULT_SETTINGS,
+      isCommandPaletteOpen: false,
+      lightPosition: { x: 50, y: 50 },
 
-  setThemePreset: (preset) =>
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        ...(THEME_PRESET_CONFIGS[preset] || {}),
-        themePreset: preset,
-      },
-    })),
+      setThemePreset: (preset) =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            ...(THEME_PRESET_CONFIGS[preset] || {}),
+            themePreset: preset,
+          },
+        })),
 
-  setAccentColor: (accentColor) =>
-    set((state) => ({
-      settings: { ...state.settings, accentColor, themePreset: 'custom' },
-    })),
+      setAccentColor: (accentColor) =>
+        set((state) => ({
+          settings: { ...state.settings, accentColor, themePreset: 'custom' },
+        })),
 
-  setWallpaper: (wallpaper) =>
-    set((state) => ({
-      settings: { ...state.settings, wallpaper, themePreset: 'custom' },
-    })),
+      setWallpaper: (wallpaper) =>
+        set((state) => ({
+          settings: { ...state.settings, wallpaper, themePreset: 'custom' },
+        })),
 
-  setGlassMaterial: (glassMaterial) =>
-    set((state) => ({
-      settings: { ...state.settings, glassMaterial, themePreset: 'custom' },
-    })),
+      setGlassMaterial: (glassMaterial) =>
+        set((state) => ({
+          settings: { ...state.settings, glassMaterial, themePreset: 'custom' },
+        })),
 
-  setChromaticAberration: (chromaticAberration) =>
-    set((state) => ({ settings: { ...state.settings, chromaticAberration } })),
+      setChromaticAberration: (chromaticAberration) =>
+        set((state) => ({ settings: { ...state.settings, chromaticAberration } })),
 
-  setDockAutoHide: (dockAutoHide) =>
-    set((state) => ({ settings: { ...state.settings, dockAutoHide } })),
+      setDockAutoHide: (dockAutoHide) =>
+        set((state) => ({ settings: { ...state.settings, dockAutoHide } })),
 
-  setDockMagnification: (dockMagnification) =>
-    set((state) => ({ settings: { ...state.settings, dockMagnification } })),
+      setDockMagnification: (dockMagnification) =>
+        set((state) => ({ settings: { ...state.settings, dockMagnification } })),
 
-  toggleDesktopIcons: () =>
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        showDesktopIcons: !state.settings.showDesktopIcons,
-      },
-    })),
+      toggleDesktopIcons: () =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            showDesktopIcons: !state.settings.showDesktopIcons,
+          },
+        })),
 
-  toggleDynamicLighting: () =>
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        dynamicLighting: !state.settings.dynamicLighting,
-      },
-    })),
+      toggleDynamicLighting: () =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            dynamicLighting: !state.settings.dynamicLighting,
+          },
+        })),
 
-  toggleDropletMerge: () =>
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        dropletMerge: !state.settings.dropletMerge,
-      },
-    })),
+      toggleDropletMerge: () =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            dropletMerge: !state.settings.dropletMerge,
+          },
+        })),
 
-  toggleAudioReactiveEnv: () =>
-    set((state) => ({
-      settings: {
-        ...state.settings,
-        audioReactiveEnv: !state.settings.audioReactiveEnv,
-      },
-    })),
+      toggleAudioReactiveEnv: () =>
+        set((state) => ({
+          settings: {
+            ...state.settings,
+            audioReactiveEnv: !state.settings.audioReactiveEnv,
+          },
+        })),
 
-  setCompanionConnected: (isCompanionConnected) =>
-    set((state) => ({
-      settings: { ...state.settings, isCompanionConnected },
-    })),
+      setCompanionConnected: (isCompanionConnected) =>
+        set((state) => ({
+          settings: { ...state.settings, isCompanionConnected },
+        })),
 
-  setCommandPaletteOpen: (isCommandPaletteOpen) => set({ isCommandPaletteOpen }),
+      setCommandPaletteOpen: (isCommandPaletteOpen) => set({ isCommandPaletteOpen }),
 
-  setLightPosition: (lightPosition) => set({ lightPosition }),
+      setLightPosition: (lightPosition) => set({ lightPosition }),
 
-  resetToDefaults: () => set({ settings: DEFAULT_SETTINGS }),
-}));
+      resetToDefaults: () => set({ settings: DEFAULT_SETTINGS }),
+    }),
+    {
+      name: 'aetheros-settings',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ settings: state.settings }),
+    }
+  )
+);

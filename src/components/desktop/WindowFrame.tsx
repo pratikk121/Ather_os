@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Minus, Square, X } from 'lucide-react';
 import { WindowState } from '../../types';
 import { useWindowStore } from '../../stores/useWindowStore';
+import { useSettingsStore } from '../../stores/useSettingsStore';
 import { LiquidSurface } from '../glass/LiquidSurface';
 
 interface WindowFrameProps {
@@ -91,6 +92,17 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         zIndex: window.zIndex,
       };
 
+  const { settings } = useSettingsStore();
+
+  const accentRingClasses: Record<string, string> = {
+    silver: 'ring-1 ring-white/40 shadow-2xl',
+    cyan: 'ring-1 ring-cyan-400/50 shadow-[0_10px_35px_rgba(34,211,238,0.25)]',
+    emerald: 'ring-1 ring-emerald-400/50 shadow-[0_10px_35px_rgba(52,211,153,0.25)]',
+    amber: 'ring-1 ring-amber-400/50 shadow-[0_10px_35px_rgba(251,191,36,0.25)]',
+    purple: 'ring-1 ring-purple-400/50 shadow-[0_10px_35px_rgba(192,132,252,0.25)]',
+    rose: 'ring-1 ring-rose-400/50 shadow-[0_10px_35px_rgba(251,113,133,0.25)]',
+  };
+
   return (
     <section
       role="region"
@@ -100,13 +112,13 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
       className="flex flex-col transition-shadow duration-200"
     >
       <LiquidSurface
-        material={isFocused ? 'regular' : 'frosted'}
+        material={isFocused ? settings.glassMaterial : 'heavy'}
         borderRadius={18}
         contentClassName="flex flex-col flex-1 overflow-hidden"
-        className={`flex-1 flex flex-col overflow-hidden ${
+        className={`flex-1 flex flex-col overflow-hidden transition-all duration-200 ${
           isFocused
-            ? 'ring-1 ring-white/35 shadow-2xl'
-            : 'opacity-95 shadow-lg'
+            ? accentRingClasses[settings.accentColor] || 'ring-1 ring-white/35 shadow-2xl'
+            : 'opacity-95 shadow-lg border-white/10'
         }`}
       >
         {/* Title Bar */}

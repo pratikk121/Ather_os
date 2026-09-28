@@ -126,16 +126,58 @@ export const CommandPalette: React.FC = () => {
     },
     {
       id: 'app-settings',
-      title: 'Open Glass Customizer',
-      subtitle: 'Adjust liquid physics and shaders',
+      title: 'Open Personalization & Theme Studio',
+      subtitle: 'Customize themes, wallpapers, glass materials, and dock physics',
       icon: Sliders,
       action: () => openWindow('settings'),
+    },
+    {
+      id: 'theme-monochrome',
+      title: 'Switch Theme: Obsidian Noir (Monochrome)',
+      subtitle: 'Pure pitch black smoked glass & silver specular rims',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('monochrome'),
+    },
+    {
+      id: 'theme-cyberpunk',
+      title: 'Switch Theme: Cyber Neon',
+      subtitle: 'Electric cyan, magenta & vibrant purple bioluminescence',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('cyberpunk'),
+    },
+    {
+      id: 'theme-emerald',
+      title: 'Switch Theme: Emerald Forest',
+      subtitle: 'Organic mint & calm emerald liquid glass',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('emerald'),
+    },
+    {
+      id: 'theme-solar',
+      title: 'Switch Theme: Solar Amber',
+      subtitle: 'Warm golden sunset & amber glow',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('solar'),
+    },
+    {
+      id: 'theme-arctic',
+      title: 'Switch Theme: Arctic Crystal',
+      subtitle: 'Ultra-clear ice frost & sky reflections',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('arctic'),
+    },
+    {
+      id: 'theme-nebula',
+      title: 'Switch Theme: Deep Nebula',
+      subtitle: 'Cosmic stellar dust & deep astronomical indigo',
+      icon: Sparkles,
+      action: () => useSettingsStore.getState().setThemePreset('nebula'),
     },
     {
       id: 'act-new-note',
       title: 'Quick Action: Create New Note',
       subtitle: 'Add a new blank markdown note',
-      icon: Sparkles,
+      icon: FileText,
       action: () => {
         addNote('Quick Capture Note');
         openWindow('notes');

@@ -5,6 +5,7 @@ import {
   Sparkles,
   Layers,
   Download,
+  Upload,
   RotateCcw,
   Check,
   Eye,
@@ -78,16 +79,16 @@ const ACCENT_COLORS: { id: AccentColor; name: string; bgClass: string; ringClass
 ];
 
 const WALLPAPERS: { id: WallpaperTheme; name: string; tag: string; preview: string }[] = [
-  { id: 'obsidian', name: 'Pitch Obsidian', tag: 'Monochrome', preview: 'bg-gradient-to-br from-black via-zinc-950 to-neutral-950' },
-  { id: 'monochrome', name: 'Monochrome Matrix', tag: 'Monochrome', preview: 'bg-gradient-to-br from-zinc-950 via-zinc-900 to-black' },
-  { id: 'silver', name: 'Platinum Ash', tag: 'Monochrome', preview: 'bg-gradient-to-br from-zinc-900 via-neutral-950 to-black' },
-  { id: 'carbon', name: 'Carbon Fiber', tag: 'Monochrome', preview: 'bg-gradient-to-br from-black via-zinc-950 to-zinc-900' },
-  { id: 'graphite', name: 'Graphite Smoke', tag: 'Monochrome', preview: 'bg-gradient-to-br from-zinc-950 via-neutral-900 to-black' },
-  { id: 'aurora', name: 'Aurora Glass', tag: 'Chromatic', preview: 'bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950' },
-  { id: 'nebula', name: 'Deep Nebula', tag: 'Chromatic', preview: 'bg-gradient-to-br from-purple-950 via-slate-950 to-cyan-950' },
-  { id: 'cyberpunk', name: 'Neon Cyberpunk', tag: 'Chromatic', preview: 'bg-gradient-to-br from-slate-950 via-rose-950 to-blue-950' },
-  { id: 'deepsea', name: 'Abyssal Deep', tag: 'Chromatic', preview: 'bg-gradient-to-br from-slate-950 via-teal-950 to-slate-950' },
-  { id: 'minimal', name: 'Minimal Void', tag: 'Monochrome', preview: 'bg-gradient-to-br from-black to-zinc-950' },
+  { id: 'obsidian', name: 'Pitch Obsidian', tag: 'Noir', preview: 'bg-gradient-to-br from-black via-zinc-950 to-neutral-950' },
+  { id: 'monochrome', name: 'Monochrome Matrix', tag: 'Zinc', preview: 'bg-gradient-to-br from-zinc-950 via-zinc-900 to-black' },
+  { id: 'silver', name: 'Platinum Ash', tag: 'Slate', preview: 'bg-gradient-to-br from-zinc-900 via-neutral-900 to-slate-950' },
+  { id: 'carbon', name: 'Carbon Fiber', tag: 'Carbon', preview: 'bg-gradient-to-br from-[#0c0c0e] via-[#141417] to-[#080809]' },
+  { id: 'graphite', name: 'Graphite Smoke', tag: 'Smoke', preview: 'bg-gradient-to-br from-neutral-950 via-zinc-900 to-black' },
+  { id: 'aurora', name: 'Aurora Glass', tag: 'Emerald Boreal', preview: 'bg-gradient-to-br from-[#022c22] via-[#064e3b] to-[#021c17]' },
+  { id: 'nebula', name: 'Deep Nebula', tag: 'Cosmic Indigo', preview: 'bg-gradient-to-br from-[#2e1065] via-[#3b0764] to-[#0f0728]' },
+  { id: 'cyberpunk', name: 'Neon Cyberpunk', tag: 'Electric Magenta', preview: 'bg-gradient-to-br from-[#4c0519] via-[#2e1065] to-[#082f49]' },
+  { id: 'deepsea', name: 'Abyssal Deep', tag: 'Oceanic Sapphire', preview: 'bg-gradient-to-br from-[#082f49] via-[#0c4a6e] to-[#02131e]' },
+  { id: 'minimal', name: 'Minimal Void', tag: 'Pure Pitch', preview: 'bg-gradient-to-br from-black via-zinc-950 to-black' },
 ];
 
 const GLASS_MATERIALS: { id: GlassMaterial; name: string; desc: string }[] = [
@@ -99,6 +100,7 @@ const GLASS_MATERIALS: { id: GlassMaterial; name: string; desc: string }[] = [
 
 export const SettingsApp: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'themes' | 'wallpapers' | 'optics' | 'dock' | 'backup'>('themes');
+  const [importStatus, setImportStatus] = useState<string | null>(null);
 
   const {
     settings,
@@ -138,6 +140,35 @@ export const SettingsApp: React.FC = () => {
     a.download = `aetheros-studio-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        if (data.settings) {
+          if (data.settings.themePreset) setThemePreset(data.settings.themePreset);
+          if (data.settings.wallpaper) setWallpaper(data.settings.wallpaper);
+          if (data.settings.accentColor) setAccentColor(data.settings.accentColor);
+          if (data.settings.glassMaterial) setGlassMaterial(data.settings.glassMaterial);
+          if (typeof data.settings.chromaticAberration === 'number') {
+            setChromaticAberration(data.settings.chromaticAberration);
+          }
+          if (data.settings.dockAutoHide) setDockAutoHide(data.settings.dockAutoHide);
+          if (data.settings.dockMagnification) setDockMagnification(data.settings.dockMagnification);
+        }
+        setImportStatus('Snapshot imported successfully!');
+        setTimeout(() => setImportStatus(null), 4000);
+      } catch (err) {
+        setImportStatus('Invalid JSON backup file.');
+        setTimeout(() => setImportStatus(null), 4000);
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
@@ -224,6 +255,28 @@ export const SettingsApp: React.FC = () => {
 
       {/* Main Content Viewport */}
       <div className="flex-1 overflow-y-auto pr-1 space-y-4 text-xs">
+        {/* Active Environment Status Pill */}
+        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between text-[11px]">
+          <div className="flex items-center gap-2">
+            <span className="text-zinc-400">Active Preset:</span>
+            <span className="font-semibold text-white uppercase font-mono tracking-wider px-2 py-0.5 rounded bg-white/10">
+              {settings.themePreset}
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="text-zinc-400">Accent:</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-white shadow-sm" />
+              <span className="font-semibold text-white capitalize">{settings.accentColor}</span>
+            </div>
+            <div className="h-3 w-px bg-white/10" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-zinc-400">Wallpaper:</span>
+              <span className="font-semibold text-white capitalize">{settings.wallpaper}</span>
+            </div>
+          </div>
+        </div>
+
         {/* TAB 1: THEMES & AESTHETICS */}
         {activeTab === 'themes' && (
           <div className="space-y-4">
@@ -542,6 +595,31 @@ export const SettingsApp: React.FC = () => {
                 <span>Export Snapshot</span>
               </button>
             </div>
+
+            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between">
+              <div>
+                <h4 className="font-bold text-white text-xs">Import Environment Snapshot</h4>
+                <p className="text-[10px] text-zinc-400 mt-0.5">
+                  Load a previously exported AetherOS JSON configuration snapshot.
+                </p>
+              </div>
+              <label className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition shadow-md cursor-pointer border border-white/20">
+                <Upload className="w-4 h-4" />
+                <span>Choose File</span>
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleImportBackup}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {importStatus && (
+              <div className="p-3 rounded-xl bg-white/10 border border-white/20 text-center font-semibold text-xs text-cyan-300 animate-in fade-in">
+                {importStatus}
+              </div>
+            )}
           </div>
         )}
       </div>
