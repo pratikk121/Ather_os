@@ -21,6 +21,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
   glassMaterial: 'regular',
   chromaticAberration: 0.22,
   dynamicLighting: true,
+  audioReactiveEnv: true,
   dropletMerge: true,
   companionUrl: 'http://localhost:3001',
   isCompanionConnected: false,

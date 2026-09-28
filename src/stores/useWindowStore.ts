@@ -15,14 +15,34 @@ interface WindowStoreState {
 }
 
 const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
+  files: {
+    id: 'files',
+    title: 'Aether Files',
+    isOpen: false,
+    isMinimized: false,
+    isMaximized: false,
+    zIndex: 9,
+    position: { x: 70, y: 70 },
+    size: { width: 620, height: 440 },
+  },
+  terminal: {
+    id: 'terminal',
+    title: 'Aether Kernel Terminal',
+    isOpen: false,
+    isMinimized: false,
+    isMaximized: false,
+    zIndex: 10,
+    position: { x: 120, y: 110 },
+    size: { width: 580, height: 380 },
+  },
   notes: {
     id: 'notes',
     title: 'Focus Notes',
     isOpen: true,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 10,
-    position: { x: 80, y: 80 },
+    zIndex: 11,
+    position: { x: 90, y: 80 },
     size: { width: 560, height: 440 },
   },
   tasks: {
@@ -31,8 +51,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 11,
-    position: { x: 140, y: 100 },
+    zIndex: 12,
+    position: { x: 150, y: 100 },
     size: { width: 700, height: 480 },
   },
   pomodoro: {
@@ -41,8 +61,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 12,
-    position: { x: 300, y: 150 },
+    zIndex: 13,
+    position: { x: 320, y: 140 },
     size: { width: 340, height: 380 },
   },
   music: {
@@ -51,8 +71,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 13,
-    position: { x: 220, y: 120 },
+    zIndex: 14,
+    position: { x: 230, y: 120 },
     size: { width: 480, height: 460 },
   },
   ambient: {
@@ -61,9 +81,9 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 14,
-    position: { x: 260, y: 140 },
-    size: { width: 440, height: 420 },
+    zIndex: 15,
+    position: { x: 270, y: 130 },
+    size: { width: 450, height: 420 },
   },
   journal: {
     id: 'journal',
@@ -71,8 +91,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 15,
-    position: { x: 180, y: 90 },
+    zIndex: 16,
+    position: { x: 190, y: 90 },
     size: { width: 620, height: 460 },
   },
   habits: {
@@ -81,8 +101,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 16,
-    position: { x: 200, y: 110 },
+    zIndex: 17,
+    position: { x: 210, y: 110 },
     size: { width: 540, height: 440 },
   },
   system: {
@@ -91,9 +111,9 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 17,
-    position: { x: 320, y: 130 },
-    size: { width: 420, height: 360 },
+    zIndex: 18,
+    position: { x: 330, y: 130 },
+    size: { width: 430, height: 360 },
   },
   settings: {
     id: 'settings',
@@ -101,8 +121,8 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
     isOpen: false,
     isMinimized: false,
     isMaximized: false,
-    zIndex: 18,
-    position: { x: 240, y: 100 },
+    zIndex: 19,
+    position: { x: 250, y: 100 },
     size: { width: 500, height: 420 },
   },
 };
@@ -110,7 +130,7 @@ const INITIAL_WINDOWS: Record<WindowId, WindowState> = {
 export const useWindowStore = create<WindowStoreState>((set, get) => ({
   windows: INITIAL_WINDOWS,
   activeWindowId: 'notes',
-  highestZIndex: 20,
+  highestZIndex: 25,
 
   openWindow: (id) => {
     const nextZ = get().highestZIndex + 1;

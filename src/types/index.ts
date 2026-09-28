@@ -1,5 +1,16 @@
 // Window Types
-export type WindowId = 'notes' | 'tasks' | 'pomodoro' | 'music' | 'ambient' | 'journal' | 'habits' | 'system' | 'settings';
+export type WindowId =
+  | 'notes'
+  | 'tasks'
+  | 'pomodoro'
+  | 'music'
+  | 'ambient'
+  | 'journal'
+  | 'habits'
+  | 'system'
+  | 'settings'
+  | 'terminal'
+  | 'files';
 
 export interface WindowState {
   id: WindowId;
@@ -10,6 +21,25 @@ export interface WindowState {
   zIndex: number;
   position: { x: number; y: number };
   size: { width: number; height: number };
+}
+
+// Desktop Icon Types
+export interface DesktopIconItem {
+  id: WindowId;
+  title: string;
+  iconName: string;
+  gridPos: { col: number; row: number };
+}
+
+// File System Types
+export interface VirtualFile {
+  id: string;
+  name: string;
+  type: 'file' | 'folder' | 'note' | 'audio';
+  path: string;
+  size?: string;
+  updatedAt: number;
+  content?: string;
 }
 
 // Productivity Types
@@ -85,11 +115,12 @@ export interface Habit {
 
 // System Settings Types
 export interface SystemSettings {
-  wallpaper: 'nebula' | 'aurora' | 'cyberpunk' | 'deepsea' | 'minimal';
+  wallpaper: 'aurora' | 'nebula' | 'cyberpunk' | 'deepsea' | 'minimal';
   glassMaterial: 'thin' | 'regular' | 'heavy' | 'frosted';
   chromaticAberration: number;
   dynamicLighting: boolean;
   dropletMerge: boolean;
+  audioReactiveEnv: boolean;
   companionUrl: string;
   isCompanionConnected: boolean;
 }

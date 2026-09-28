@@ -11,6 +11,8 @@ import {
   Activity,
   Sliders,
   Sparkles,
+  Terminal,
+  Folder,
   X,
 } from 'lucide-react';
 import { useSettingsStore } from '../../stores/useSettingsStore';
@@ -52,6 +54,20 @@ export const CommandPalette: React.FC = () => {
   if (!isCommandPaletteOpen) return null;
 
   const appActions: { id: string; title: string; subtitle: string; icon: any; action: () => void }[] = [
+    {
+      id: 'app-files',
+      title: 'Open Aether Files',
+      subtitle: 'Browse documents, notes, audio, and system files',
+      icon: Folder,
+      action: () => openWindow('files'),
+    },
+    {
+      id: 'app-terminal',
+      title: 'Open Kernel Terminal',
+      subtitle: 'Execute shell commands, themes, and telemetry',
+      icon: Terminal,
+      action: () => openWindow('terminal'),
+    },
     {
       id: 'app-notes',
       title: 'Open Focus Notes',
