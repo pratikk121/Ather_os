@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSettingsStore } from '../../stores/useSettingsStore';
 import { useWindowStore } from '../../stores/useWindowStore';
 import { useMediaStore } from '../../stores/useMediaStore';
+import { applyThemeToElement } from '../../theme/tokens';
 import { TopBar } from './TopBar';
 import { LiquidDock } from './LiquidDock';
 import { WindowFrame } from './WindowFrame';
@@ -55,6 +56,13 @@ export const DesktopCanvas: React.FC = () => {
     isOpen: false,
   });
 
+  // Apply theme tokens on initial mount and when themePreset updates
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      applyThemeToElement(document.documentElement, settings.themePreset);
+    }
+  }, [settings.themePreset]);
+
   // Track cursor position for dynamic rim light
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -89,53 +97,6 @@ export const DesktopCanvas: React.FC = () => {
     minimal: 'from-[#18181b] via-[#09090b] to-[#18181b]',
   };
 
-  const getAmbientColors = () => {
-    const preset = settings.themePreset;
-    const accent = settings.accentColor;
-
-    if (preset === 'cyberpunk' || accent === 'rose' || (preset === 'custom' && accent === 'cyan')) {
-      return {
-        s1: 'bg-cyan-500/[0.22]',
-        s2: 'bg-pink-500/[0.20]',
-        s3: 'bg-purple-600/[0.22]',
-      };
-    }
-    if (preset === 'emerald' || accent === 'emerald') {
-      return {
-        s1: 'bg-emerald-400/[0.22]',
-        s2: 'bg-teal-500/[0.20]',
-        s3: 'bg-green-600/[0.18]',
-      };
-    }
-    if (preset === 'solar' || accent === 'amber') {
-      return {
-        s1: 'bg-amber-400/[0.22]',
-        s2: 'bg-orange-500/[0.20]',
-        s3: 'bg-rose-600/[0.18]',
-      };
-    }
-    if (preset === 'arctic' || (preset === 'custom' && accent === 'cyan')) {
-      return {
-        s1: 'bg-sky-400/[0.22]',
-        s2: 'bg-blue-500/[0.20]',
-        s3: 'bg-cyan-300/[0.18]',
-      };
-    }
-    if (preset === 'nebula' || accent === 'purple') {
-      return {
-        s1: 'bg-purple-500/[0.24]',
-        s2: 'bg-indigo-500/[0.22]',
-        s3: 'bg-fuchsia-600/[0.20]',
-      };
-    }
-    return {
-      s1: 'bg-cyan-500/[0.08]',
-      s2: 'bg-purple-500/[0.06]',
-      s3: 'bg-white/[0.04]',
-    };
-  };
-
-  const ambient = getAmbientColors();
   const isAudioPulsing = settings.audioReactiveEnv && isPlaying;
   const hasActiveWindows = Object.values(windows).some((w) => w.isOpen && !w.isMinimized);
 
@@ -147,23 +108,26 @@ export const DesktopCanvas: React.FC = () => {
         if (contextMenu.isOpen) setContextMenu({ ...contextMenu, isOpen: false });
       }}
       className={`relative w-screen h-screen overflow-hidden bg-gradient-to-br ${
-        wallpapers[settings.wallpaper] || wallpapers.cyberpunk
-      } text-zinc-100 flex flex-col justify-between select-none transition-colors duration-500`}
+        wallpapers[settings.wallpaper] || wallpapers.obsidian
+      } text-content-primary flex flex-col justify-between select-none transition-colors duration-500`}
     >
-      {/* Dynamic Theme & Audio-Reactive Ambient Fluid Light Spheres */}
+      {/* Dynamic Theme-Derived Fluid Light Spheres */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
-          className={`absolute top-1/4 left-1/4 w-96 h-96 ${ambient.s1} rounded-full blur-3xl transition-all duration-700 ${
+          style={{ backgroundColor: 'var(--aether-ambient-glow-1)' }}
+          className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-all duration-700 ${
             isAudioPulsing ? 'scale-125 animate-pulse' : 'animate-pulse-slow'
           }`}
         />
         <div
-          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] ${ambient.s2} rounded-full blur-3xl transition-all duration-700 delay-300 ${
+          style={{ backgroundColor: 'var(--aether-ambient-glow-2)' }}
+          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] rounded-full blur-3xl transition-all duration-700 delay-300 ${
             isAudioPulsing ? 'scale-110' : 'animate-pulse-slow'
           }`}
         />
         <div
-          className={`absolute top-1/2 right-1/3 w-80 h-80 ${ambient.s3} rounded-full blur-3xl transition-all duration-700 delay-500 ${
+          style={{ backgroundColor: 'var(--aether-ambient-glow-3)' }}
+          className={`absolute top-1/2 right-1/3 w-80 h-80 rounded-full blur-3xl transition-all duration-700 delay-500 ${
             isAudioPulsing ? 'scale-120 animate-pulse' : 'animate-pulse-slow'
           }`}
         />
@@ -177,41 +141,45 @@ export const DesktopCanvas: React.FC = () => {
         {/* Ambient Spatial Centerpiece (Displayed when all windows are minimized or closed) */}
         {!hasActiveWindows && (
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0 pb-12">
-            <div className="pointer-events-auto flex flex-col items-center gap-4 text-center max-w-sm p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/15 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+            <div className="pointer-events-auto flex flex-col items-center gap-4 text-center max-w-sm p-6 rounded-3xl bg-surface-primary/80 backdrop-blur-2xl border border-border-default shadow-2xl animate-in fade-in zoom-in-95 duration-300">
               <div className="flex flex-col items-center">
-                <span className="text-3xl font-extrabold font-mono tracking-tight text-white drop-shadow-md">
+                <span className="text-3xl font-extrabold font-mono tracking-tight text-content-primary drop-shadow-md">
                   {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
-                <span className="text-xs font-semibold text-zinc-300 mt-1 uppercase tracking-wider font-mono">
+                <span className="text-xs font-semibold text-content-secondary mt-1 uppercase tracking-wider font-mono">
                   {new Date().toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}
                 </span>
               </div>
 
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-border-default to-transparent" />
 
-              <p className="text-[11px] text-zinc-400">
-                All windows minimized. Click any dock icon or press <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-white font-mono text-[10px]">⌘K</kbd> to launch.
+              <p className="text-[11px] text-content-muted">
+                All windows minimized. Click any dock icon or press{' '}
+                <kbd className="px-1.5 py-0.5 rounded bg-surface-interactive border border-border-default text-content-primary font-mono text-[10px]">
+                  ⌘K
+                </kbd>{' '}
+                to launch.
               </p>
 
               <div className="flex items-center gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => useWindowStore.getState().openWindow('terminal')}
-                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-sm"
+                  className="px-3 py-1.5 rounded-xl bg-surface-interactive hover:bg-surface-selected border border-border-default text-xs text-content-primary font-semibold transition hover:scale-105 shadow-sm"
                 >
                   Terminal
                 </button>
                 <button
                   type="button"
                   onClick={() => useWindowStore.getState().openWindow('notes')}
-                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-sm"
+                  className="px-3 py-1.5 rounded-xl bg-surface-interactive hover:bg-surface-selected border border-border-default text-xs text-content-primary font-semibold transition hover:scale-105 shadow-sm"
                 >
                   Notes
                 </button>
                 <button
                   type="button"
                   onClick={() => useWindowStore.getState().openWindow('settings')}
-                  className="px-3 py-1.5 rounded-xl bg-cyan-500/25 hover:bg-cyan-500/35 border border-cyan-400/50 text-xs text-cyan-200 font-semibold transition hover:scale-105 shadow-md"
+                  className="px-3 py-1.5 rounded-xl bg-accent-soft hover:bg-accent-primary/25 border border-accent-primary/40 text-xs text-accent-primary font-semibold transition hover:scale-105 shadow-md"
                 >
                   Personalize
                 </button>
@@ -305,9 +273,9 @@ export const DesktopCanvas: React.FC = () => {
 
         {/* Floating Minimized Apps Quick Tray (Bottom-Left) */}
         {Object.values(windows).some((w) => w.isOpen && w.isMinimized) && (
-          <div className="absolute bottom-4 left-4 z-30 flex items-center gap-2 bg-black/75 backdrop-blur-2xl p-2 rounded-2xl border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-3">
-            <span className="text-[10px] font-mono text-zinc-400 uppercase px-1.5 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <div className="absolute bottom-4 left-4 z-30 flex items-center gap-2 bg-surface-elevated/90 backdrop-blur-2xl p-2 rounded-2xl border border-border-default shadow-2xl animate-in fade-in slide-in-from-bottom-3">
+            <span className="text-[10px] font-mono text-content-muted uppercase px-1.5 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-status-warning animate-pulse" />
               <span>Minimized:</span>
             </span>
             {Object.values(windows)
@@ -317,11 +285,11 @@ export const DesktopCanvas: React.FC = () => {
                   key={w.id}
                   type="button"
                   onClick={() => useWindowStore.getState().openWindow(w.id)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-md"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-interactive hover:bg-surface-selected border border-border-default text-xs text-content-primary font-semibold transition hover:scale-105 shadow-md"
                   title={`Click to restore ${w.title}`}
                 >
                   <span>{w.title}</span>
-                  <span className="text-[9px] font-mono text-cyan-300">↗ Restore</span>
+                  <span className="text-[9px] font-mono text-accent-primary">↗ Restore</span>
                 </button>
               ))}
           </div>

@@ -20,13 +20,12 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
       {habits.map((habit) => {
         const weeklyCompleted = habit.completedDates.filter((d) => past7Dates.has(d)).length;
-
         const targetPercent = Math.min(100, Math.round((weeklyCompleted / habit.targetPerWeek) * 100));
 
         return (
           <div
             key={habit.id}
-            className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col items-center text-center gap-1.5"
+            className="p-2.5 rounded-xl bg-surface-interactive/40 border border-border-subtle flex flex-col items-center text-center gap-1.5"
           >
             {/* Circular Progress */}
             <div className="relative w-12 h-12 flex items-center justify-center">
@@ -35,7 +34,7 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
                   cx="24"
                   cy="24"
                   r="20"
-                  className="stroke-white/10"
+                  className="stroke-surface-interactive"
                   strokeWidth="3.5"
                   fill="transparent"
                 />
@@ -43,7 +42,7 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
                   cx="24"
                   cy="24"
                   r="20"
-                  className="stroke-white transition-all duration-700"
+                  className="stroke-current text-accent-primary transition-all duration-700"
                   strokeWidth="3.5"
                   strokeDasharray={2 * Math.PI * 20}
                   strokeDashoffset={2 * Math.PI * 20 * (1 - targetPercent / 100)}
@@ -54,11 +53,11 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
               <span className="absolute text-sm">{habit.icon}</span>
             </div>
 
-            <span className="text-[11px] font-semibold text-zinc-200 truncate max-w-full">
+            <span className="text-[11px] font-semibold text-content-primary truncate max-w-full">
               {habit.name}
             </span>
 
-            <div className="flex items-center gap-1 text-[10px] text-zinc-300 font-mono">
+            <div className="flex items-center gap-1 text-[10px] text-accent-primary font-mono font-semibold">
               <span>🔥 {habit.streak}d streak</span>
             </div>
           </div>

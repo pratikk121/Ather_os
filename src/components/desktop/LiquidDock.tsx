@@ -75,7 +75,7 @@ const THEME_GRADIENTS: Record<ThemePreset, Record<WindowId, string>> = {
     journal: 'from-green-400 to-teal-500',
     habits: 'from-emerald-300 to-green-600',
     system: 'from-teal-400 to-emerald-800',
-    settings: 'from-emerald-400 to-zinc-600',
+    settings: 'from-emerald-400 to-teal-700',
   },
   solar: {
     files: 'from-amber-300 to-orange-500',
@@ -88,7 +88,7 @@ const THEME_GRADIENTS: Record<ThemePreset, Record<WindowId, string>> = {
     journal: 'from-amber-400 to-yellow-500',
     habits: 'from-orange-400 to-red-600',
     system: 'from-amber-500 to-rose-600',
-    settings: 'from-orange-400 to-zinc-600',
+    settings: 'from-orange-400 to-amber-700',
   },
   arctic: {
     files: 'from-sky-200 to-blue-400',
@@ -101,7 +101,7 @@ const THEME_GRADIENTS: Record<ThemePreset, Record<WindowId, string>> = {
     journal: 'from-sky-200 to-indigo-400',
     habits: 'from-cyan-200 to-blue-500',
     system: 'from-sky-300 to-indigo-500',
-    settings: 'from-blue-200 to-zinc-500',
+    settings: 'from-blue-200 to-sky-600',
   },
   nebula: {
     files: 'from-purple-300 to-indigo-500',
@@ -114,7 +114,7 @@ const THEME_GRADIENTS: Record<ThemePreset, Record<WindowId, string>> = {
     journal: 'from-purple-300 to-indigo-600',
     habits: 'from-fuchsia-400 to-pink-600',
     system: 'from-purple-400 to-violet-700',
-    settings: 'from-indigo-400 to-zinc-600',
+    settings: 'from-indigo-400 to-purple-700',
   },
   custom: {
     files: 'from-zinc-200 via-zinc-400 to-zinc-600',
@@ -166,7 +166,7 @@ export const LiquidDock: React.FC = () => {
           material="frosted"
           borderRadius={26}
           contentClassName="flex flex-row flex-nowrap items-end space-x-2 px-3.5 py-2 overflow-visible"
-          className="border border-white/20 shadow-2xl backdrop-blur-3xl bg-black/80 overflow-visible"
+          className="border border-border-default shadow-2xl backdrop-blur-3xl bg-surface-primary/90 overflow-visible"
         >
           {DOCK_ITEMS_DEF.map((item, index) => {
             const isOpen = windows[item.id]?.isOpen;
@@ -206,7 +206,7 @@ export const LiquidDock: React.FC = () => {
                 <div
                   role="tooltip"
                   id={`dock-tooltip-${item.id}`}
-                  className="absolute -top-10 px-2.5 py-1 rounded-lg bg-black/95 text-zinc-100 text-[11px] font-semibold border border-white/20 shadow-2xl pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity whitespace-nowrap z-50 drop-shadow-lg"
+                  className="absolute -top-10 px-2.5 py-1 rounded-lg bg-surface-elevated/95 text-content-primary text-[11px] font-semibold border border-border-default shadow-2xl pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity whitespace-nowrap z-50 drop-shadow-lg"
                 >
                   {item.label} {isMinimized ? '• Minimized (Click to restore)' : ''}
                 </div>
@@ -217,10 +217,10 @@ export const LiquidDock: React.FC = () => {
                   onClick={() => handleAppClick(item.id)}
                   aria-label={`Launch ${item.label}`}
                   aria-describedby={`dock-tooltip-${item.id}`}
-                  className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center relative transition-all shadow-md bg-gradient-to-br ${gradient} p-[1.5px] focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none`}
+                  className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center relative transition-all shadow-md bg-gradient-to-br ${gradient} p-[1.5px] focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:outline-none`}
                 >
-                  <div className="w-full h-full rounded-[10px] bg-black/75 hover:bg-black/35 flex items-center justify-center transition-colors">
-                    <Icon className="w-5 h-5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                  <div className="w-full h-full rounded-[10px] bg-surface-elevated/85 hover:bg-surface-elevated/40 flex items-center justify-center transition-colors">
+                    <Icon className="w-5 h-5 text-content-primary drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
                   </div>
                 </button>
 
@@ -231,8 +231,8 @@ export const LiquidDock: React.FC = () => {
                       aria-hidden="true"
                       className={`w-1.5 h-1.5 rounded-full transition-all ${
                         isMinimized
-                          ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)] animate-pulse'
-                          : 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)]'
+                          ? 'bg-status-warning shadow-[0_0_6px_var(--aether-status-warning)] animate-pulse'
+                          : 'bg-accent-primary shadow-[0_0_6px_var(--aether-accent-primary)]'
                       }`}
                     />
                   )}
@@ -245,4 +245,3 @@ export const LiquidDock: React.FC = () => {
     </div>
   );
 };
-

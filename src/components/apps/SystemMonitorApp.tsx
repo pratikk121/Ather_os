@@ -20,20 +20,20 @@ export const SystemMonitorApp: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full gap-3 text-slate-100">
+    <div className="flex flex-col h-full gap-3 text-content-primary">
       {/* Backend Status Banner */}
       <div
         className={`p-3 rounded-xl border flex items-center justify-between transition ${
           settings.isCompanionConnected
-            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-            : 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+            ? 'bg-status-success/15 border-status-success/40 text-status-success'
+            : 'bg-status-warning/15 border-status-warning/40 text-status-warning'
         }`}
       >
         <div className="flex items-center gap-2">
           {settings.isCompanionConnected ? (
-            <Wifi className="w-4 h-4 text-emerald-400" />
+            <Wifi className="w-4 h-4 text-status-success" />
           ) : (
-            <WifiOff className="w-4 h-4 text-amber-400" />
+            <WifiOff className="w-4 h-4 text-status-warning" />
           )}
           <div>
             <h4 className="text-xs font-semibold">
@@ -46,7 +46,7 @@ export const SystemMonitorApp: React.FC = () => {
             </p>
           </div>
         </div>
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/30">
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-base/50 border border-border-subtle">
           :3001
         </span>
       </div>
@@ -54,38 +54,33 @@ export const SystemMonitorApp: React.FC = () => {
       {/* Metrics Gauges */}
       <div className="grid grid-cols-2 gap-3">
         {/* CPU Gauge */}
-        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col gap-2">
+        <div className="p-3 rounded-2xl bg-surface-interactive/40 border border-border-subtle flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-semibold">
+            <div className="flex items-center gap-1.5 text-accent-primary text-xs font-semibold">
               <Cpu className="w-4 h-4" />
               <span>CPU Load</span>
             </div>
-            <span className="text-sm font-mono font-bold text-white">
+            <span className="text-sm font-mono font-bold text-content-primary">
               {telemetry.cpuUsage}%
             </span>
           </div>
-          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+          <div className="w-full h-2 rounded-full bg-surface-interactive overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-500 rounded-full"
+              className="h-full bg-accent-primary transition-all duration-500 rounded-full"
               style={{ width: `${Math.min(100, telemetry.cpuUsage)}%` }}
             />
           </div>
         </div>
 
         {/* Memory Gauge */}
-        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-purple-400 text-xs font-semibold">
-              <HardDrive className="w-4 h-4" />
-              <span>RAM Used</span>
-            </div>
-            <span className="text-sm font-mono font-bold text-white">
-              {telemetry.memoryUsage}%
-            </span>
+        <div className="p-3 rounded-2xl bg-surface-interactive/40 border border-border-subtle flex flex-col gap-2">
+          <div className="flex items-center gap-1.5 text-accent-secondary text-xs font-semibold">
+            <HardDrive className="w-4 h-4" />
+            <span>RAM Used</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+          <div className="w-full h-2 rounded-full bg-surface-interactive overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-purple-400 to-pink-500 transition-all duration-500 rounded-full"
+              className="h-full bg-accent-secondary transition-all duration-500 rounded-full"
               style={{ width: `${Math.min(100, telemetry.memoryUsage)}%` }}
             />
           </div>
@@ -93,12 +88,12 @@ export const SystemMonitorApp: React.FC = () => {
       </div>
 
       {/* System Stats Footer */}
-      <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-2 text-slate-300">
-          <Clock className="w-4 h-4 text-cyan-400" />
+      <div className="p-3 rounded-xl bg-surface-interactive/40 border border-border-subtle flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2 text-content-secondary">
+          <Clock className="w-4 h-4 text-accent-primary" />
           <span>System Uptime</span>
         </div>
-        <span className="font-mono text-cyan-300">
+        <span className="font-mono text-accent-primary">
           {formatUptime(telemetry.uptimeSeconds)}
         </span>
       </div>

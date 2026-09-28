@@ -8,13 +8,13 @@ const CATEGORY_META: Record<
   ActivityCategory,
   { label: string; icon: React.FC<{ className?: string }>; color: string }
 > = {
-  coding: { label: 'Coding / Building', icon: Code, color: 'text-cyan-400 bg-cyan-500/20 border-cyan-500/30' },
-  productivity: { label: 'Productivity', icon: Sparkles, color: 'text-indigo-400 bg-indigo-500/20 border-indigo-500/30' },
-  reading: { label: 'Deep Reading', icon: BookOpen, color: 'text-emerald-400 bg-emerald-500/20 border-emerald-500/30' },
-  fitness: { label: 'Workout / Fitness', icon: Dumbbell, color: 'text-rose-400 bg-rose-500/20 border-rose-500/30' },
-  mindfulness: { label: 'Mindfulness', icon: Coffee, color: 'text-amber-400 bg-amber-500/20 border-amber-500/30' },
-  social: { label: 'Social & Offline', icon: Globe, color: 'text-purple-400 bg-purple-500/20 border-purple-500/30' },
-  sleep: { label: 'Rest & Recovery', icon: Coffee, color: 'text-blue-400 bg-blue-500/20 border-blue-500/30' },
+  coding: { label: 'Coding / Building', icon: Code, color: 'text-accent-primary bg-accent-soft border-accent-primary/40' },
+  productivity: { label: 'Productivity', icon: Sparkles, color: 'text-accent-secondary bg-surface-interactive border-border-subtle' },
+  reading: { label: 'Deep Reading', icon: BookOpen, color: 'text-status-success bg-status-success/20 border-status-success/30' },
+  fitness: { label: 'Workout / Fitness', icon: Dumbbell, color: 'text-status-error bg-status-error/20 border-status-error/30' },
+  mindfulness: { label: 'Mindfulness', icon: Coffee, color: 'text-status-warning bg-status-warning/20 border-status-warning/30' },
+  social: { label: 'Social & Offline', icon: Globe, color: 'text-status-info bg-status-info/20 border-status-info/30' },
+  sleep: { label: 'Rest & Recovery', icon: Coffee, color: 'text-accent-secondary bg-surface-interactive border-border-subtle' },
 };
 
 export const ActivityJournalApp: React.FC = () => {
@@ -48,15 +48,15 @@ export const ActivityJournalApp: React.FC = () => {
     .reduce((sum, a) => sum + a.durationMinutes, 0);
 
   return (
-    <div className="flex flex-col h-full gap-3 text-slate-100">
+    <div className="flex flex-col h-full gap-3 text-content-primary">
       {/* 28-day Activity Matrix */}
       <GlassHeatmap activities={activities} />
 
       {/* Log New Activity Section */}
-      <form onSubmit={handleLog} className="p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col gap-2">
+      <form onSubmit={handleLog} className="p-3 rounded-xl bg-surface-interactive/40 border border-border-subtle flex flex-col gap-2">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-semibold text-slate-200">Log Activity</span>
-          <span className="text-[10px] text-cyan-300 font-mono">
+          <span className="font-semibold text-content-primary">Log Activity</span>
+          <span className="text-[10px] text-accent-primary font-mono">
             Today: {Math.floor(totalMinutesToday / 60)}h {totalMinutesToday % 60}m
           </span>
         </div>
@@ -67,13 +67,13 @@ export const ActivityJournalApp: React.FC = () => {
             placeholder="What did you work on or do?"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="sm:col-span-2 px-2.5 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
+            className="sm:col-span-2 px-2.5 py-1.5 text-xs bg-surface-interactive border border-border-subtle rounded-lg text-content-primary placeholder-content-muted focus:outline-none focus:border-accent-primary"
           />
 
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as ActivityCategory)}
-            className="px-2 py-1.5 text-xs bg-slate-900 border border-white/10 rounded-lg text-slate-200 focus:outline-none"
+            className="px-2 py-1.5 text-xs bg-surface-base border border-border-subtle rounded-lg text-content-primary focus:outline-none focus:border-accent-primary"
           >
             {Object.entries(CATEGORY_META).map(([key, meta]) => (
               <option key={key} value={key}>
@@ -86,13 +86,13 @@ export const ActivityJournalApp: React.FC = () => {
             <select
               value={type}
               onChange={(e) => setType(e.target.value as 'online' | 'offline')}
-              className="px-2 py-1.5 text-xs bg-slate-900 border border-white/10 rounded-lg text-slate-200 focus:outline-none"
+              className="px-2 py-1.5 text-xs bg-surface-base border border-border-subtle rounded-lg text-content-primary focus:outline-none"
             >
               <option value="online">🌐 Online</option>
               <option value="offline">🌲 Offline</option>
             </select>
 
-            <div className="flex items-center bg-white/5 border border-white/10 px-2 py-1 rounded-lg text-xs">
+            <div className="flex items-center bg-surface-interactive border border-border-subtle px-2 py-1 rounded-lg text-xs">
               <input
                 type="number"
                 min="5"
@@ -100,14 +100,14 @@ export const ActivityJournalApp: React.FC = () => {
                 step="5"
                 value={durationMinutes}
                 onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                className="w-10 bg-transparent text-center focus:outline-none text-white text-xs"
+                className="w-10 bg-transparent text-center focus:outline-none text-content-primary text-xs"
               />
-              <span className="text-slate-400 text-[10px]">m</span>
+              <span className="text-content-muted text-[10px]">m</span>
             </div>
 
             <button
               type="submit"
-              className="px-3 py-1.5 rounded-lg bg-cyan-500/30 hover:bg-cyan-500/40 text-cyan-200 border border-cyan-500/40 text-xs font-semibold transition"
+              className="px-3 py-1.5 rounded-lg bg-accent-soft hover:bg-accent-primary/25 text-accent-primary border border-accent-primary/40 text-xs font-semibold transition"
             >
               Log
             </button>
@@ -117,7 +117,7 @@ export const ActivityJournalApp: React.FC = () => {
 
       {/* Activity Timeline List */}
       <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-        <span className="text-xs font-semibold text-slate-300 px-1">Recent Timeline</span>
+        <span className="text-xs font-semibold text-content-secondary px-1">Recent Timeline</span>
         {activities.map((act) => {
           const meta = CATEGORY_META[act.category] || CATEGORY_META.coding;
           const Icon = meta.icon;
@@ -129,7 +129,7 @@ export const ActivityJournalApp: React.FC = () => {
           return (
             <div
               key={act.id}
-              className="p-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 flex items-center justify-between transition group"
+              className="p-2.5 rounded-xl bg-surface-interactive/30 hover:bg-surface-interactive/60 border border-border-subtle flex items-center justify-between transition group"
             >
               <div className="flex items-center gap-2.5">
                 <div className={`p-2 rounded-lg border ${meta.color}`}>
@@ -137,27 +137,29 @@ export const ActivityJournalApp: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-xs font-medium text-white">{act.title}</h4>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/10 text-slate-400">
+                    <h4 className="text-xs font-medium text-content-primary">{act.title}</h4>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-surface-interactive text-content-muted border border-border-subtle">
                       {act.type}
                     </span>
                   </div>
-                  {act.notes && <p className="text-[10px] text-slate-400 mt-0.5">{act.notes}</p>}
+                  {act.notes && <p className="text-[10px] text-content-muted mt-0.5">{act.notes}</p>}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <span className="text-xs font-mono font-semibold text-cyan-300">
+                  <span className="text-xs font-mono font-semibold text-content-primary">
                     {act.durationMinutes}m
                   </span>
-                  <p className="text-[10px] text-slate-500">{dateFormatted}</p>
+                  <span className="block text-[10px] text-content-muted font-mono">{dateFormatted}</span>
                 </div>
                 <button
+                  type="button"
                   onClick={() => deleteActivity(act.id)}
-                  className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 p-1 transition"
+                  aria-label={`Delete activity: ${act.title}`}
+                  className="opacity-0 group-hover:opacity-100 text-content-muted hover:text-status-error p-1 rounded transition focus-visible:ring-1 focus-visible:ring-status-error"
                 >
-                  <Trash2 className="w-3 h-3" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>

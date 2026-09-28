@@ -98,11 +98,11 @@ export const FileExplorerApp: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full gap-3 text-slate-100 select-none">
+    <div className="flex h-full gap-3 text-content-primary select-none">
       {/* Sidebar Navigation */}
-      <nav aria-label="Folder navigation" className="w-44 border-r border-white/10 pr-2 flex flex-col gap-1.5 text-xs">
-        <div className="flex items-center gap-1.5 px-2 py-1 text-slate-400 font-semibold text-[11px] uppercase tracking-wider">
-          <HardDrive className="w-3.5 h-3.5 text-cyan-400" />
+      <nav aria-label="Folder navigation" className="w-44 border-r border-border-subtle pr-2 flex flex-col gap-1.5 text-xs">
+        <div className="flex items-center gap-1.5 px-2 py-1 text-content-muted font-semibold text-[11px] uppercase tracking-wider">
+          <HardDrive className="w-3.5 h-3.5 text-accent-primary" />
           <span>Locations</span>
         </div>
 
@@ -113,10 +113,12 @@ export const FileExplorerApp: React.FC = () => {
             setSearchQuery('');
           }}
           className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition text-left ${
-            currentFolder === 'root' && !searchQuery ? 'bg-cyan-500/25 text-white font-bold' : 'text-slate-300 hover:bg-white/5'
+            currentFolder === 'root' && !searchQuery
+              ? 'bg-accent-soft text-accent-primary font-bold border border-accent-primary/30'
+              : 'text-content-secondary hover:bg-surface-interactive'
           }`}
         >
-          <Folder className="w-4 h-4 text-cyan-400" />
+          <Folder className="w-4 h-4 text-accent-primary" />
           <span>Root Drive</span>
         </button>
 
@@ -127,10 +129,12 @@ export const FileExplorerApp: React.FC = () => {
             setSearchQuery('');
           }}
           className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition text-left ${
-            currentFolder === 'documents' && !searchQuery ? 'bg-cyan-500/25 text-white font-bold' : 'text-slate-300 hover:bg-white/5'
+            currentFolder === 'documents' && !searchQuery
+              ? 'bg-accent-soft text-accent-primary font-bold border border-accent-primary/30'
+              : 'text-content-secondary hover:bg-surface-interactive'
           }`}
         >
-          <FileText className="w-4 h-4 text-indigo-400" />
+          <FileText className="w-4 h-4 text-accent-secondary" />
           <span>Documents</span>
         </button>
 
@@ -141,10 +145,12 @@ export const FileExplorerApp: React.FC = () => {
             setSearchQuery('');
           }}
           className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition text-left ${
-            currentFolder === 'audio' && !searchQuery ? 'bg-cyan-500/25 text-white font-bold' : 'text-slate-300 hover:bg-white/5'
+            currentFolder === 'audio' && !searchQuery
+              ? 'bg-accent-soft text-accent-primary font-bold border border-accent-primary/30'
+              : 'text-content-secondary hover:bg-surface-interactive'
           }`}
         >
-          <Music className="w-4 h-4 text-purple-400" />
+          <Music className="w-4 h-4 text-accent-primary" />
           <span>Audio Files</span>
         </button>
 
@@ -155,10 +161,12 @@ export const FileExplorerApp: React.FC = () => {
             setSearchQuery('');
           }}
           className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition text-left ${
-            currentFolder === 'system' && !searchQuery ? 'bg-cyan-500/25 text-white font-bold' : 'text-slate-300 hover:bg-white/5'
+            currentFolder === 'system' && !searchQuery
+              ? 'bg-accent-soft text-accent-primary font-bold border border-accent-primary/30'
+              : 'text-content-secondary hover:bg-surface-interactive'
           }`}
         >
-          <HardDrive className="w-4 h-4 text-rose-400" />
+          <HardDrive className="w-4 h-4 text-accent-secondary" />
           <span>System Files</span>
         </button>
       </nav>
@@ -166,30 +174,30 @@ export const FileExplorerApp: React.FC = () => {
       {/* Main Files Grid */}
       <div className="flex-1 flex flex-col gap-2 overflow-hidden">
         {/* Breadcrumbs & Search */}
-        <div className="flex items-center justify-between pb-2 border-b border-white/10">
-          <div className="flex items-center gap-1.5 text-xs text-slate-300">
+        <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
+          <div className="flex items-center gap-1.5 text-xs text-content-secondary">
             {currentFolder !== 'root' && (
               <button
                 type="button"
                 onClick={() => setCurrentFolder('root')}
-                className="p-1 rounded hover:bg-white/10 text-slate-300 transition"
+                className="p-1 rounded hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
               </button>
             )}
-            <span className="text-slate-400 font-mono">/aetheros</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-            <span className="font-bold text-white uppercase text-[11px]">{currentFolder}</span>
+            <span className="text-content-muted font-mono">/aetheros</span>
+            <ChevronRight className="w-3.5 h-3.5 text-content-disabled" />
+            <span className="font-bold text-content-primary uppercase text-[11px]">{currentFolder}</span>
           </div>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 absolute left-2 top-2 text-slate-400" />
+            <Search className="w-3.5 h-3.5 absolute left-2 top-2 text-content-muted" />
             <input
               type="text"
               placeholder="Search files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-7 pr-2.5 py-1 text-xs bg-white/10 border border-white/15 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 w-44"
+              className="pl-7 pr-2.5 py-1 text-xs bg-surface-interactive border border-border-subtle rounded-lg text-content-primary placeholder-content-muted focus:outline-none focus:border-accent-primary w-44"
             />
           </div>
         </div>
@@ -197,7 +205,7 @@ export const FileExplorerApp: React.FC = () => {
         {/* File Grid */}
         <div role="list" className="flex-1 overflow-y-auto grid grid-cols-3 sm:grid-cols-4 gap-2.5 p-1">
           {currentItems.length === 0 ? (
-            <div className="col-span-full py-12 text-center text-xs text-slate-400">
+            <div className="col-span-full py-12 text-center text-xs text-content-muted">
               Folder is empty
             </div>
           ) : (
@@ -212,26 +220,26 @@ export const FileExplorerApp: React.FC = () => {
                   onDoubleClick={() => handleItemDoubleClick(item)}
                   className={`p-3 rounded-xl border flex flex-col items-center text-center gap-1.5 cursor-pointer transition ${
                     isSelected
-                      ? 'bg-cyan-500/25 border-cyan-400 shadow-md ring-1 ring-cyan-400/30'
-                      : 'bg-white/[0.04] border-white/10 hover:bg-white/[0.08]'
+                      ? 'bg-surface-selected border-accent-primary shadow-md ring-1 ring-accent-primary/40'
+                      : 'bg-surface-interactive/40 border-border-subtle hover:bg-surface-interactive hover:border-border-default'
                   }`}
                 >
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/5">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-interactive/60">
                     {item.type === 'folder' ? (
-                      <Folder className="w-6 h-6 text-cyan-400" />
+                      <Folder className="w-6 h-6 text-accent-primary" />
                     ) : item.type === 'note' ? (
-                      <FileText className="w-6 h-6 text-indigo-400" />
+                      <FileText className="w-6 h-6 text-accent-secondary" />
                     ) : item.type === 'audio' ? (
-                      <Music className="w-6 h-6 text-purple-400" />
+                      <Music className="w-6 h-6 text-accent-primary" />
                     ) : (
-                      <HardDrive className="w-6 h-6 text-slate-300" />
+                      <HardDrive className="w-6 h-6 text-content-muted" />
                     )}
                   </div>
-                  <span className="text-xs font-semibold text-white truncate max-w-full">
+                  <span className="text-xs font-semibold text-content-primary truncate max-w-full">
                     {item.name}
                   </span>
                   {item.size && (
-                    <span className="text-[10px] text-slate-400 font-mono">{item.size}</span>
+                    <span className="text-[10px] text-content-muted font-mono">{item.size}</span>
                   )}
                 </div>
               );
@@ -241,17 +249,17 @@ export const FileExplorerApp: React.FC = () => {
 
         {/* Selected File Action Bar */}
         {selectedFile && selectedFile.type !== 'folder' && (
-          <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between text-xs">
+          <div className="p-2.5 rounded-xl bg-surface-interactive/40 border border-border-subtle flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 truncate">
-              <span className="font-semibold text-white truncate">{selectedFile.name}</span>
+              <span className="font-semibold text-content-primary truncate">{selectedFile.name}</span>
               {selectedFile.size && (
-                <span className="text-[10px] text-slate-400 font-mono">({selectedFile.size})</span>
+                <span className="text-[10px] text-content-muted font-mono">({selectedFile.size})</span>
               )}
             </div>
             <button
               type="button"
               onClick={() => handleItemDoubleClick(selectedFile)}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-500/30 hover:bg-cyan-500/40 text-cyan-100 border border-cyan-400/50 font-semibold transition"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-accent-soft hover:bg-accent-primary/25 text-accent-primary border border-accent-primary/40 font-semibold transition"
             >
               <span>Launch / View</span>
               <ExternalLink className="w-3 h-3" />

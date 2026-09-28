@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SystemSettings, ThemePreset, AccentColor, WallpaperTheme, GlassMaterial } from '../types';
+import { applyThemeToElement } from '../theme/tokens';
 
 interface SettingsStoreState {
   settings: SystemSettings;
@@ -25,11 +26,11 @@ interface SettingsStoreState {
 }
 
 const DEFAULT_SETTINGS: SystemSettings = {
-  wallpaper: 'cyberpunk',
-  themePreset: 'cyberpunk',
-  accentColor: 'cyan',
+  wallpaper: 'obsidian',
+  themePreset: 'monochrome',
+  accentColor: 'silver',
   glassMaterial: 'regular',
-  chromaticAberration: 0.25,
+  chromaticAberration: 0.2,
   dynamicLighting: true,
   audioReactiveEnv: true,
   dropletMerge: true,
@@ -48,8 +49,8 @@ export const THEME_PRESET_CONFIGS: Record<
     themePreset: 'monochrome',
     wallpaper: 'obsidian',
     accentColor: 'silver',
-    glassMaterial: 'heavy',
-    chromaticAberration: 0.12,
+    glassMaterial: 'regular',
+    chromaticAberration: 0.15,
     dynamicLighting: true,
   },
   cyberpunk: {
@@ -104,14 +105,18 @@ export const useSettingsStore = create<SettingsStoreState>()(
       isCommandPaletteOpen: false,
       lightPosition: { x: 50, y: 50 },
 
-      setThemePreset: (preset) =>
+      setThemePreset: (preset) => {
+        if (typeof document !== 'undefined') {
+          applyThemeToElement(document.documentElement, preset);
+        }
         set((state) => ({
           settings: {
             ...state.settings,
             ...(THEME_PRESET_CONFIGS[preset] || {}),
             themePreset: preset,
           },
-        })),
+        }));
+      },
 
       setAccentColor: (accentColor) =>
         set((state) => ({
@@ -178,12 +183,22 @@ export const useSettingsStore = create<SettingsStoreState>()(
 
       setLightPosition: (lightPosition) => set({ lightPosition }),
 
-      resetToDefaults: () => set({ settings: DEFAULT_SETTINGS }),
+      resetToDefaults: () => {
+        if (typeof document !== 'undefined') {
+          applyThemeToElement(document.documentElement, DEFAULT_SETTINGS.themePreset);
+        }
+        set({ settings: DEFAULT_SETTINGS });
+      },
     }),
     {
-      name: 'aetheros-settings-v3',
+      name: 'aetheros-settings-v4',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ settings: state.settings }),
+      onRehydrateStorage: () => (state) => {
+        if (state && typeof document !== 'undefined') {
+          applyThemeToElement(document.documentElement, state.settings.themePreset);
+        }
+      },
     }
   )
 );

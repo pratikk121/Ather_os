@@ -14,60 +14,10 @@ import {
 import { useSettingsStore } from '../../stores/useSettingsStore';
 import { useProductivityStore } from '../../stores/useProductivityStore';
 import { useActivityStore } from '../../stores/useActivityStore';
-import { ThemePreset, AccentColor, WallpaperTheme, GlassMaterial } from '../../types';
+import { AccentColor, WallpaperTheme, GlassMaterial } from '../../types';
+import { THEME_PRESETS_DEF } from '../../theme/tokens';
 
-interface ThemePresetItem {
-  id: ThemePreset;
-  name: string;
-  desc: string;
-  badge: string;
-  colorPreview: string;
-}
-
-const THEME_PRESETS: ThemePresetItem[] = [
-  {
-    id: 'monochrome',
-    name: 'Obsidian Noir',
-    desc: 'Pure pitch black, smoked glass, zinc & silver specular rims',
-    badge: 'Monochrome',
-    colorPreview: 'from-black via-zinc-800 to-zinc-950 border-white/40',
-  },
-  {
-    id: 'cyberpunk',
-    name: 'Cyber Neon',
-    desc: 'Electric cyan, magenta & vibrant purple bioluminescence',
-    badge: 'Vibrant',
-    colorPreview: 'from-cyan-500 via-purple-600 to-rose-500 border-cyan-400',
-  },
-  {
-    id: 'emerald',
-    name: 'Emerald Forest',
-    desc: 'Organic mint, deep moss & calm emerald liquid glass',
-    badge: 'Nature',
-    colorPreview: 'from-emerald-400 via-teal-600 to-slate-900 border-emerald-400',
-  },
-  {
-    id: 'solar',
-    name: 'Solar Amber',
-    desc: 'Warm golden sunset, amber glow & carbon textures',
-    badge: 'Warmth',
-    colorPreview: 'from-amber-400 via-orange-600 to-zinc-950 border-amber-400',
-  },
-  {
-    id: 'arctic',
-    name: 'Arctic Crystal',
-    desc: 'Ultra-clear ice frost, crisp sky reflections & blue highlights',
-    badge: 'Clarity',
-    colorPreview: 'from-sky-300 via-blue-500 to-slate-900 border-sky-300',
-  },
-  {
-    id: 'nebula',
-    name: 'Deep Nebula',
-    desc: 'Cosmic stellar dust, deep astronomical indigo & violet ripples',
-    badge: 'Cosmic',
-    colorPreview: 'from-purple-500 via-indigo-600 to-zinc-950 border-purple-400',
-  },
-];
+const THEME_PRESETS = Object.values(THEME_PRESETS_DEF);
 
 const ACCENT_COLORS: { id: AccentColor; name: string; bgClass: string; ringClass: string }[] = [
   { id: 'silver', name: 'Titanium Silver', bgClass: 'bg-zinc-200', ringClass: 'ring-zinc-300' },
@@ -79,16 +29,16 @@ const ACCENT_COLORS: { id: AccentColor; name: string; bgClass: string; ringClass
 ];
 
 const WALLPAPERS: { id: WallpaperTheme; name: string; tag: string; preview: string }[] = [
-  { id: 'obsidian', name: 'Pitch Obsidian', tag: 'Noir', preview: 'bg-gradient-to-br from-black via-zinc-950 to-neutral-950' },
-  { id: 'monochrome', name: 'Monochrome Matrix', tag: 'Zinc', preview: 'bg-gradient-to-br from-zinc-950 via-zinc-900 to-black' },
-  { id: 'silver', name: 'Platinum Ash', tag: 'Slate', preview: 'bg-gradient-to-br from-zinc-900 via-neutral-900 to-slate-950' },
-  { id: 'carbon', name: 'Carbon Fiber', tag: 'Carbon', preview: 'bg-gradient-to-br from-[#0c0c0e] via-[#141417] to-[#080809]' },
-  { id: 'graphite', name: 'Graphite Smoke', tag: 'Smoke', preview: 'bg-gradient-to-br from-neutral-950 via-zinc-900 to-black' },
-  { id: 'aurora', name: 'Aurora Glass', tag: 'Emerald Boreal', preview: 'bg-gradient-to-br from-[#022c22] via-[#064e3b] to-[#021c17]' },
-  { id: 'nebula', name: 'Deep Nebula', tag: 'Cosmic Indigo', preview: 'bg-gradient-to-br from-[#2e1065] via-[#3b0764] to-[#0f0728]' },
-  { id: 'cyberpunk', name: 'Neon Cyberpunk', tag: 'Electric Magenta', preview: 'bg-gradient-to-br from-[#4c0519] via-[#2e1065] to-[#082f49]' },
-  { id: 'deepsea', name: 'Abyssal Deep', tag: 'Oceanic Sapphire', preview: 'bg-gradient-to-br from-[#082f49] via-[#0c4a6e] to-[#02131e]' },
-  { id: 'minimal', name: 'Minimal Void', tag: 'Pure Pitch', preview: 'bg-gradient-to-br from-black via-zinc-950 to-black' },
+  { id: 'obsidian', name: 'Pitch Obsidian', tag: 'Noir', preview: 'bg-gradient-to-br from-[#0b0c10] via-[#1f2833] to-[#0b0c10]' },
+  { id: 'monochrome', name: 'Monochrome Matrix', tag: 'Zinc', preview: 'bg-gradient-to-br from-[#121214] via-[#1a1a24] to-[#09090b]' },
+  { id: 'silver', name: 'Platinum Ash', tag: 'Slate', preview: 'bg-gradient-to-br from-[#1c1d22] via-[#2a2c35] to-[#121316]' },
+  { id: 'carbon', name: 'Carbon Fiber', tag: 'Carbon', preview: 'bg-gradient-to-br from-[#18181b] via-[#27272a] to-[#0f0f11]' },
+  { id: 'graphite', name: 'Graphite Smoke', tag: 'Smoke', preview: 'bg-gradient-to-br from-[#141416] via-[#22232a] to-[#0e0e10]' },
+  { id: 'aurora', name: 'Aurora Glass', tag: 'Emerald Boreal', preview: 'bg-gradient-to-br from-[#042f2e] via-[#065f46] to-[#022c22]' },
+  { id: 'nebula', name: 'Deep Nebula', tag: 'Cosmic Indigo', preview: 'bg-gradient-to-br from-[#311042] via-[#4c1d95] to-[#1e1b4b]' },
+  { id: 'cyberpunk', name: 'Neon Cyberpunk', tag: 'Electric Magenta', preview: 'bg-gradient-to-br from-[#581c87] via-[#831843] to-[#0c4a6e]' },
+  { id: 'deepsea', name: 'Abyssal Deep', tag: 'Oceanic Sapphire', preview: 'bg-gradient-to-br from-[#0c4a6e] via-[#0369a1] to-[#082f49]' },
+  { id: 'minimal', name: 'Minimal Void', tag: 'Pure Pitch', preview: 'bg-gradient-to-br from-[#18181b] via-[#09090b] to-[#18181b]' },
 ];
 
 const GLASS_MATERIALS: { id: GlassMaterial; name: string; desc: string }[] = [
@@ -172,17 +122,17 @@ export const SettingsApp: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full gap-3 text-zinc-100 select-none">
+    <div className="flex flex-col h-full gap-3 text-content-primary select-none">
       {/* Navigation Sub-Header Tabs */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-2 flex-shrink-0">
-        <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+      <div className="flex items-center justify-between border-b border-border-subtle pb-2 flex-shrink-0">
+        <div className="flex items-center gap-1 bg-surface-interactive/60 p-1 rounded-xl border border-border-subtle">
           <button
             type="button"
             onClick={() => setActiveTab('themes')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition ${
               activeTab === 'themes'
-                ? 'bg-white text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-accent-primary text-accent-contrast shadow-md'
+                : 'text-content-muted hover:text-content-primary hover:bg-surface-interactive'
             }`}
           >
             <Palette className="w-3.5 h-3.5" />
@@ -194,8 +144,8 @@ export const SettingsApp: React.FC = () => {
             onClick={() => setActiveTab('wallpapers')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition ${
               activeTab === 'wallpapers'
-                ? 'bg-white text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-accent-primary text-accent-contrast shadow-md'
+                : 'text-content-muted hover:text-content-primary hover:bg-surface-interactive'
             }`}
           >
             <Image className="w-3.5 h-3.5" />
@@ -207,8 +157,8 @@ export const SettingsApp: React.FC = () => {
             onClick={() => setActiveTab('optics')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition ${
               activeTab === 'optics'
-                ? 'bg-white text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-accent-primary text-accent-contrast shadow-md'
+                : 'text-content-muted hover:text-content-primary hover:bg-surface-interactive'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -220,8 +170,8 @@ export const SettingsApp: React.FC = () => {
             onClick={() => setActiveTab('dock')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition ${
               activeTab === 'dock'
-                ? 'bg-white text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-accent-primary text-accent-contrast shadow-md'
+                : 'text-content-muted hover:text-content-primary hover:bg-surface-interactive'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -233,8 +183,8 @@ export const SettingsApp: React.FC = () => {
             onClick={() => setActiveTab('backup')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition ${
               activeTab === 'backup'
-                ? 'bg-white text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-accent-primary text-accent-contrast shadow-md'
+                : 'text-content-muted hover:text-content-primary hover:bg-surface-interactive'
             }`}
           >
             <Download className="w-3.5 h-3.5" />
@@ -246,7 +196,7 @@ export const SettingsApp: React.FC = () => {
           type="button"
           onClick={resetToDefaults}
           title="Reset to Factory Defaults"
-          className="flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/10 transition"
+          className="flex items-center gap-1 px-2.5 py-1 text-xs rounded-lg bg-surface-interactive hover:bg-surface-selected text-content-muted hover:text-content-primary border border-border-subtle transition"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Reset</span>
@@ -256,23 +206,23 @@ export const SettingsApp: React.FC = () => {
       {/* Main Content Viewport */}
       <div className="flex-1 overflow-y-auto pr-1 space-y-4 text-xs">
         {/* Active Environment Status Pill */}
-        <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between text-[11px]">
+        <div className="p-2.5 rounded-xl bg-surface-interactive/40 border border-border-subtle flex items-center justify-between text-[11px]">
           <div className="flex items-center gap-2">
-            <span className="text-zinc-400">Active Preset:</span>
-            <span className="font-semibold text-white uppercase font-mono tracking-wider px-2 py-0.5 rounded bg-white/10">
+            <span className="text-content-muted">Active Preset:</span>
+            <span className="font-semibold text-content-primary uppercase font-mono tracking-wider px-2 py-0.5 rounded bg-surface-interactive border border-border-subtle">
               {settings.themePreset}
             </span>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <span className="text-zinc-400">Accent:</span>
-              <span className="w-2.5 h-2.5 rounded-full bg-white shadow-sm" />
-              <span className="font-semibold text-white capitalize">{settings.accentColor}</span>
+              <span className="text-content-muted">Accent:</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-accent-primary shadow-sm" />
+              <span className="font-semibold text-content-primary capitalize">{settings.accentColor}</span>
             </div>
-            <div className="h-3 w-px bg-white/10" />
+            <div className="h-3 w-px bg-border-subtle" />
             <div className="flex items-center gap-1.5">
-              <span className="text-zinc-400">Wallpaper:</span>
-              <span className="font-semibold text-white capitalize">{settings.wallpaper}</span>
+              <span className="text-content-muted">Wallpaper:</span>
+              <span className="font-semibold text-content-primary capitalize">{settings.wallpaper}</span>
             </div>
           </div>
         </div>
@@ -281,9 +231,9 @@ export const SettingsApp: React.FC = () => {
         {activeTab === 'themes' && (
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold text-white text-sm">Curated Aesthetic Presets</h3>
-              <p className="text-[11px] text-zinc-400">
-                Choose between monochromatic noir, vibrant cyberpunk, organic emerald, or cosmic void.
+              <h3 className="font-bold text-content-primary text-sm">Curated Aesthetic Presets</h3>
+              <p className="text-[11px] text-content-muted">
+                Each theme customizes the system surface tokens, glass refraction, dynamic glows, and text palettes.
               </p>
             </div>
 
@@ -297,22 +247,22 @@ export const SettingsApp: React.FC = () => {
                     onClick={() => setThemePreset(t.id)}
                     className={`p-3 rounded-2xl border text-left flex flex-col justify-between gap-2.5 transition relative overflow-hidden group ${
                       isSelected
-                        ? 'border-white bg-white/15 shadow-xl ring-1 ring-white/30'
-                        : 'border-white/10 hover:border-white/20 bg-white/[0.02]'
+                        ? 'border-accent-primary bg-surface-selected shadow-xl ring-1 ring-accent-primary/50'
+                        : 'border-border-subtle hover:border-border-strong bg-surface-interactive/40'
                     }`}
                   >
                     <div className="flex items-center justify-between w-full">
                       <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${t.colorPreview} border shadow-md flex items-center justify-center`}>
                         {isSelected && <Check className="w-4 h-4 text-white" />}
                       </div>
-                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-black/50 text-zinc-300 border border-white/10">
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-surface-base/80 text-content-secondary border border-border-subtle">
                         {t.badge}
                       </span>
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-white text-xs">{t.name}</h4>
-                      <p className="text-[10px] text-zinc-400 leading-tight mt-0.5">{t.desc}</p>
+                      <h4 className="font-bold text-content-primary text-xs">{t.name}</h4>
+                      <p className="text-[10px] text-content-muted leading-tight mt-0.5">{t.desc}</p>
                     </div>
                   </button>
                 );
@@ -320,9 +270,9 @@ export const SettingsApp: React.FC = () => {
             </div>
 
             {/* Accent Color Palette */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2.5">
-              <h4 className="font-semibold text-white">Custom Accent Highlight</h4>
-              <p className="text-[10px] text-zinc-400">
+            <div className="p-3.5 rounded-2xl bg-surface-interactive/40 border border-border-subtle space-y-2.5">
+              <h4 className="font-semibold text-content-primary">Custom Accent Highlight</h4>
+              <p className="text-[10px] text-content-muted">
                 Fine-tune the interactive specular highlight hue across system elements.
               </p>
               <div className="flex items-center gap-3 pt-1">
@@ -351,8 +301,8 @@ export const SettingsApp: React.FC = () => {
         {activeTab === 'wallpapers' && (
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold text-white text-sm">Environmental Wallpapers</h3>
-              <p className="text-[11px] text-zinc-400">
+              <h3 className="font-bold text-content-primary text-sm">Environmental Wallpapers</h3>
+              <p className="text-[11px] text-content-muted">
                 Select your ambient atmospheric backdrop.
               </p>
             </div>
@@ -367,16 +317,16 @@ export const SettingsApp: React.FC = () => {
                     onClick={() => setWallpaper(wp.id)}
                     className={`p-2 rounded-xl border flex flex-col items-center gap-1.5 transition text-left ${
                       isSelected
-                        ? 'border-white bg-white/20 shadow-lg ring-1 ring-white/40'
-                        : 'border-white/10 hover:border-white/20 bg-white/[0.02]'
+                        ? 'border-accent-primary bg-surface-selected shadow-lg ring-1 ring-accent-primary/60'
+                        : 'border-border-subtle hover:border-border-strong bg-surface-interactive/40'
                     }`}
                   >
-                    <div className={`w-full h-14 rounded-lg ${wp.preview} border border-white/15 shadow-inner relative flex items-center justify-center`}>
+                    <div className={`w-full h-14 rounded-lg ${wp.preview} border border-border-subtle shadow-inner relative flex items-center justify-center`}>
                       {isSelected && <Check className="w-4 h-4 text-white drop-shadow-md" />}
                     </div>
                     <div className="w-full">
-                      <span className="text-[11px] font-semibold text-white block truncate">{wp.name}</span>
-                      <span className="text-[9px] font-mono text-zinc-400 uppercase">{wp.tag}</span>
+                      <span className="text-[11px] font-semibold text-content-primary block truncate">{wp.name}</span>
+                      <span className="text-[9px] font-mono text-content-muted uppercase">{wp.tag}</span>
                     </div>
                   </button>
                 );
@@ -389,8 +339,8 @@ export const SettingsApp: React.FC = () => {
         {activeTab === 'optics' && (
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold text-white text-sm">QuickLiquid Shader & Optics Engine</h3>
-              <p className="text-[11px] text-zinc-400">
+              <h3 className="font-bold text-content-primary text-sm">QuickLiquid Shader & Optics Engine</h3>
+              <p className="text-[11px] text-content-muted">
                 Physical glass refraction materials, dispersion, and cursor-reactive lighting.
               </p>
             </div>
@@ -406,23 +356,23 @@ export const SettingsApp: React.FC = () => {
                     onClick={() => setGlassMaterial(mat.id)}
                     className={`p-3 rounded-2xl border text-left flex flex-col gap-1 transition ${
                       isSelected
-                        ? 'border-white bg-white/20 shadow-lg ring-1 ring-white/30'
-                        : 'border-white/10 hover:border-white/20 bg-white/[0.02]'
+                        ? 'border-accent-primary bg-surface-selected shadow-lg ring-1 ring-accent-primary/50'
+                        : 'border-border-subtle hover:border-border-strong bg-surface-interactive/40'
                     }`}
                   >
-                    <span className="font-bold text-white text-xs">{mat.name}</span>
-                    <span className="text-[10px] text-zinc-400 leading-tight">{mat.desc}</span>
+                    <span className="font-bold text-content-primary text-xs">{mat.name}</span>
+                    <span className="text-[10px] text-content-muted leading-tight">{mat.desc}</span>
                   </button>
                 );
               })}
             </div>
 
             {/* Dispersion and dynamic lighting */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div className="p-3.5 rounded-2xl bg-surface-interactive/40 border border-border-subtle space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-white">Prismatic Dispersion (Chromatic Aberration)</span>
-                  <p className="text-[10px] text-zinc-400">Refraction spectrum fringing along window edges</p>
+                  <span className="font-semibold text-content-primary">Prismatic Dispersion (Chromatic Aberration)</span>
+                  <p className="text-[10px] text-content-muted">Refraction spectrum fringing along window edges</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -432,44 +382,44 @@ export const SettingsApp: React.FC = () => {
                     step="0.02"
                     value={settings.chromaticAberration}
                     onChange={(e) => setChromaticAberration(Number(e.target.value))}
-                    className="w-28 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+                    className="w-28 h-1.5 bg-surface-interactive rounded-lg appearance-none cursor-pointer accent-accent-primary"
                   />
-                  <span className="text-[11px] font-mono w-10 text-right text-white font-bold">
+                  <span className="text-[11px] font-mono w-10 text-right text-content-primary font-bold">
                     {Math.round(settings.chromaticAberration * 100)}%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2.5 border-t border-white/10">
+              <div className="flex items-center justify-between pt-2.5 border-t border-border-subtle">
                 <div>
-                  <span className="font-semibold text-white">Cursor-Tracking Specular Light</span>
-                  <p className="text-[10px] text-zinc-400">Dynamically tracks pointer position to calculate rim reflection angles</p>
+                  <span className="font-semibold text-content-primary">Cursor-Tracking Specular Light</span>
+                  <p className="text-[10px] text-content-muted">Dynamically tracks pointer position to calculate rim reflection angles</p>
                 </div>
                 <button
                   type="button"
                   onClick={toggleDynamicLighting}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     settings.dynamicLighting
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-white/10 text-zinc-400 hover:text-white'
+                      ? 'bg-accent-primary text-accent-contrast shadow-md'
+                      : 'bg-surface-interactive text-content-muted hover:text-content-primary'
                   }`}
                 >
                   {settings.dynamicLighting ? 'Enabled' : 'Disabled'}
                 </button>
               </div>
 
-              <div className="flex items-center justify-between pt-2.5 border-t border-white/10">
+              <div className="flex items-center justify-between pt-2.5 border-t border-border-subtle">
                 <div>
-                  <span className="font-semibold text-white">Audio-Reactive Environmental Waves</span>
-                  <p className="text-[10px] text-zinc-400">Subtle background light ripple when audio engine is playing</p>
+                  <span className="font-semibold text-content-primary">Audio-Reactive Environmental Waves</span>
+                  <p className="text-[10px] text-content-muted">Subtle background light ripple when audio engine is playing</p>
                 </div>
                 <button
                   type="button"
                   onClick={toggleAudioReactiveEnv}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     settings.audioReactiveEnv
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-white/10 text-zinc-400 hover:text-white'
+                      ? 'bg-accent-primary text-accent-contrast shadow-md'
+                      : 'bg-surface-interactive text-content-muted hover:text-content-primary'
                   }`}
                 >
                   {settings.audioReactiveEnv ? 'Enabled' : 'Disabled'}
@@ -483,29 +433,29 @@ export const SettingsApp: React.FC = () => {
         {activeTab === 'dock' && (
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold text-white text-sm">Dock & Workspace Behavior</h3>
-              <p className="text-[11px] text-zinc-400">
+              <h3 className="font-bold text-content-primary text-sm">Dock & Workspace Behavior</h3>
+              <p className="text-[11px] text-content-muted">
                 Customize dock magnification, auto-hide mechanics, and desktop icon display.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div className="p-3.5 rounded-2xl bg-surface-interactive/40 border border-border-subtle space-y-3">
               {/* Dock Auto-Hide Mode */}
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-white">Dock Auto-Hide Behavior</span>
-                  <p className="text-[10px] text-zinc-400">
+                  <span className="font-semibold text-content-primary">Dock Auto-Hide Behavior</span>
+                  <p className="text-[10px] text-content-muted">
                     Smart auto-hide dips the dock when interacting with windows; hovering brings it up instantly.
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-xl border border-white/10">
+                <div className="flex items-center gap-1.5 bg-surface-interactive/60 p-1 rounded-xl border border-border-subtle">
                   <button
                     type="button"
                     onClick={() => setDockAutoHide('smart')}
                     className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
                       settings.dockAutoHide === 'smart'
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'bg-accent-primary text-accent-contrast shadow-sm'
+                        : 'text-content-muted hover:text-content-primary'
                     }`}
                   >
                     Smart Auto-Hide
@@ -515,8 +465,8 @@ export const SettingsApp: React.FC = () => {
                     onClick={() => setDockAutoHide('never')}
                     className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
                       settings.dockAutoHide === 'never'
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'bg-accent-primary text-accent-contrast shadow-sm'
+                        : 'text-content-muted hover:text-content-primary'
                     }`}
                   >
                     Always Visible
@@ -525,10 +475,10 @@ export const SettingsApp: React.FC = () => {
               </div>
 
               {/* Magnification Scale */}
-              <div className="flex items-center justify-between pt-2.5 border-t border-white/10">
+              <div className="flex items-center justify-between pt-2.5 border-t border-border-subtle">
                 <div>
-                  <span className="font-semibold text-white">Dock Fisheye Magnification</span>
-                  <p className="text-[10px] text-zinc-400">Controls scale factor when hovering over dock icons</p>
+                  <span className="font-semibold text-content-primary">Dock Fisheye Magnification</span>
+                  <p className="text-[10px] text-content-muted">Controls scale factor when hovering over dock icons</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -538,27 +488,27 @@ export const SettingsApp: React.FC = () => {
                     step="0.05"
                     value={settings.dockMagnification || 1.35}
                     onChange={(e) => setDockMagnification(Number(e.target.value))}
-                    className="w-28 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white"
+                    className="w-28 h-1.5 bg-surface-interactive rounded-lg appearance-none cursor-pointer accent-accent-primary"
                   />
-                  <span className="text-[11px] font-mono w-10 text-right text-white font-bold">
+                  <span className="text-[11px] font-mono w-10 text-right text-content-primary font-bold">
                     {(settings.dockMagnification || 1.35).toFixed(2)}x
                   </span>
                 </div>
               </div>
 
               {/* Desktop Shortcuts Toggle */}
-              <div className="flex items-center justify-between pt-2.5 border-t border-white/10">
+              <div className="flex items-center justify-between pt-2.5 border-t border-border-subtle">
                 <div>
-                  <span className="font-semibold text-white">Desktop Shortcut Icons</span>
-                  <p className="text-[10px] text-zinc-400">Toggle display of physical shortcuts on the desktop canvas</p>
+                  <span className="font-semibold text-content-primary">Desktop Shortcut Icons</span>
+                  <p className="text-[10px] text-content-muted">Toggle display of physical shortcuts on the desktop canvas</p>
                 </div>
                 <button
                   type="button"
                   onClick={toggleDesktopIcons}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                     settings.showDesktopIcons
-                      ? 'bg-white text-black shadow-md'
-                      : 'bg-white/10 text-zinc-400 hover:text-white'
+                      ? 'bg-accent-primary text-accent-contrast shadow-md'
+                      : 'bg-surface-interactive text-content-muted hover:text-content-primary'
                   }`}
                 >
                   {settings.showDesktopIcons ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
@@ -573,37 +523,37 @@ export const SettingsApp: React.FC = () => {
         {activeTab === 'backup' && (
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold text-white text-sm">System Portability & Data Export</h3>
-              <p className="text-[11px] text-zinc-400">
+              <h3 className="font-bold text-content-primary text-sm">System Portability & Data Export</h3>
+              <p className="text-[11px] text-content-muted">
                 AetherOS is 100% offline-first. Your entire OS state, notes, tasks, habits, and themes can be exported at any time.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-surface-interactive/40 border border-border-subtle flex items-center justify-between">
               <div>
-                <h4 className="font-bold text-white text-xs">Export Complete Environment Snapshot</h4>
-                <p className="text-[10px] text-zinc-400 mt-0.5">
+                <h4 className="font-bold text-content-primary text-xs">Export Complete Environment Snapshot</h4>
+                <p className="text-[10px] text-content-muted mt-0.5">
                   Downloads a JSON file containing all user data and personalized configurations.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleExportBackup}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200 transition shadow-md"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-accent-primary text-accent-contrast text-xs font-bold hover:opacity-90 transition shadow-md"
               >
                 <Download className="w-4 h-4" />
                 <span>Export Snapshot</span>
               </button>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-surface-interactive/40 border border-border-subtle flex items-center justify-between">
               <div>
-                <h4 className="font-bold text-white text-xs">Import Environment Snapshot</h4>
-                <p className="text-[10px] text-zinc-400 mt-0.5">
+                <h4 className="font-bold text-content-primary text-xs">Import Environment Snapshot</h4>
+                <p className="text-[10px] text-content-muted mt-0.5">
                   Load a previously exported AetherOS JSON configuration snapshot.
                 </p>
               </div>
-              <label className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition shadow-md cursor-pointer border border-white/20">
+              <label className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-interactive hover:bg-surface-selected text-content-primary text-xs font-bold transition shadow-md cursor-pointer border border-border-subtle">
                 <Upload className="w-4 h-4" />
                 <span>Choose File</span>
                 <input
@@ -616,7 +566,7 @@ export const SettingsApp: React.FC = () => {
             </div>
 
             {importStatus && (
-              <div className="p-3 rounded-xl bg-white/10 border border-white/20 text-center font-semibold text-xs text-cyan-300 animate-in fade-in">
+              <div className="p-3 rounded-xl bg-surface-interactive border border-border-default text-center font-semibold text-xs text-status-success animate-in fade-in">
                 {importStatus}
               </div>
             )}

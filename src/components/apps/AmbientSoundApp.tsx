@@ -48,19 +48,19 @@ export const AmbientSoundApp: React.FC = () => {
   const activeCount = ambientTracks.filter((t) => t.isPlaying).length;
 
   return (
-    <div className="flex flex-col h-full gap-3 text-slate-100">
+    <div className="flex flex-col h-full gap-3 text-content-primary">
       {/* Header Info */}
-      <div className="flex items-center justify-between pb-2 border-b border-white/10">
+      <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
         <div>
-          <h3 className="text-xs font-bold text-white">Procedural Ambient Synthesizers</h3>
-          <p className="text-[11px] text-slate-300 mt-0.5">Real-time Web Audio sound generators for cognitive flow</p>
+          <h3 className="text-xs font-bold text-content-primary">Procedural Ambient Synthesizers</h3>
+          <p className="text-[11px] text-content-secondary mt-0.5">Real-time Web Audio sound generators for cognitive flow</p>
         </div>
         {activeCount > 0 && (
           <button
             type="button"
             onClick={handleStopAll}
             aria-label="Mute all active soundscapes"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/25 hover:bg-rose-500/35 text-rose-200 text-xs font-semibold border border-rose-500/40 transition focus-visible:ring-2 focus-visible:ring-rose-400"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-status-error/20 hover:bg-status-error/30 text-status-error text-xs font-semibold border border-status-error/40 transition focus-visible:ring-2 focus-visible:ring-status-error"
           >
             <Square className="w-3.5 h-3.5 fill-current" />
             <span>Mute All ({activeCount})</span>
@@ -80,8 +80,8 @@ export const AmbientSoundApp: React.FC = () => {
               role="listitem"
               className={`p-3.5 rounded-xl border transition ${
                 track.isPlaying
-                  ? 'bg-cyan-500/15 border-cyan-400/50 shadow-md ring-1 ring-cyan-500/20'
-                  : 'bg-white/[0.04] border-white/10 hover:bg-white/[0.07]'
+                  ? 'bg-surface-selected border-accent-primary/60 shadow-md ring-1 ring-accent-primary/30'
+                  : 'bg-surface-interactive/40 border-border-subtle hover:bg-surface-interactive'
               }`}
             >
               <div className="flex items-start justify-between mb-2.5">
@@ -90,15 +90,15 @@ export const AmbientSoundApp: React.FC = () => {
                     aria-hidden="true"
                     className={`p-2 rounded-xl ${
                       track.isPlaying
-                        ? 'bg-cyan-500/30 text-cyan-200 shadow-sm'
-                        : 'bg-white/10 text-slate-300'
+                        ? 'bg-accent-soft text-accent-primary shadow-sm'
+                        : 'bg-surface-interactive text-content-secondary'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white">{track.name}</h4>
-                    <p className="text-[10px] text-cyan-200/90 mt-0.5">{meta.benefit}</p>
+                    <h4 className="text-xs font-bold text-content-primary">{track.name}</h4>
+                    <p className="text-[10px] text-accent-primary mt-0.5">{meta.benefit}</p>
                   </div>
                 </div>
 
@@ -107,10 +107,10 @@ export const AmbientSoundApp: React.FC = () => {
                   onClick={() => handleToggle(track.id, track.type, track.isPlaying, track.volume)}
                   aria-pressed={track.isPlaying}
                   aria-label={`${track.isPlaying ? 'Mute' : 'Play'} ${track.name}`}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-accent-primary ${
                     track.isPlaying
-                      ? 'bg-cyan-500/35 text-cyan-100 border border-cyan-400/60 shadow-sm'
-                      : 'bg-white/10 text-slate-200 hover:bg-white/20 hover:text-white border border-white/15'
+                      ? 'bg-accent-primary text-accent-contrast shadow-sm'
+                      : 'bg-surface-interactive text-content-secondary hover:bg-surface-selected hover:text-content-primary border border-border-subtle'
                   }`}
                 >
                   {track.isPlaying ? 'Active' : 'Turn On'}
@@ -119,7 +119,7 @@ export const AmbientSoundApp: React.FC = () => {
 
               {/* Volume Slider */}
               <div className="flex items-center gap-3 pt-1">
-                <Volume2 className="w-4 h-4 text-slate-400" aria-hidden="true" />
+                <Volume2 className="w-4 h-4 text-content-muted" aria-hidden="true" />
                 <input
                   type="range"
                   aria-label={`Volume for ${track.name}`}
@@ -129,9 +129,9 @@ export const AmbientSoundApp: React.FC = () => {
                   disabled={!track.isPlaying}
                   value={track.volume}
                   onChange={(e) => handleVolume(track.id, Number(e.target.value))}
-                  className="flex-1 h-1.5 bg-white/15 rounded-lg appearance-none cursor-pointer accent-cyan-400 disabled:opacity-30"
+                  className="flex-1 h-1.5 bg-surface-interactive rounded-lg appearance-none cursor-pointer accent-accent-primary disabled:opacity-30"
                 />
-                <span className="text-[11px] font-mono text-slate-200 w-10 text-right font-semibold">
+                <span className="text-[11px] font-mono text-content-primary w-10 text-right font-semibold">
                   {Math.round(track.volume * 100)}%
                 </span>
               </div>

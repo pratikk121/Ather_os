@@ -21,10 +21,10 @@ export const TerminalApp: React.FC = () => {
       id: 'init-1',
       command: '',
       output: (
-        <div className="text-slate-300 space-y-1">
-          <p className="text-cyan-400 font-bold">🌌 AetherOS Kernel v2.0.0 [Physical Glass Engine]</p>
-          <p className="text-xs text-slate-400">Lineage: PratikOS v1.0.0 &bull; QuickLiquid Optics &bull; Local-First</p>
-          <p className="text-xs text-slate-400">Type <span className="text-cyan-300 font-semibold">'help'</span> for a list of available physical commands.</p>
+        <div className="text-content-secondary space-y-1">
+          <p className="text-accent-primary font-bold">🌌 AetherOS Kernel v2.0.0 [Physical Glass Engine]</p>
+          <p className="text-xs text-content-muted">Lineage: PratikOS v1.0.0 &bull; QuickLiquid Optics &bull; Local-First</p>
+          <p className="text-xs text-content-muted">Type <span className="text-accent-primary font-semibold">'help'</span> for a list of available physical commands.</p>
         </div>
       ),
     },
@@ -34,7 +34,7 @@ export const TerminalApp: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { openWindow, closeWindow } = useWindowStore();
-  const { settings, setWallpaper, setGlassMaterial, setChromaticAberration } = useSettingsStore();
+  const { settings, setThemePreset, setWallpaper, setGlassMaterial, setChromaticAberration } = useSettingsStore();
   const { togglePlay, nextTrack, prevTrack, isPlaying } = useMediaStore();
   const { notes, addNote } = useProductivityStore();
 
@@ -60,19 +60,20 @@ export const TerminalApp: React.FC = () => {
       case 'help':
         output = (
           <div className="space-y-1 text-xs">
-            <p className="text-cyan-300 font-bold">Available System Commands:</p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-slate-300">
-              <div><span className="text-cyan-400 font-mono">open &lt;app&gt;</span> - Launch window (notes, tasks, music, files, etc.)</div>
-              <div><span className="text-cyan-400 font-mono">close &lt;app&gt;</span> - Close window</div>
-              <div><span className="text-cyan-400 font-mono">theme &lt;name&gt;</span> - aurora, nebula, cyberpunk, deepsea, minimal</div>
-              <div><span className="text-cyan-400 font-mono">glass &lt;preset&gt;</span> - thin, regular, heavy, frosted</div>
-              <div><span className="text-cyan-400 font-mono">dispersion &lt;val&gt;</span> - Set chromatic aberration (0.0 - 0.5)</div>
-              <div><span className="text-cyan-400 font-mono">audio &lt;action&gt;</span> - play, pause, next, prev</div>
-              <div><span className="text-cyan-400 font-mono">note &lt;title&gt;</span> - Quick capture a new markdown note</div>
-              <div><span className="text-cyan-400 font-mono">ls</span> - List directory contents and documents</div>
-              <div><span className="text-cyan-400 font-mono">top</span> - View CPU, memory, and telemetry snapshot</div>
-              <div><span className="text-cyan-400 font-mono">clear</span> - Clear terminal buffer</div>
-              <div><span className="text-cyan-400 font-mono">whoami / version</span> - Kernel information</div>
+            <p className="text-accent-primary font-bold">Available System Commands:</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-content-secondary">
+              <div><span className="text-accent-primary font-mono">open &lt;app&gt;</span> - Launch window (notes, tasks, music, files, etc.)</div>
+              <div><span className="text-accent-primary font-mono">close &lt;app&gt;</span> - Close window</div>
+              <div><span className="text-accent-primary font-mono">theme &lt;name&gt;</span> - monochrome, cyberpunk, emerald, solar, arctic, nebula</div>
+              <div><span className="text-accent-primary font-mono">wallpaper &lt;name&gt;</span> - obsidian, aurora, nebula, cyberpunk, deepsea, minimal</div>
+              <div><span className="text-accent-primary font-mono">glass &lt;preset&gt;</span> - thin, regular, heavy, frosted</div>
+              <div><span className="text-accent-primary font-mono">dispersion &lt;val&gt;</span> - Set chromatic aberration (0.0 - 0.5)</div>
+              <div><span className="text-accent-primary font-mono">audio &lt;action&gt;</span> - play, pause, next, prev</div>
+              <div><span className="text-accent-primary font-mono">note &lt;title&gt;</span> - Quick capture a new markdown note</div>
+              <div><span className="text-accent-primary font-mono">ls</span> - List directory contents and documents</div>
+              <div><span className="text-accent-primary font-mono">top</span> - View CPU, memory, and telemetry snapshot</div>
+              <div><span className="text-accent-primary font-mono">clear</span> - Clear terminal buffer</div>
+              <div><span className="text-accent-primary font-mono">whoami / version</span> - Kernel information</div>
             </div>
           </div>
         );
@@ -105,14 +106,29 @@ export const TerminalApp: React.FC = () => {
 
       case 'theme':
         if (!args[0]) {
-          output = `Current wallpaper theme: ${settings.wallpaper}. Available: aurora, nebula, cyberpunk, deepsea, minimal`;
+          output = `Current theme preset: ${settings.themePreset}. Available: monochrome, cyberpunk, emerald, solar, arctic, nebula`;
         } else {
           const t = args[0].toLowerCase();
-          if (['aurora', 'nebula', 'cyberpunk', 'deepsea', 'minimal'].includes(t)) {
-            setWallpaper(t as any);
-            output = `Wallpaper shifted to [${t}].`;
+          if (['monochrome', 'cyberpunk', 'emerald', 'solar', 'arctic', 'nebula'].includes(t)) {
+            setThemePreset(t as any);
+            output = `Active theme material shifted to [${t}].`;
           } else {
-            output = `Unknown theme: ${t}`;
+            output = `Unknown theme preset: ${t}`;
+            isError = true;
+          }
+        }
+        break;
+
+      case 'wallpaper':
+        if (!args[0]) {
+          output = `Current wallpaper: ${settings.wallpaper}. Available: obsidian, monochrome, silver, carbon, aurora, nebula, cyberpunk, deepsea, minimal`;
+        } else {
+          const w = args[0].toLowerCase();
+          if (['obsidian', 'monochrome', 'silver', 'carbon', 'aurora', 'nebula', 'cyberpunk', 'deepsea', 'minimal'].includes(w)) {
+            setWallpaper(w as any);
+            output = `Wallpaper shifted to [${w}].`;
+          } else {
+            output = `Unknown wallpaper: ${w}`;
             isError = true;
           }
         }
@@ -174,16 +190,16 @@ export const TerminalApp: React.FC = () => {
       case 'ls':
         output = (
           <div className="space-y-1 text-xs">
-            <p className="text-slate-400">Directory listing for /aetheros/root:</p>
+            <p className="text-content-muted">Directory listing for /aetheros/root:</p>
             <div className="grid grid-cols-3 gap-2 font-mono">
-              <span className="text-cyan-400">📁 desktop/</span>
-              <span className="text-cyan-400">📁 documents/</span>
-              <span className="text-cyan-400">📁 audio/</span>
-              <span className="text-emerald-400">📄 focus-matrix.md</span>
-              <span className="text-emerald-400">📄 optics-spec.md</span>
-              <span className="text-purple-400">🎵 lofi-flow.mp3</span>
+              <span className="text-accent-primary">📁 desktop/</span>
+              <span className="text-accent-primary">📁 documents/</span>
+              <span className="text-accent-primary">📁 audio/</span>
+              <span className="text-status-success">📄 focus-matrix.md</span>
+              <span className="text-status-success">📄 optics-spec.md</span>
+              <span className="text-accent-secondary">🎵 lofi-flow.mp3</span>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">Total {notes.length} note files mounted in IndexedDB.</p>
+            <p className="text-[11px] text-content-muted mt-1">Total {notes.length} note files mounted in IndexedDB.</p>
           </div>
         );
         break;
@@ -191,7 +207,7 @@ export const TerminalApp: React.FC = () => {
       case 'top':
         output = (
           <div className="space-y-1 text-xs font-mono">
-            <p className="text-cyan-400 font-bold">System Telemetry Snapshot</p>
+            <p className="text-accent-primary font-bold">System Telemetry Snapshot</p>
             <p>Platform: {navigator.platform} &bull; UserAgent: {navigator.userAgent.slice(0, 40)}...</p>
             <p>Active Windows: {useWindowStore.getState().activeWindowId || 'None'}</p>
             <p>Companion Bridge: {settings.isCompanionConnected ? '🟢 CONNECTED (Port 3001)' : '🟡 OFFLINE (IndexedDB Mode)'}</p>
@@ -257,27 +273,27 @@ export const TerminalApp: React.FC = () => {
   return (
     <div
       onClick={() => inputRef.current?.focus()}
-      className="flex flex-col h-full bg-slate-950/80 rounded-xl font-mono text-xs text-slate-200 p-3 overflow-hidden cursor-text"
+      className="flex flex-col h-full bg-surface-base/90 rounded-xl font-mono text-xs text-content-primary p-3 overflow-hidden cursor-text border border-border-subtle shadow-inner"
     >
       {/* Logs Output */}
       <div className="flex-1 overflow-y-auto space-y-2.5 pr-1">
         {logs.map((log) => (
           <div key={log.id} className="space-y-1 leading-relaxed">
             {log.command && (
-              <div className="flex items-center space-x-2 text-slate-400">
-                <span className="text-cyan-400 font-bold">pratik@aether:~$</span>
-                <span className="text-white font-semibold">{log.command}</span>
+              <div className="flex items-center space-x-2 text-content-muted">
+                <span className="text-accent-primary font-bold">pratik@aether:~$</span>
+                <span className="text-content-primary font-semibold">{log.command}</span>
               </div>
             )}
-            <div className={log.isError ? 'text-rose-400' : 'text-slate-300'}>{log.output}</div>
+            <div className={log.isError ? 'text-status-error' : 'text-content-secondary'}>{log.output}</div>
           </div>
         ))}
         <div ref={bottomRef} />
       </div>
 
       {/* Interactive Input Prompt */}
-      <div className="flex items-center space-x-2 border-t border-white/10 pt-2 mt-2">
-        <span className="text-cyan-400 font-bold">pratik@aether:~$</span>
+      <div className="flex items-center space-x-2 border-t border-border-subtle pt-2 mt-2">
+        <span className="text-accent-primary font-bold">pratik@aether:~$</span>
         <input
           ref={inputRef}
           type="text"
@@ -285,7 +301,7 @@ export const TerminalApp: React.FC = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent text-white focus:outline-none font-mono text-xs"
+          className="flex-1 bg-transparent text-content-primary focus:outline-none font-mono text-xs placeholder-content-muted"
           placeholder="Type a command..."
           autoFocus
         />

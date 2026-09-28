@@ -8,10 +8,44 @@ export default {
   theme: {
     extend: {
       colors: {
+        surface: {
+          base: 'var(--aether-surface-base)',
+          primary: 'var(--aether-surface-primary)',
+          secondary: 'var(--aether-surface-secondary)',
+          elevated: 'var(--aether-surface-elevated)',
+          overlay: 'var(--aether-surface-overlay)',
+          interactive: 'var(--aether-surface-interactive)',
+          selected: 'var(--aether-surface-selected)',
+        },
+        content: {
+          primary: 'var(--aether-text-primary)',
+          secondary: 'var(--aether-text-secondary)',
+          muted: 'var(--aether-text-muted)',
+          disabled: 'var(--aether-text-disabled)',
+          inverse: 'var(--aether-text-inverse)',
+        },
+        border: {
+          subtle: 'var(--aether-border-subtle)',
+          DEFAULT: 'var(--aether-border-default)',
+          strong: 'var(--aether-border-strong)',
+        },
+        accent: {
+          primary: 'var(--aether-accent-primary)',
+          secondary: 'var(--aether-accent-secondary)',
+          soft: 'var(--aether-accent-soft)',
+          contrast: 'var(--aether-accent-contrast)',
+        },
+        status: {
+          success: 'var(--aether-status-success)',
+          warning: 'var(--aether-status-warning)',
+          error: 'var(--aether-status-error)',
+          info: 'var(--aether-status-info)',
+        },
         glass: {
-          surface: 'rgba(255, 255, 255, 0.08)',
-          border: 'rgba(255, 255, 255, 0.18)',
-          highlight: 'rgba(255, 255, 255, 0.4)',
+          surface: 'var(--aether-glass-bg)',
+          border: 'var(--aether-glass-border)',
+          highlight: 'var(--aether-glass-highlight)',
+          shadow: 'var(--aether-glass-shadow)',
           dark: 'rgba(10, 15, 29, 0.7)',
         },
         aether: {

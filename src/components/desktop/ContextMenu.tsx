@@ -42,7 +42,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
   const menuY = Math.min(y, window.innerHeight - 300);
 
   const cycleWallpaper = () => {
-    const wallpapers: typeof settings.wallpaper[] = ['aurora', 'nebula', 'cyberpunk', 'deepsea', 'minimal'];
+    const wallpapers: typeof settings.wallpaper[] = ['obsidian', 'monochrome', 'silver', 'carbon', 'aurora', 'nebula', 'cyberpunk', 'deepsea', 'minimal'];
     const nextIdx = (wallpapers.indexOf(settings.wallpaper) + 1) % wallpapers.length;
     setWallpaper(wallpapers[nextIdx]);
     onClose();
@@ -66,7 +66,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
       <LiquidSurface
         material="heavy"
         borderRadius={16}
-        className="p-1.5 shadow-2xl border border-white/20 bg-black/90 text-xs text-zinc-100"
+        className="p-1.5 shadow-2xl border border-border-default bg-surface-primary/95 text-xs text-content-primary"
       >
         <button
           type="button"
@@ -75,9 +75,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('terminal');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
-          <Terminal className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+          <Terminal className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
           <span>Launch Terminal</span>
         </button>
 
@@ -88,9 +88,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('files');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
-          <Folder className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+          <Folder className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
           <span>Open File Explorer</span>
         </button>
 
@@ -101,38 +101,38 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('notes');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
-          <FileText className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+          <FileText className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
           <span>New Note</span>
         </button>
 
-        <div className="h-px bg-white/10 my-1" />
+        <div className="h-px bg-border-subtle my-1" />
 
         <button
           type="button"
           role="menuitem"
           onClick={cycleWallpaper}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Image className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+            <Image className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
             <span>Next Wallpaper</span>
           </div>
-          <span className="text-[10px] text-zinc-400 uppercase font-mono">{settings.wallpaper}</span>
+          <span className="text-[10px] text-content-muted uppercase font-mono">{settings.wallpaper}</span>
         </button>
 
         <button
           type="button"
           role="menuitem"
           onClick={cycleGlass}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+            <Sparkles className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
             <span>Glass Preset</span>
           </div>
-          <span className="text-[10px] text-zinc-400 uppercase font-mono">{settings.glassMaterial}</span>
+          <span className="text-[10px] text-content-muted uppercase font-mono">{settings.glassMaterial}</span>
         </button>
 
         <button
@@ -142,18 +142,18 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             toggleDynamicLighting();
             onClose();
           }}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+            <Sliders className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
             <span>Cursor Light</span>
           </div>
-          <span className="text-[10px] text-zinc-300 font-bold font-mono">
+          <span className="text-[10px] text-accent-primary font-bold font-mono">
             {settings.dynamicLighting ? 'ON' : 'OFF'}
           </span>
         </button>
 
-        <div className="h-px bg-white/10 my-1" />
+        <div className="h-px bg-border-subtle my-1" />
 
         <button
           type="button"
@@ -162,9 +162,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('settings');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white transition text-left group"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-interactive text-content-secondary hover:text-content-primary transition text-left group"
         >
-          <Sliders className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+          <Sliders className="w-4 h-4 text-content-muted group-hover:text-accent-primary" />
           <span>System Settings</span>
         </button>
       </LiquidSurface>

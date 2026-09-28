@@ -24,17 +24,20 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, cla
       const barWidth = (canvas.width / data.length) * 2;
       let x = 0;
 
+      // Theme-responsive gradient reading from computed styles
+      const computedStyle = getComputedStyle(canvas);
+      const accentColor = computedStyle.getPropertyValue('--aether-accent-primary').trim() || '#ffffff';
+      const accentSoft = computedStyle.getPropertyValue('--aether-accent-soft').trim() || 'rgba(255, 255, 255, 0.2)';
+
       for (let i = 0; i < data.length / 2; i++) {
         const barHeight = isPlaying ? (data[i] / 255) * canvas.height : 4;
 
-        // Monochromatic Gradient bar
         const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
-        gradient.addColorStop(0.5, 'rgba(200, 200, 210, 0.7)');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
+        gradient.addColorStop(0, accentSoft);
+        gradient.addColorStop(1, accentColor);
 
         ctx.fillStyle = gradient;
-        ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+        ctx.fillRect(x, canvas.height - barHeight, Math.max(1, barWidth - 1), barHeight);
 
         x += barWidth;
       }

@@ -28,18 +28,18 @@ export const GlassHeatmap: React.FC<GlassHeatmapProps> = ({ activities }) => {
   }
 
   const getColor = (minutes: number) => {
-    if (minutes === 0) return 'bg-white/5 border-white/5';
-    if (minutes < 30) return 'bg-white/15 border-white/20 text-zinc-300';
-    if (minutes < 60) return 'bg-white/30 border-white/40 text-zinc-100';
-    if (minutes < 120) return 'bg-white/60 border-white/70 text-black';
-    return 'bg-white text-black font-bold border-white shadow-[0_0_8px_rgba(255,255,255,0.5)]';
+    if (minutes === 0) return 'bg-surface-interactive/30 border-border-subtle text-content-muted';
+    if (minutes < 30) return 'bg-accent-soft border-border-default text-content-secondary';
+    if (minutes < 60) return 'bg-accent-primary/40 border-accent-primary/50 text-content-primary';
+    if (minutes < 120) return 'bg-accent-primary/75 border-accent-primary text-accent-contrast font-semibold';
+    return 'bg-accent-primary text-accent-contrast font-bold border-accent-primary shadow-[0_0_8px_var(--aether-accent-primary)]';
   };
 
   return (
-    <div className="flex flex-col gap-2 p-3 rounded-2xl bg-white/[0.03] border border-white/10">
+    <div className="flex flex-col gap-2 p-3 rounded-2xl bg-surface-interactive/40 border border-border-subtle">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-semibold text-slate-200">28-Day Activity Matrix</span>
-        <span className="text-[10px] text-slate-400">Online & Offline Activity</span>
+        <span className="font-semibold text-content-primary">28-Day Activity Matrix</span>
+        <span className="text-[10px] text-content-muted">Online & Offline Activity</span>
       </div>
 
       <div className="grid grid-cols-7 gap-1.5">
@@ -51,24 +51,24 @@ export const GlassHeatmap: React.FC<GlassHeatmapProps> = ({ activities }) => {
             )}`}
           >
             {/* Tooltip */}
-            <div className="absolute -top-8 px-2 py-1 rounded bg-slate-900 text-white text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 border border-white/10 shadow-lg">
+            <div className="absolute -top-8 px-2 py-1 rounded bg-surface-elevated text-content-primary text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 border border-border-default shadow-lg">
               {day.label}: {day.minutes} mins ({day.count} sessions)
             </div>
-            <span className="text-[9px] font-mono text-slate-300/80">
+            <span className="text-[9px] font-mono text-content-muted leading-none">
               {day.minutes > 0 ? `${day.minutes}m` : '·'}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
+      <div className="flex items-center justify-between text-[10px] text-content-muted pt-1">
         <span>Less active</span>
         <div className="flex items-center gap-1">
-          <div className="w-2.5 h-2.5 rounded bg-white/5 border border-white/5" />
-          <div className="w-2.5 h-2.5 rounded bg-cyan-500/20 border border-cyan-500/30" />
-          <div className="w-2.5 h-2.5 rounded bg-cyan-500/40 border border-cyan-500/50" />
-          <div className="w-2.5 h-2.5 rounded bg-indigo-500/60 border border-indigo-500/70" />
-          <div className="w-2.5 h-2.5 rounded bg-purple-500/80 border border-purple-400" />
+          <div className="w-2.5 h-2.5 rounded bg-surface-interactive border border-border-subtle" />
+          <div className="w-2.5 h-2.5 rounded bg-accent-soft border border-border-default" />
+          <div className="w-2.5 h-2.5 rounded bg-accent-primary/40 border border-accent-primary/50" />
+          <div className="w-2.5 h-2.5 rounded bg-accent-primary/75 border border-accent-primary" />
+          <div className="w-2.5 h-2.5 rounded bg-accent-primary border border-accent-primary" />
         </div>
         <span>More active</span>
       </div>

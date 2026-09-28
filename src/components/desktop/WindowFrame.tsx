@@ -94,15 +94,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
 
   const { settings } = useSettingsStore();
 
-  const accentRingClasses: Record<string, string> = {
-    silver: 'ring-1 ring-white/40 shadow-2xl',
-    cyan: 'ring-1 ring-cyan-400/50 shadow-[0_10px_35px_rgba(34,211,238,0.25)]',
-    emerald: 'ring-1 ring-emerald-400/50 shadow-[0_10px_35px_rgba(52,211,153,0.25)]',
-    amber: 'ring-1 ring-amber-400/50 shadow-[0_10px_35px_rgba(251,191,36,0.25)]',
-    purple: 'ring-1 ring-purple-400/50 shadow-[0_10px_35px_rgba(192,132,252,0.25)]',
-    rose: 'ring-1 ring-rose-400/50 shadow-[0_10px_35px_rgba(251,113,133,0.25)]',
-  };
-
   return (
     <section
       role="region"
@@ -117,16 +108,16 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         contentClassName="flex flex-col flex-1 overflow-hidden"
         className={`flex-1 flex flex-col overflow-hidden transition-all duration-200 ${
           isFocused
-            ? accentRingClasses[settings.accentColor] || 'ring-1 ring-white/35 shadow-2xl'
-            : 'opacity-95 shadow-lg border-white/10'
+            ? 'ring-1 ring-accent-primary/60 shadow-2xl border-accent-primary/40'
+            : 'opacity-95 shadow-lg border-border-subtle'
         }`}
       >
         {/* Title Bar */}
         <header
           onMouseDown={handleMouseDownHeader}
-          className="h-10 px-4 flex items-center justify-between border-b border-white/10 select-none cursor-grab active:cursor-grabbing bg-white/[0.04]"
+          className="h-10 px-4 flex items-center justify-between border-b border-border-subtle select-none cursor-grab active:cursor-grabbing bg-surface-interactive/40"
         >
-          {/* Liquid Jewel Window Controls */}
+          {/* Liquid Jewel Window Controls (Intentional Status/Control semantics) */}
           <div className="flex items-center space-x-2">
             <button
               type="button"
@@ -167,7 +158,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
           </div>
 
           {/* Window Title */}
-          <h2 className="text-xs font-bold text-white tracking-wide">
+          <h2 className="text-xs font-bold text-content-primary tracking-wide">
             {window.title}
           </h2>
 
@@ -186,7 +177,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
             tabIndex={-1}
             className="absolute bottom-1 right-1 w-5 h-5 cursor-nwse-resize opacity-50 hover:opacity-100 flex items-end justify-end p-1"
           >
-            <div className="w-2.5 h-2.5 border-r-2 border-b-2 border-white/60 rounded-br-sm" />
+            <div className="w-2.5 h-2.5 border-r-2 border-b-2 border-content-muted rounded-br-sm" />
           </div>
         )}
       </LiquidSurface>

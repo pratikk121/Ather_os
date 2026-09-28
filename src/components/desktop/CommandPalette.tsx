@@ -228,7 +228,7 @@ export const CommandPalette: React.FC = () => {
   return (
     <div
       onClick={() => setCommandPaletteOpen(false)}
-      className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-start justify-center pt-24 px-4 select-none"
+      className="fixed inset-0 z-[100] bg-surface-overlay/75 backdrop-blur-md flex items-start justify-center pt-24 px-4 select-none"
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -237,11 +237,11 @@ export const CommandPalette: React.FC = () => {
         <LiquidSurface
           material="frosted"
           borderRadius={20}
-          className="p-3 shadow-2xl border border-white/20 bg-black/85"
+          className="p-3 shadow-2xl border border-border-default bg-surface-primary/95"
         >
           {/* Search Input Bar */}
-          <div className="flex items-center gap-3 px-3 py-2 border-b border-white/10">
-            <Search className="w-5 h-5 text-white" />
+          <div className="flex items-center gap-3 px-3 py-2 border-b border-border-subtle">
+            <Search className="w-5 h-5 text-accent-primary" />
             <input
               ref={inputRef}
               type="text"
@@ -252,11 +252,11 @@ export const CommandPalette: React.FC = () => {
                 setSelectedIndex(0);
               }}
               onKeyDown={handleKeyDownList}
-              className="flex-1 bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
+              className="flex-1 bg-transparent text-sm text-content-primary placeholder-content-muted focus:outline-none"
             />
             <button
               onClick={() => setCommandPaletteOpen(false)}
-              className="p-1 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white"
+              className="p-1 rounded-md hover:bg-surface-interactive text-content-muted hover:text-content-primary transition"
             >
               <X className="w-4 h-4" />
             </button>
@@ -265,7 +265,7 @@ export const CommandPalette: React.FC = () => {
           {/* Results List */}
           <div className="max-h-80 overflow-y-auto space-y-1 p-1 mt-2">
             {filteredItems.length === 0 ? (
-              <div className="py-8 text-center text-xs text-zinc-500">
+              <div className="py-8 text-center text-xs text-content-muted">
                 No matching results found for "{query}"
               </div>
             ) : (
@@ -279,26 +279,26 @@ export const CommandPalette: React.FC = () => {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`p-2.5 rounded-xl cursor-pointer flex items-center justify-between transition ${
                       isSelected
-                        ? 'bg-white/15 border border-white/30 text-white'
-                        : 'hover:bg-white/5 text-zinc-300 border border-transparent'
+                        ? 'bg-surface-selected border border-border-strong text-content-primary'
+                        : 'hover:bg-surface-interactive text-content-secondary border border-transparent'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`p-2 rounded-lg ${
-                          isSelected ? 'bg-white/25 text-white' : 'bg-white/5 text-zinc-400'
+                          isSelected ? 'bg-surface-interactive text-accent-primary' : 'bg-surface-interactive/60 text-content-muted'
                         }`}
                       >
                         <Icon className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="text-xs font-semibold">{item.title}</h4>
-                        <p className="text-[10px] text-slate-400">{item.subtitle}</p>
+                        <h4 className="text-xs font-semibold text-content-primary">{item.title}</h4>
+                        <p className="text-[10px] text-content-muted">{item.subtitle}</p>
                       </div>
                     </div>
 
                     {isSelected && (
-                      <span className="text-[10px] font-mono text-cyan-300 px-2 py-0.5 rounded bg-white/10">
+                      <span className="text-[10px] font-mono text-accent-primary px-2 py-0.5 rounded bg-surface-interactive border border-border-subtle">
                         ↵ Return
                       </span>
                     )}
