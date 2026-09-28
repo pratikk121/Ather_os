@@ -4,6 +4,7 @@ import { useSettingsStore } from '../../stores/useSettingsStore';
 interface LiquidSurfaceProps {
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   borderRadius?: number;
   material?: 'thin' | 'regular' | 'heavy' | 'frosted';
   chromaticAberration?: number;
@@ -16,6 +17,7 @@ interface LiquidSurfaceProps {
 export const LiquidSurface: React.FC<LiquidSurfaceProps> = ({
   children,
   className = '',
+  contentClassName = '',
   borderRadius = 16,
   material,
   chromaticAberration,
@@ -74,7 +76,7 @@ export const LiquidSurface: React.FC<LiquidSurfaceProps> = ({
           }}
         />
       )}
-      <div className="relative z-10 w-full h-full">{children}</div>
+      <div className={`relative z-10 w-full h-full ${contentClassName}`}>{children}</div>
     </div>
   );
 };

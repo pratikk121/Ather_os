@@ -65,12 +65,14 @@ export const LiquidDock: React.FC = () => {
         <LiquidSurface
           material="frosted"
           borderRadius={24}
-          className="px-3 py-1.5 flex flex-row flex-nowrap items-center space-x-1.5 border border-white/20 shadow-2xl backdrop-blur-2xl bg-black/85 max-w-[calc(100vw-32px)] overflow-x-auto no-scrollbar"
+          contentClassName="flex flex-row flex-nowrap items-center space-x-1.5"
+          className="px-3 py-1.5 border border-white/20 shadow-2xl backdrop-blur-2xl bg-black/85 max-w-[calc(100vw-32px)] overflow-x-auto no-scrollbar"
         >
-          {DOCK_ITEMS.map((item, index) => {
-            const isOpen = windows[item.id]?.isOpen;
-            const isMinimized = windows[item.id]?.isMinimized;
-            const Icon = item.icon;
+          <div className="flex flex-row flex-nowrap items-center space-x-1.5">
+            {DOCK_ITEMS.map((item, index) => {
+              const isOpen = windows[item.id]?.isOpen;
+              const isMinimized = windows[item.id]?.isMinimized;
+              const Icon = item.icon;
 
             // Calculate fisheye magnification
             let scale = 1;
@@ -138,6 +140,7 @@ export const LiquidDock: React.FC = () => {
               </div>
             );
           })}
+          </div>
         </LiquidSurface>
       </nav>
     </div>

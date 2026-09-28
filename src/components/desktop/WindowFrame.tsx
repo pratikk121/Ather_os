@@ -102,6 +102,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
       <LiquidSurface
         material={isFocused ? 'regular' : 'frosted'}
         borderRadius={18}
+        contentClassName="flex flex-col flex-1 overflow-hidden"
         className={`flex-1 flex flex-col overflow-hidden ${
           isFocused
             ? 'ring-1 ring-white/35 shadow-2xl'
