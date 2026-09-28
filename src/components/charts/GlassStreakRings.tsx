@@ -1,19 +1,25 @@
 import React from 'react';
 import { Habit } from '../../types';
+import { getLocalDateStr } from '../../stores/useActivityStore';
 
 interface GlassStreakRingsProps {
   habits: Habit[];
 }
 
 export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) => {
+  const today = new Date();
+  const past7Dates = new Set(
+    Array.from({ length: 7 }, (_, i) => {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+      return getLocalDateStr(d);
+    })
+  );
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
       {habits.map((habit) => {
-        const weeklyCompleted = habit.completedDates.filter((d) => {
-          const past7 = new Date();
-          past7.setDate(past7.getDate() - 7);
-          return new Date(d) >= past7;
-        }).length;
+        const weeklyCompleted = habit.completedDates.filter((d) => past7Dates.has(d)).length;
 
         const targetPercent = Math.min(100, Math.round((weeklyCompleted / habit.targetPerWeek) * 100));
 

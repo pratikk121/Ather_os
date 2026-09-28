@@ -23,10 +23,17 @@ interface ActivityStoreState {
   updateTelemetry: (telemetry: Partial<ActivityStoreState['telemetry']>) => void;
 }
 
+export const getLocalDateStr = (d: Date = new Date()): string => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const getPastDateStr = (daysAgo: number) => {
   const d = new Date();
   d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().split('T')[0];
+  return getLocalDateStr(d);
 };
 
 const INITIAL_ACTIVITIES: ActivityEntry[] = [
@@ -143,15 +150,15 @@ export const useActivityStore = create<ActivityStoreState>((set) => ({
         let streak = 0;
         let checkDate = new Date();
         while (true) {
-          const ds = checkDate.toISOString().split('T')[0];
+          const ds = getLocalDateStr(checkDate);
           if (updatedDates.includes(ds)) {
             streak++;
             checkDate.setDate(checkDate.getDate() - 1);
           } else {
             // Check if today was missed but yesterday completed
-            if (streak === 0 && checkDate.toISOString().split('T')[0] === new Date().toISOString().split('T')[0]) {
+            if (streak === 0 && ds === getLocalDateStr(new Date())) {
               checkDate.setDate(checkDate.getDate() - 1);
-              const yesterdayDs = checkDate.toISOString().split('T')[0];
+              const yesterdayDs = getLocalDateStr(checkDate);
               if (updatedDates.includes(yesterdayDs)) {
                 streak++;
                 checkDate.setDate(checkDate.getDate() - 1);
