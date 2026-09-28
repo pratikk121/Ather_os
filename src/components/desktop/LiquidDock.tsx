@@ -208,7 +208,7 @@ export const LiquidDock: React.FC = () => {
                   id={`dock-tooltip-${item.id}`}
                   className="absolute -top-10 px-2.5 py-1 rounded-lg bg-black/95 text-zinc-100 text-[11px] font-semibold border border-white/20 shadow-2xl pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity whitespace-nowrap z-50 drop-shadow-lg"
                 >
-                  {item.label}
+                  {item.label} {isMinimized ? '• Minimized (Click to restore)' : ''}
                 </div>
 
                 {/* App Icon Button */}
@@ -231,7 +231,7 @@ export const LiquidDock: React.FC = () => {
                       aria-hidden="true"
                       className={`w-1.5 h-1.5 rounded-full transition-all ${
                         isMinimized
-                          ? 'bg-zinc-500'
+                          ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)] animate-pulse'
                           : 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)]'
                       }`}
                     />

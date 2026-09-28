@@ -25,11 +25,11 @@ interface SettingsStoreState {
 }
 
 const DEFAULT_SETTINGS: SystemSettings = {
-  wallpaper: 'obsidian',
-  themePreset: 'monochrome',
-  accentColor: 'silver',
+  wallpaper: 'cyberpunk',
+  themePreset: 'cyberpunk',
+  accentColor: 'cyan',
   glassMaterial: 'regular',
-  chromaticAberration: 0.15,
+  chromaticAberration: 0.25,
   dynamicLighting: true,
   audioReactiveEnv: true,
   dropletMerge: true,

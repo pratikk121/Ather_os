@@ -255,6 +255,30 @@ export const DesktopCanvas: React.FC = () => {
             <SettingsApp />
           </WindowFrame>
         )}
+
+        {/* Floating Minimized Apps Quick Tray (Bottom-Left) */}
+        {Object.values(windows).some((w) => w.isOpen && w.isMinimized) && (
+          <div className="absolute bottom-4 left-4 z-30 flex items-center gap-2 bg-black/75 backdrop-blur-2xl p-2 rounded-2xl border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-3">
+            <span className="text-[10px] font-mono text-zinc-400 uppercase px-1.5 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span>Minimized:</span>
+            </span>
+            {Object.values(windows)
+              .filter((w) => w.isOpen && w.isMinimized)
+              .map((w) => (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => useWindowStore.getState().openWindow(w.id)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-semibold transition hover:scale-105 shadow-md"
+                  title={`Click to restore ${w.title}`}
+                >
+                  <span>{w.title}</span>
+                  <span className="text-[9px] font-mono text-cyan-300">↗ Restore</span>
+                </button>
+              ))}
+          </div>
+        )}
       </main>
 
       {/* Context Right-Click Menu */}

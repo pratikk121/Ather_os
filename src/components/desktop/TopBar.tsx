@@ -3,6 +3,7 @@ import { Command, Wifi, WifiOff, Clock, Volume2 } from 'lucide-react';
 import { useSettingsStore } from '../../stores/useSettingsStore';
 import { useMediaStore } from '../../stores/useMediaStore';
 import { useProductivityStore } from '../../stores/useProductivityStore';
+import { useWindowStore } from '../../stores/useWindowStore';
 
 export const TopBar: React.FC = () => {
   const [timeStr, setTimeStr] = useState('');
@@ -11,6 +12,9 @@ export const TopBar: React.FC = () => {
   const { settings, setCommandPaletteOpen } = useSettingsStore();
   const { isPlaying, playlist, currentTrackIndex } = useMediaStore();
   const { pomodoro } = useProductivityStore();
+  const { windows, focusWindow, openWindow, activeWindowId } = useWindowStore();
+
+  const openWindows = Object.values(windows).filter((w) => w.isOpen);
 
   useEffect(() => {
     const updateClock = () => {
@@ -35,26 +39,68 @@ export const TopBar: React.FC = () => {
       aria-label="AetherOS Status Bar"
       className="h-10 px-4 m-2 glass-pill flex items-center justify-between z-50 select-none text-xs text-slate-200"
     >
-      {/* Brand & Focus Status */}
-      <div className="flex items-center space-x-3">
-        <div className="flex items-center space-x-2 font-bold tracking-wide text-white">
+      {/* Brand, Active App Tabs & Focus Status */}
+      <div className="flex items-center space-x-3 overflow-hidden">
+        <div className="flex items-center space-x-2 font-bold tracking-wide text-white flex-shrink-0">
           <div
             aria-hidden="true"
-            className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]"
+            className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.9)]"
           />
           <span className="text-white font-extrabold text-sm tracking-tight">
             AetherOS
           </span>
         </div>
 
-        <div className="h-3 w-px bg-white/20" aria-hidden="true" />
+        <div className="h-3 w-px bg-white/20 flex-shrink-0" aria-hidden="true" />
+
+        {/* Active & Minimized App Tabs (Quick Taskbar) */}
+        {openWindows.length > 0 && (
+          <div className="flex items-center space-x-1.5 overflow-x-auto max-w-[280px] lg:max-w-md py-0.5">
+            {openWindows.map((w) => {
+              const isFocused = activeWindowId === w.id && !w.isMinimized;
+              return (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => {
+                    if (w.isMinimized) {
+                      openWindow(w.id);
+                    } else {
+                      focusWindow(w.id);
+                    }
+                  }}
+                  className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs transition truncate flex-shrink-0 ${
+                    isFocused
+                      ? 'bg-white/25 text-white font-bold border border-white/40 shadow-sm'
+                      : w.isMinimized
+                      ? 'bg-white/5 text-zinc-400 border border-white/10 hover:bg-white/10 hover:text-white'
+                      : 'bg-white/10 text-zinc-300 border border-white/15 hover:bg-white/20'
+                  }`}
+                  title={`${w.title}${w.isMinimized ? ' (Minimized - click to restore)' : ''}`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                      isFocused
+                        ? 'bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.9)]'
+                        : w.isMinimized
+                        ? 'bg-amber-400'
+                        : 'bg-zinc-400'
+                    }`}
+                  />
+                  <span className="truncate max-w-[90px]">{w.title}</span>
+                  {w.isMinimized && <span className="text-[10px] text-amber-400 font-mono">_</span>}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Pomodoro quick badge */}
         {pomodoro.isRunning && (
           <div
             role="status"
             aria-label={`Flow timer running, ${Math.floor(pomodoro.remainingSeconds / 60)} minutes remaining`}
-            className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/25"
+            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/25 flex-shrink-0"
           >
             <Clock className="w-3 h-3 text-zinc-300" />
             <span className="font-mono font-medium text-xs">
@@ -69,10 +115,10 @@ export const TopBar: React.FC = () => {
           <div
             role="status"
             aria-label={`Now playing: ${currentTrack.title}`}
-            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20"
+            className="hidden md:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 flex-shrink-0"
           >
-            <Volume2 className="w-3 h-3 animate-bounce text-zinc-300" />
-            <span className="truncate max-w-[150px] font-medium text-xs">{currentTrack.title}</span>
+            <Volume2 className="w-3 h-3 animate-bounce text-cyan-300" />
+            <span className="truncate max-w-[120px] font-medium text-xs">{currentTrack.title}</span>
           </div>
         )}
       </div>
