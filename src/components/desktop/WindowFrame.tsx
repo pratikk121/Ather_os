@@ -104,7 +104,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         borderRadius={18}
         className={`flex-1 flex flex-col overflow-hidden ${
           isFocused
-            ? 'ring-1 ring-cyan-400/40 shadow-2xl'
+            ? 'ring-1 ring-white/35 shadow-2xl'
             : 'opacity-95 shadow-lg'
         }`}
       >
@@ -113,7 +113,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
           onMouseDown={handleMouseDownHeader}
           className="h-10 px-4 flex items-center justify-between border-b border-white/10 select-none cursor-grab active:cursor-grabbing bg-white/[0.04]"
         >
-          {/* Window Controls */}
+          {/* Monochromatic Window Controls */}
           <div className="flex items-center space-x-2">
             <button
               type="button"
@@ -122,10 +122,10 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 closeWindow(window.id);
               }}
               aria-label={`Close ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-rose-500 hover:bg-rose-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-rose-400"
+              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
               title="Close"
             >
-              <X className="w-2.5 h-2.5 text-rose-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <X className="w-2.5 h-2.5 text-current opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
               type="button"
@@ -134,10 +134,10 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 minimizeWindow(window.id);
               }}
               aria-label={`Minimize ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-amber-500 hover:bg-amber-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-amber-400"
+              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
               title="Minimize"
             >
-              <Minus className="w-2.5 h-2.5 text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Minus className="w-2.5 h-2.5 text-current opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
               type="button"
@@ -146,15 +146,15 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
                 maximizeWindow(window.id);
               }}
               aria-label={`Maximize ${window.title}`}
-              className="w-3.5 h-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-emerald-400"
+              className="w-3.5 h-3.5 rounded-full bg-zinc-800 hover:bg-white border border-white/20 hover:border-white text-zinc-400 hover:text-black flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-white transition-colors"
               title="Maximize"
             >
-              <Square className="w-2 h-2 text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Square className="w-2 h-2 text-current opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           </div>
 
           {/* Window Title */}
-          <h2 className="text-xs font-bold text-slate-100 tracking-wide">
+          <h2 className="text-xs font-bold text-white tracking-wide">
             {window.title}
           </h2>
 

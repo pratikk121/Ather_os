@@ -27,11 +27,11 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, cla
       for (let i = 0; i < data.length / 2; i++) {
         const barHeight = isPlaying ? (data[i] / 255) * canvas.height : 4;
 
-        // Gradient bar
+        // Monochromatic Gradient bar
         const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        gradient.addColorStop(0, 'rgba(14, 165, 233, 0.2)');
-        gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.8)');
-        gradient.addColorStop(1, 'rgba(236, 72, 153, 0.9)');
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+        gradient.addColorStop(0.5, 'rgba(200, 200, 210, 0.7)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
 
         ctx.fillStyle = gradient;
         ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);

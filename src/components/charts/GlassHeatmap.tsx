@@ -29,10 +29,10 @@ export const GlassHeatmap: React.FC<GlassHeatmapProps> = ({ activities }) => {
 
   const getColor = (minutes: number) => {
     if (minutes === 0) return 'bg-white/5 border-white/5';
-    if (minutes < 30) return 'bg-cyan-500/20 border-cyan-500/30';
-    if (minutes < 60) return 'bg-cyan-500/40 border-cyan-500/50';
-    if (minutes < 120) return 'bg-indigo-500/60 border-indigo-500/70';
-    return 'bg-purple-500/80 border-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.5)]';
+    if (minutes < 30) return 'bg-white/15 border-white/20 text-zinc-300';
+    if (minutes < 60) return 'bg-white/30 border-white/40 text-zinc-100';
+    if (minutes < 120) return 'bg-white/60 border-white/70 text-black';
+    return 'bg-white text-black font-bold border-white shadow-[0_0_8px_rgba(255,255,255,0.5)]';
   };
 
   return (

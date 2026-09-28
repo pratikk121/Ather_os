@@ -5,7 +5,7 @@
 :root {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   color-scheme: dark;
-  --focus-ring: #06b6d4;
+  --focus-ring: #ffffff;
 }
 
 /* Accessible focus ring standards */
@@ -24,29 +24,29 @@
   }
 }
 
-/* Custom glass utilities */
+/* Custom glass utilities - Pure Monochromatic Noir */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.72);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+  background: rgba(9, 9, 11, 0.78);
+  backdrop-filter: blur(28px) saturate(100%);
+  -webkit-backdrop-filter: blur(28px) saturate(100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
 }
 
 .glass-pill {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  background: rgba(12, 12, 14, 0.75);
+  backdrop-filter: blur(20px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .glass-dock {
-  background: rgba(10, 15, 30, 0.68);
-  backdrop-filter: blur(36px) saturate(210%);
-  -webkit-backdrop-filter: blur(36px) saturate(210%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 28px 65px -12px rgba(0, 0, 0, 0.7), inset 0 1px 1.5px rgba(255, 255, 255, 0.35);
+  background: rgba(8, 8, 10, 0.82);
+  backdrop-filter: blur(36px) saturate(100%);
+  -webkit-backdrop-filter: blur(36px) saturate(100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 28px 65px -12px rgba(0, 0, 0, 0.9), inset 0 1px 1.5px rgba(255, 255, 255, 0.35);
 }
 
 /* Custom scrollbars */

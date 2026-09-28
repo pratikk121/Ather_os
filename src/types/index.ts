@@ -115,7 +115,7 @@ export interface Habit {
 
 // System Settings Types
 export interface SystemSettings {
-  wallpaper: 'aurora' | 'nebula' | 'cyberpunk' | 'deepsea' | 'minimal';
+  wallpaper: 'obsidian' | 'monochrome' | 'silver' | 'carbon' | 'graphite' | 'aurora' | 'nebula' | 'cyberpunk' | 'deepsea' | 'minimal';
   glassMaterial: 'thin' | 'regular' | 'heavy' | 'frosted';
   chromaticAberration: number;
   dynamicLighting: boolean;

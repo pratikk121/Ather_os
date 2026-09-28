@@ -40,9 +40,9 @@ export const TopBar: React.FC = () => {
         <div className="flex items-center space-x-2 font-bold tracking-wide text-white">
           <div
             aria-hidden="true"
-            className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.9)]"
+            className="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]"
           />
-          <span className="bg-gradient-to-r from-cyan-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent font-extrabold text-sm tracking-tight">
+          <span className="text-white font-extrabold text-sm tracking-tight">
             AetherOS
           </span>
         </div>
@@ -54,10 +54,10 @@ export const TopBar: React.FC = () => {
           <div
             role="status"
             aria-label={`Flow timer running, ${Math.floor(pomodoro.remainingSeconds / 60)} minutes remaining`}
-            className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-500/40 animate-pulse"
+            className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/25"
           >
-            <Clock className="w-3 h-3" />
-            <span className="font-mono font-medium">
+            <Clock className="w-3 h-3 text-zinc-300" />
+            <span className="font-mono font-medium text-xs">
               {Math.floor(pomodoro.remainingSeconds / 60)}:
               {(pomodoro.remainingSeconds % 60).toString().padStart(2, '0')}
             </span>
@@ -69,10 +69,10 @@ export const TopBar: React.FC = () => {
           <div
             role="status"
             aria-label={`Now playing: ${currentTrack.title}`}
-            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/25 text-cyan-200 border border-cyan-500/40"
+            className="hidden sm:flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20"
           >
-            <Volume2 className="w-3 h-3 animate-bounce" />
-            <span className="truncate max-w-[150px] font-medium">{currentTrack.title}</span>
+            <Volume2 className="w-3 h-3 animate-bounce text-zinc-300" />
+            <span className="truncate max-w-[150px] font-medium text-xs">{currentTrack.title}</span>
           </div>
         )}
       </div>
@@ -82,11 +82,11 @@ export const TopBar: React.FC = () => {
         type="button"
         onClick={() => setCommandPaletteOpen(true)}
         aria-label="Open command palette and search (Press Command + K or Control + K)"
-        className="flex items-center space-x-2 px-3.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 transition border border-white/15 text-slate-100 hover:text-white group focus-visible:ring-2 focus-visible:ring-cyan-400"
+        className="flex items-center space-x-2 px-3.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 transition border border-white/15 text-zinc-200 hover:text-white group focus-visible:ring-2 focus-visible:ring-white"
       >
-        <Command className="w-3.5 h-3.5 text-cyan-300" />
+        <Command className="w-3.5 h-3.5 text-zinc-300 group-hover:text-white" />
         <span className="text-xs font-semibold">Search & Launch</span>
-        <kbd className="px-1.5 py-0.5 rounded bg-black/50 text-[10px] text-slate-300 border border-white/15 group-hover:text-white font-mono">
+        <kbd className="px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-zinc-300 border border-white/15 group-hover:text-white font-mono">
           ⌘K
         </kbd>
       </button>

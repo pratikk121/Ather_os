@@ -38,17 +38,17 @@ const ICON_MAP = {
 };
 
 const ICON_GRADIENTS = {
-  notes: 'from-cyan-400 to-blue-500',
-  tasks: 'from-blue-400 to-indigo-500',
-  pomodoro: 'from-indigo-400 to-purple-500',
-  music: 'from-purple-400 to-pink-500',
-  ambient: 'from-pink-400 to-rose-500',
-  journal: 'from-emerald-400 to-teal-500',
-  habits: 'from-amber-400 to-orange-500',
-  system: 'from-rose-400 to-red-500',
-  settings: 'from-slate-400 to-zinc-500',
-  terminal: 'from-emerald-500 to-cyan-500',
-  files: 'from-amber-400 to-yellow-500',
+  notes: 'from-zinc-100 via-zinc-300 to-zinc-500',
+  tasks: 'from-zinc-300 via-zinc-400 to-zinc-600',
+  pomodoro: 'from-white via-zinc-200 to-zinc-500',
+  music: 'from-zinc-200 via-zinc-400 to-zinc-700',
+  ambient: 'from-zinc-300 via-zinc-500 to-zinc-800',
+  journal: 'from-zinc-100 via-zinc-300 to-zinc-600',
+  habits: 'from-white via-zinc-400 to-zinc-700',
+  system: 'from-zinc-200 via-zinc-400 to-zinc-600',
+  settings: 'from-zinc-400 via-zinc-600 to-zinc-800',
+  terminal: 'from-white via-zinc-300 to-zinc-600',
+  files: 'from-zinc-200 via-zinc-400 to-zinc-600',
 };
 
 export const DesktopIcon: React.FC<DesktopIconProps> = ({
@@ -60,7 +60,7 @@ export const DesktopIcon: React.FC<DesktopIconProps> = ({
 }) => {
   const { openWindow, focusWindow, windows } = useWindowStore();
   const Icon = ICON_MAP[iconType] || FileText;
-  const gradient = ICON_GRADIENTS[iconType] || 'from-cyan-400 to-blue-500';
+  const gradient = ICON_GRADIENTS[iconType] || 'from-zinc-200 to-zinc-600';
 
   const handleDoubleClick = () => {
     if (!windows[id]?.isOpen || windows[id]?.isMinimized) {
@@ -83,23 +83,23 @@ export const DesktopIcon: React.FC<DesktopIconProps> = ({
         if (e.key === 'Enter') handleDoubleClick();
       }}
       aria-label={`Desktop shortcut: ${label}`}
-      className={`w-20 p-2 rounded-2xl flex flex-col items-center gap-1.5 cursor-pointer select-none transition-all duration-150 group ${
+      className={`w-16 p-1.5 rounded-xl flex flex-col items-center gap-1 cursor-pointer select-none transition-all duration-150 group ${
         isSelected
-          ? 'bg-cyan-500/20 border border-cyan-400/60 shadow-[0_0_15px_rgba(6,182,212,0.3)] backdrop-blur-md'
+          ? 'bg-white/15 border border-white/50 shadow-[0_0_12px_rgba(255,255,255,0.25)] backdrop-blur-md'
           : 'hover:bg-white/[0.06] border border-transparent'
       }`}
     >
       {/* Refractive Glass Icon Badge */}
       <div
-        className={`w-12 h-12 rounded-2xl p-[1.5px] bg-gradient-to-br ${gradient} shadow-lg transition-transform duration-150 group-hover:scale-105 group-active:scale-95`}
+        className={`w-10 h-10 rounded-xl p-[1.5px] bg-gradient-to-br ${gradient} shadow-md transition-transform duration-150 group-hover:scale-105 group-active:scale-95`}
       >
-        <div className="w-full h-full rounded-[14px] bg-slate-950/75 backdrop-blur-md flex items-center justify-center">
-          <Icon className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]" />
+        <div className="w-full h-full rounded-[10px] bg-black/75 backdrop-blur-md flex items-center justify-center">
+          <Icon className="w-5 h-5 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
         </div>
       </div>
 
       {/* Label with Shadow & High Contrast */}
-      <span className="text-[11px] font-semibold text-white text-center leading-tight tracking-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] max-w-full truncate px-1 rounded bg-slate-950/30">
+      <span className="text-[10px] font-medium text-white text-center leading-tight tracking-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] max-w-full truncate px-1 rounded bg-black/40">
         {label}
       </span>
     </div>

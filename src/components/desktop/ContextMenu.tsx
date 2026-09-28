@@ -66,7 +66,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
       <LiquidSurface
         material="heavy"
         borderRadius={16}
-        className="p-1.5 shadow-2xl border border-white/20 bg-slate-950/90 text-xs text-slate-100"
+        className="p-1.5 shadow-2xl border border-white/20 bg-black/90 text-xs text-zinc-100"
       >
         <button
           type="button"
@@ -75,9 +75,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('terminal');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-500/20 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
-          <Terminal className="w-4 h-4 text-cyan-400" />
+          <Terminal className="w-4 h-4 text-zinc-300 group-hover:text-white" />
           <span>Launch Terminal</span>
         </button>
 
@@ -88,9 +88,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('files');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-500/20 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
-          <Folder className="w-4 h-4 text-amber-400" />
+          <Folder className="w-4 h-4 text-zinc-300 group-hover:text-white" />
           <span>Open File Explorer</span>
         </button>
 
@@ -101,9 +101,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('notes');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-500/20 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
-          <FileText className="w-4 h-4 text-indigo-400" />
+          <FileText className="w-4 h-4 text-zinc-300 group-hover:text-white" />
           <span>New Note</span>
         </button>
 
@@ -113,26 +113,26 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
           type="button"
           role="menuitem"
           onClick={cycleWallpaper}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/10 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Image className="w-4 h-4 text-purple-400" />
+            <Image className="w-4 h-4 text-zinc-300 group-hover:text-white" />
             <span>Next Wallpaper</span>
           </div>
-          <span className="text-[10px] text-slate-400 uppercase font-mono">{settings.wallpaper}</span>
+          <span className="text-[10px] text-zinc-400 uppercase font-mono">{settings.wallpaper}</span>
         </button>
 
         <button
           type="button"
           role="menuitem"
           onClick={cycleGlass}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/10 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <Sparkles className="w-4 h-4 text-zinc-300 group-hover:text-white" />
             <span>Glass Preset</span>
           </div>
-          <span className="text-[10px] text-slate-400 uppercase font-mono">{settings.glassMaterial}</span>
+          <span className="text-[10px] text-zinc-400 uppercase font-mono">{settings.glassMaterial}</span>
         </button>
 
         <button
@@ -142,13 +142,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             toggleDynamicLighting();
             onClose();
           }}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/10 text-slate-200 hover:text-white transition text-left"
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-200 hover:text-white transition text-left group"
         >
           <div className="flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-emerald-400" />
+            <Sliders className="w-4 h-4 text-zinc-300 group-hover:text-white" />
             <span>Cursor Light</span>
           </div>
-          <span className="text-[10px] text-emerald-300 font-bold">
+          <span className="text-[10px] text-zinc-300 font-bold font-mono">
             {settings.dynamicLighting ? 'ON' : 'OFF'}
           </span>
         </button>
@@ -162,10 +162,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, isOpen, onClose 
             openWindow('settings');
             onClose();
           }}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition text-left"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white transition text-left group"
         >
-          <Sliders className="w-4 h-4 text-slate-400" />
-          <span>Desktop Settings</span>
+          <Sliders className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+          <span>System Settings</span>
         </button>
       </LiquidSurface>
     </div>

@@ -17,7 +17,7 @@ interface SettingsStoreState {
 }
 
 const DEFAULT_SETTINGS: SystemSettings = {
-  wallpaper: 'aurora',
+  wallpaper: 'obsidian',
   glassMaterial: 'regular',
   chromaticAberration: 0.22,
   dynamicLighting: true,

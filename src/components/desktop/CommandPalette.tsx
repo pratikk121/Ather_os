@@ -195,11 +195,11 @@ export const CommandPalette: React.FC = () => {
         <LiquidSurface
           material="frosted"
           borderRadius={20}
-          className="p-3 shadow-2xl border border-white/20 bg-slate-950/80"
+          className="p-3 shadow-2xl border border-white/20 bg-black/85"
         >
           {/* Search Input Bar */}
           <div className="flex items-center gap-3 px-3 py-2 border-b border-white/10">
-            <Search className="w-5 h-5 text-cyan-400" />
+            <Search className="w-5 h-5 text-white" />
             <input
               ref={inputRef}
               type="text"
@@ -210,11 +210,11 @@ export const CommandPalette: React.FC = () => {
                 setSelectedIndex(0);
               }}
               onKeyDown={handleKeyDownList}
-              className="flex-1 bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none"
+              className="flex-1 bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
             />
             <button
               onClick={() => setCommandPaletteOpen(false)}
-              className="p-1 rounded-md hover:bg-white/10 text-slate-400 hover:text-white"
+              className="p-1 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white"
             >
               <X className="w-4 h-4" />
             </button>
@@ -223,7 +223,7 @@ export const CommandPalette: React.FC = () => {
           {/* Results List */}
           <div className="max-h-80 overflow-y-auto space-y-1 p-1 mt-2">
             {filteredItems.length === 0 ? (
-              <div className="py-8 text-center text-xs text-slate-500">
+              <div className="py-8 text-center text-xs text-zinc-500">
                 No matching results found for "{query}"
               </div>
             ) : (
@@ -237,14 +237,14 @@ export const CommandPalette: React.FC = () => {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`p-2.5 rounded-xl cursor-pointer flex items-center justify-between transition ${
                       isSelected
-                        ? 'bg-cyan-500/20 border border-cyan-500/40 text-white'
-                        : 'hover:bg-white/5 text-slate-300 border border-transparent'
+                        ? 'bg-white/15 border border-white/30 text-white'
+                        : 'hover:bg-white/5 text-zinc-300 border border-transparent'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`p-2 rounded-lg ${
-                          isSelected ? 'bg-cyan-500/30 text-cyan-200' : 'bg-white/5 text-slate-400'
+                          isSelected ? 'bg-white/25 text-white' : 'bg-white/5 text-zinc-400'
                         }`}
                       >
                         <Icon className="w-4 h-4" />

@@ -37,7 +37,7 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
                   cx="24"
                   cy="24"
                   r="20"
-                  className="stroke-amber-400 transition-all duration-700"
+                  className="stroke-white transition-all duration-700"
                   strokeWidth="3.5"
                   strokeDasharray={2 * Math.PI * 20}
                   strokeDashoffset={2 * Math.PI * 20 * (1 - targetPercent / 100)}
@@ -48,11 +48,11 @@ export const GlassStreakRings: React.FC<GlassStreakRingsProps> = ({ habits }) =>
               <span className="absolute text-sm">{habit.icon}</span>
             </div>
 
-            <span className="text-[11px] font-semibold text-slate-200 truncate max-w-full">
+            <span className="text-[11px] font-semibold text-zinc-200 truncate max-w-full">
               {habit.name}
             </span>
 
-            <div className="flex items-center gap-1 text-[10px] text-amber-400 font-mono">
+            <div className="flex items-center gap-1 text-[10px] text-zinc-300 font-mono">
               <span>🔥 {habit.streak}d streak</span>
             </div>
           </div>

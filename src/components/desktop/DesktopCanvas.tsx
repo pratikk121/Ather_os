@@ -75,12 +75,17 @@ export const DesktopCanvas: React.FC = () => {
     });
   };
 
-  const wallpapers = {
-    aurora: 'from-slate-950 via-indigo-950/80 to-slate-950',
-    nebula: 'from-purple-950 via-slate-950 to-cyan-950/70',
-    cyberpunk: 'from-slate-950 via-rose-950/50 to-blue-950',
-    deepsea: 'from-slate-950 via-teal-950/60 to-slate-950',
-    minimal: 'from-slate-950 to-zinc-950',
+  const wallpapers: Record<string, string> = {
+    obsidian: 'from-black via-zinc-950 to-neutral-950',
+    monochrome: 'from-zinc-950 via-zinc-900/90 to-black',
+    silver: 'from-zinc-900 via-neutral-950 to-black',
+    carbon: 'from-black via-zinc-950/90 to-zinc-900',
+    graphite: 'from-zinc-950 via-neutral-900 to-black',
+    aurora: 'from-black via-zinc-950 to-neutral-950',
+    nebula: 'from-zinc-950 via-zinc-900 to-black',
+    cyberpunk: 'from-black via-zinc-950 to-zinc-900',
+    deepsea: 'from-zinc-950 via-neutral-950 to-black',
+    minimal: 'from-black via-zinc-950 to-neutral-950',
   };
 
   return (
@@ -91,23 +96,23 @@ export const DesktopCanvas: React.FC = () => {
         if (contextMenu.isOpen) setContextMenu({ ...contextMenu, isOpen: false });
       }}
       className={`relative w-screen h-screen overflow-hidden bg-gradient-to-br ${
-        wallpapers[settings.wallpaper] || wallpapers.aurora
-      } text-slate-100 flex flex-col justify-between select-none`}
+        wallpapers[settings.wallpaper] || wallpapers.obsidian
+      } text-zinc-100 flex flex-col justify-between select-none`}
     >
-      {/* Dynamic Ambient Fluid Light Spheres */}
+      {/* Dynamic Monochromatic Ambient Fluid Light Spheres */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
-          className={`absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl transition-transform duration-1000 ${
+          className={`absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.04] rounded-full blur-3xl transition-transform duration-1000 ${
             isPlaying ? 'scale-125 animate-pulse' : 'animate-pulse-slow'
           }`}
         />
         <div
-          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] bg-indigo-500/15 rounded-full blur-3xl transition-transform duration-1000 delay-500 ${
+          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] bg-zinc-200/[0.03] rounded-full blur-3xl transition-transform duration-1000 delay-500 ${
             isPlaying ? 'scale-110' : 'animate-pulse-slow'
           }`}
         />
         <div
-          className={`absolute top-1/2 right-1/3 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl transition-transform duration-1000 delay-700 ${
+          className={`absolute top-1/2 right-1/3 w-80 h-80 bg-white/[0.03] rounded-full blur-3xl transition-transform duration-1000 delay-700 ${
             isPlaying ? 'scale-120 animate-pulse' : 'animate-pulse-slow'
           }`}
         />
@@ -117,9 +122,9 @@ export const DesktopCanvas: React.FC = () => {
       <TopBar />
 
       {/* Desktop Physical Workspace with Interactive Icons & Floating Windows */}
-      <main className="relative flex-1 w-full h-full overflow-hidden p-4">
-        {/* Desktop Shortcut Grid */}
-        <div className="absolute top-4 left-4 grid grid-flow-col grid-rows-5 gap-3 z-0">
+      <main className="relative flex-1 w-full h-full overflow-hidden p-3">
+        {/* Desktop Shortcut Column */}
+        <div className="absolute top-2 left-2 flex flex-col flex-wrap max-h-[calc(100vh-120px)] gap-1.5 z-0">
           {DESKTOP_SHORTCUTS.map((item) => (
             <DesktopIcon
               key={item.id}
