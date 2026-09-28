@@ -49,8 +49,8 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         const newY = Math.max(40, Math.min(e.clientY - dragOffset.y, globalThis.innerHeight - 100));
         updatePosition(window.id, { x: newX, y: newY });
       } else if (isResizing) {
-        const newW = Math.max(300, resizeStart.w + (e.clientX - resizeStart.x));
-        const newH = Math.max(200, resizeStart.h + (e.clientY - resizeStart.y));
+        const newW = Math.max(320, resizeStart.w + (e.clientX - resizeStart.x));
+        const newH = Math.max(220, resizeStart.h + (e.clientY - resizeStart.y));
         updateSize(window.id, { width: newW, height: newH });
       }
     };
@@ -92,7 +92,9 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
       };
 
   return (
-    <div
+    <section
+      role="region"
+      aria-label={`${window.title} window`}
       style={frameStyle}
       onMouseDown={() => focusWindow(window.id)}
       className="flex flex-col transition-shadow duration-200"
@@ -101,55 +103,63 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         material={isFocused ? 'regular' : 'frosted'}
         borderRadius={18}
         className={`flex-1 flex flex-col overflow-hidden ${
-          isFocused ? 'ring-1 ring-cyan-500/30' : 'opacity-95'
+          isFocused
+            ? 'ring-1 ring-cyan-400/40 shadow-2xl'
+            : 'opacity-95 shadow-lg'
         }`}
       >
         {/* Title Bar */}
-        <div
+        <header
           onMouseDown={handleMouseDownHeader}
-          className="h-10 px-4 flex items-center justify-between border-b border-white/10 select-none cursor-grab active:cursor-grabbing bg-white/[0.03]"
+          className="h-10 px-4 flex items-center justify-between border-b border-white/10 select-none cursor-grab active:cursor-grabbing bg-white/[0.04]"
         >
           {/* Window Controls */}
           <div className="flex items-center space-x-2">
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 closeWindow(window.id);
               }}
-              className="w-3 h-3 rounded-full bg-rose-500/80 hover:bg-rose-400 flex items-center justify-center group"
+              aria-label={`Close ${window.title}`}
+              className="w-3.5 h-3.5 rounded-full bg-rose-500 hover:bg-rose-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-rose-400"
               title="Close"
             >
-              <X className="w-2 h-2 text-rose-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <X className="w-2.5 h-2.5 text-rose-950 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 minimizeWindow(window.id);
               }}
-              className="w-3 h-3 rounded-full bg-amber-500/80 hover:bg-amber-400 flex items-center justify-center group"
+              aria-label={`Minimize ${window.title}`}
+              className="w-3.5 h-3.5 rounded-full bg-amber-500 hover:bg-amber-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-amber-400"
               title="Minimize"
             >
-              <Minus className="w-2 h-2 text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Minus className="w-2.5 h-2.5 text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 maximizeWindow(window.id);
               }}
-              className="w-3 h-3 rounded-full bg-emerald-500/80 hover:bg-emerald-400 flex items-center justify-center group"
+              aria-label={`Maximize ${window.title}`}
+              className="w-3.5 h-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-emerald-400"
               title="Maximize"
             >
-              <Square className="w-1.5 h-1.5 text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Square className="w-2 h-2 text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           </div>
 
           {/* Window Title */}
-          <span className="text-xs font-semibold text-slate-200 tracking-wide">
+          <h2 className="text-xs font-bold text-slate-100 tracking-wide">
             {window.title}
-          </span>
+          </h2>
 
-          <div className="w-12" />
-        </div>
+          <div className="w-12" aria-hidden="true" />
+        </header>
 
         {/* Content Area */}
         <div className="flex-1 overflow-auto p-4">{children}</div>
@@ -158,12 +168,15 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         {!window.isMaximized && (
           <div
             onMouseDown={handleMouseDownResize}
-            className="absolute bottom-1 right-1 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-100 flex items-end justify-end p-0.5"
+            role="separator"
+            aria-label="Resize window handle"
+            tabIndex={-1}
+            className="absolute bottom-1 right-1 w-5 h-5 cursor-nwse-resize opacity-50 hover:opacity-100 flex items-end justify-end p-1"
           >
-            <div className="w-2 h-2 border-r-2 border-b-2 border-white/50 rounded-br-sm" />
+            <div className="w-2.5 h-2.5 border-r-2 border-b-2 border-white/60 rounded-br-sm" />
           </div>
         )}
       </LiquidSurface>
-    </div>
+    </section>
   );
 };
