@@ -506,6 +506,7 @@ export const applyThemeToElement = (
 ) => {
   const tokens = getThemeTokens(preset, accentColor);
   element.setAttribute('data-theme', preset);
+  element.style.setProperty('--theme-color-scheme', 'dark');
 
   // Set CSS Custom Properties on the element
   element.style.setProperty('--aether-surface-base', tokens.surfaceBase);

@@ -5,7 +5,7 @@
 /* Base Default Fallback Variables (Obsidian Noir / Monochrome) */
 :root {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  color-scheme: dark;
+  color-scheme: var(--theme-color-scheme, dark);
 
   --aether-surface-base: #09090b;
   --aether-surface-primary: rgba(18, 18, 22, 0.88);

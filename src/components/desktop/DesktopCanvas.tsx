@@ -24,6 +24,7 @@ import { TerminalApp } from '../apps/TerminalApp';
 import { FileExplorerApp } from '../apps/FileExplorerApp';
 import { CommandPalette } from './CommandPalette';
 import { companionClient } from '../../services/companionClient';
+import { audioEngine } from '../../services/audioEngine';
 
 interface DesktopShortcut {
   id: WindowId;
@@ -57,10 +58,53 @@ export const DesktopCanvas: React.FC = () => {
     isOpen: false,
   });
 
+  const [audioBands, setAudioBands] = useState({ bass: 1, mid: 1, treble: 1 });
+
   // Connect to companion telemetry server
   useEffect(() => {
     companionClient.connect();
   }, []);
+
+  // Real-time audio spectrum analysis for ambient environment pulsing
+  useEffect(() => {
+    if (!settings.audioReactiveEnv || !isPlaying) {
+      setAudioBands({ bass: 1, mid: 1, treble: 1 });
+      return;
+    }
+
+    let animationFrameId: number;
+    const updateSpectrum = () => {
+      try {
+        const freq = audioEngine.getFrequencyData();
+        if (freq && freq.length > 0) {
+          // Low / Bass (0..7)
+          let bassSum = 0;
+          for (let i = 0; i < 8; i++) bassSum += freq[i] || 0;
+          const bassAvg = bassSum / 8 / 255;
+
+          // Mid / Vocal (8..23)
+          let midSum = 0;
+          for (let i = 8; i < 24; i++) midSum += freq[i] || 0;
+          const midAvg = midSum / 16 / 255;
+
+          // Treble / High (24..48)
+          let trebleSum = 0;
+          for (let i = 24; i < 48; i++) trebleSum += freq[i] || 0;
+          const trebleAvg = trebleSum / 24 / 255;
+
+          setAudioBands({
+            bass: 1 + bassAvg * 0.45,
+            mid: 1 + midAvg * 0.35,
+            treble: 1 + trebleAvg * 0.30,
+          });
+        }
+      } catch {}
+      animationFrameId = requestAnimationFrame(updateSpectrum);
+    };
+
+    animationFrameId = requestAnimationFrame(updateSpectrum);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [settings.audioReactiveEnv, isPlaying]);
 
   // Apply theme tokens on initial mount and when themePreset or accentColor updates
   useEffect(() => {
@@ -117,24 +161,36 @@ export const DesktopCanvas: React.FC = () => {
         wallpapers[settings.wallpaper] || wallpapers.obsidian
       } text-content-primary flex flex-col justify-between select-none transition-colors duration-500`}
     >
-      {/* Dynamic Theme-Derived Fluid Light Spheres */}
+      {/* Dynamic Theme-Derived Fluid Light Spheres (Audio Spectrum Responsive) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
-          style={{ backgroundColor: 'var(--aether-ambient-glow-1)' }}
-          className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-all duration-700 ${
-            isAudioPulsing ? 'scale-125 animate-pulse' : 'animate-pulse-slow'
+          style={{
+            backgroundColor: 'var(--aether-ambient-glow-1)',
+            transform: `scale(${audioBands.bass})`,
+            opacity: 0.6 + (audioBands.bass - 1) * 0.8,
+          }}
+          className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-transform duration-100 ${
+            !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />
         <div
-          style={{ backgroundColor: 'var(--aether-ambient-glow-2)' }}
-          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] rounded-full blur-3xl transition-all duration-700 delay-300 ${
-            isAudioPulsing ? 'scale-110' : 'animate-pulse-slow'
+          style={{
+            backgroundColor: 'var(--aether-ambient-glow-2)',
+            transform: `scale(${audioBands.mid})`,
+            opacity: 0.5 + (audioBands.mid - 1) * 0.7,
+          }}
+          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] rounded-full blur-3xl transition-transform duration-100 ${
+            !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />
         <div
-          style={{ backgroundColor: 'var(--aether-ambient-glow-3)' }}
-          className={`absolute top-1/2 right-1/3 w-80 h-80 rounded-full blur-3xl transition-all duration-700 delay-500 ${
-            isAudioPulsing ? 'scale-120 animate-pulse' : 'animate-pulse-slow'
+          style={{
+            backgroundColor: 'var(--aether-ambient-glow-3)',
+            transform: `scale(${audioBands.treble})`,
+            opacity: 0.5 + (audioBands.treble - 1) * 0.6,
+          }}
+          className={`absolute top-1/2 right-1/3 w-80 h-80 rounded-full blur-3xl transition-transform duration-100 ${
+            !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />
       </div>
