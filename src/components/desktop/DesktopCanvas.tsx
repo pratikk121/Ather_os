@@ -23,6 +23,7 @@ import { SettingsApp } from '../apps/SettingsApp';
 import { TerminalApp } from '../apps/TerminalApp';
 import { FileExplorerApp } from '../apps/FileExplorerApp';
 import { CommandPalette } from './CommandPalette';
+import { companionClient } from '../../services/companionClient';
 
 interface DesktopShortcut {
   id: WindowId;
@@ -55,6 +56,11 @@ export const DesktopCanvas: React.FC = () => {
     y: 0,
     isOpen: false,
   });
+
+  // Connect to companion telemetry server
+  useEffect(() => {
+    companionClient.connect();
+  }, []);
 
   // Apply theme tokens on initial mount and when themePreset updates
   useEffect(() => {

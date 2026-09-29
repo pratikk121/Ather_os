@@ -5,6 +5,7 @@ class AudioEngine {
   private analyser: AnalyserNode | null = null;
   private ambientGains: Map<string, GainNode> = new Map();
   private ambientNodes: Map<string, { stop: () => void }> = new Map();
+  private mediaSources: WeakMap<HTMLMediaElement, MediaElementAudioSourceNode> = new WeakMap();
 
   private getContext(): AudioContext {
     if (!this.ctx) {
@@ -12,7 +13,7 @@ class AudioEngine {
       this.ctx = new AudioCtx();
     }
     if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
     return this.ctx;
   }
@@ -31,6 +32,25 @@ class AudioEngine {
     const data = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(data);
     return data;
+  }
+
+  public connectMediaElement(el: HTMLMediaElement): MediaElementAudioSourceNode | null {
+    if (!el) return null;
+    try {
+      const ctx = this.getContext();
+      let sourceNode = this.mediaSources.get(el);
+      if (!sourceNode) {
+        sourceNode = ctx.createMediaElementSource(el);
+        const analyser = this.getAnalyser();
+        sourceNode.connect(analyser);
+        analyser.connect(ctx.destination);
+        this.mediaSources.set(el, sourceNode);
+      }
+      return sourceNode;
+    } catch (err) {
+      console.warn('AudioEngine: MediaElement connection fallback:', err);
+      return null;
+    }
   }
 
   // Procedural Ambient Generators
@@ -65,7 +85,15 @@ class AudioEngine {
       filter.connect(gainNode);
       noise.start();
 
-      this.ambientNodes.set(id, { stop: () => noise.stop() });
+      this.ambientNodes.set(id, {
+        stop: () => {
+          try {
+            noise.stop();
+            noise.disconnect();
+            filter.disconnect();
+          } catch {}
+        },
+      });
     } else if (type === 'brownNoise') {
       // Brown noise generator
       const bufferSize = ctx.sampleRate * 2;
@@ -85,7 +113,14 @@ class AudioEngine {
       noise.connect(gainNode);
       noise.start();
 
-      this.ambientNodes.set(id, { stop: () => noise.stop() });
+      this.ambientNodes.set(id, {
+        stop: () => {
+          try {
+            noise.stop();
+            noise.disconnect();
+          } catch {}
+        },
+      });
     } else if (type === 'binaural') {
       // Dual oscillator with 6Hz difference for theta brainwave entrainment
       const osc1 = ctx.createOscillator();
@@ -100,8 +135,12 @@ class AudioEngine {
 
       this.ambientNodes.set(id, {
         stop: () => {
-          osc1.stop();
-          osc2.stop();
+          try {
+            osc1.stop();
+            osc2.stop();
+            osc1.disconnect();
+            osc2.disconnect();
+          } catch {}
         },
       });
     } else if (type === 'waves') {
@@ -142,8 +181,14 @@ class AudioEngine {
 
       this.ambientNodes.set(id, {
         stop: () => {
-          noise.stop();
-          lfo.stop();
+          try {
+            noise.stop();
+            lfo.stop();
+            noise.disconnect();
+            lfo.disconnect();
+            lfoGain.disconnect();
+            filter.disconnect();
+          } catch {}
         },
       });
     }
@@ -164,7 +209,13 @@ class AudioEngine {
       } catch {}
       this.ambientNodes.delete(id);
     }
-    this.ambientGains.delete(id);
+    const gainNode = this.ambientGains.get(id);
+    if (gainNode) {
+      try {
+        gainNode.disconnect();
+      } catch {}
+      this.ambientGains.delete(id);
+    }
   }
 }
 

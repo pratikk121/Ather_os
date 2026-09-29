@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, Globe, Coffee, Dumbbell, BookOpen, Code, Sparkles } from 'lucide-react';
 import { ActivityCategory } from '../../types';
-import { useActivityStore } from '../../stores/useActivityStore';
+import { useActivityStore, getLocalDateStr } from '../../stores/useActivityStore';
 import { GlassHeatmap } from '../charts/GlassHeatmap';
 
 const CATEGORY_META: Record<
@@ -39,12 +39,9 @@ export const ActivityJournalApp: React.FC = () => {
     setNotes('');
   };
 
+  const todayStr = getLocalDateStr(new Date());
   const totalMinutesToday = activities
-    .filter(
-      (a) =>
-        new Date(a.timestamp).toISOString().split('T')[0] ===
-        new Date().toISOString().split('T')[0]
-    )
+    .filter((a) => getLocalDateStr(new Date(a.timestamp)) === todayStr)
     .reduce((sum, a) => sum + a.durationMinutes, 0);
 
   return (

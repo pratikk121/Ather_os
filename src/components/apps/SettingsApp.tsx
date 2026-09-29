@@ -67,8 +67,8 @@ export const SettingsApp: React.FC = () => {
     resetToDefaults,
   } = useSettingsStore();
 
-  const { notes, tasks } = useProductivityStore();
-  const { activities, habits } = useActivityStore();
+  const { notes, tasks, restoreProductivityState } = useProductivityStore();
+  const { activities, habits, restoreActivityState } = useActivityStore();
 
   const handleExportBackup = () => {
     const backupData = {
@@ -100,21 +100,34 @@ export const SettingsApp: React.FC = () => {
     reader.onload = (event) => {
       try {
         const data = JSON.parse(event.target?.result as string);
-        if (data.settings) {
-          if (data.settings.themePreset) setThemePreset(data.settings.themePreset);
-          if (data.settings.wallpaper) setWallpaper(data.settings.wallpaper);
-          if (data.settings.accentColor) setAccentColor(data.settings.accentColor);
-          if (data.settings.glassMaterial) setGlassMaterial(data.settings.glassMaterial);
-          if (typeof data.settings.chromaticAberration === 'number') {
-            setChromaticAberration(data.settings.chromaticAberration);
+        if (data && typeof data === 'object') {
+          if (data.settings) {
+            if (data.settings.themePreset) setThemePreset(data.settings.themePreset);
+            if (data.settings.wallpaper) setWallpaper(data.settings.wallpaper);
+            if (data.settings.accentColor) setAccentColor(data.settings.accentColor);
+            if (data.settings.glassMaterial) setGlassMaterial(data.settings.glassMaterial);
+            if (typeof data.settings.chromaticAberration === 'number') {
+              setChromaticAberration(data.settings.chromaticAberration);
+            }
+            if (data.settings.dockAutoHide) setDockAutoHide(data.settings.dockAutoHide);
+            if (data.settings.dockMagnification) setDockMagnification(data.settings.dockMagnification);
           }
-          if (data.settings.dockAutoHide) setDockAutoHide(data.settings.dockAutoHide);
-          if (data.settings.dockMagnification) setDockMagnification(data.settings.dockMagnification);
+
+          if (data.notes || data.tasks) {
+            restoreProductivityState({ notes: data.notes, tasks: data.tasks });
+          }
+
+          if (data.activities || data.habits) {
+            restoreActivityState({ activities: data.activities, habits: data.habits });
+          }
+
+          setImportStatus('Complete system snapshot restored successfully!');
+          setTimeout(() => setImportStatus(null), 4000);
+        } else {
+          throw new Error('Invalid schema');
         }
-        setImportStatus('Snapshot imported successfully!');
-        setTimeout(() => setImportStatus(null), 4000);
       } catch (err) {
-        setImportStatus('Invalid JSON backup file.');
+        setImportStatus('Invalid JSON backup snapshot.');
         setTimeout(() => setImportStatus(null), 4000);
       }
     };

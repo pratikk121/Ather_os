@@ -4,6 +4,7 @@ import { WindowState } from '../../types';
 import { useWindowStore } from '../../stores/useWindowStore';
 import { useSettingsStore } from '../../stores/useSettingsStore';
 import { LiquidSurface } from '../glass/LiquidSurface';
+import { ErrorBoundary } from '../common/ErrorBoundary';
 
 interface WindowFrameProps {
   window: WindowState;
@@ -46,8 +47,10 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging) {
-        const newX = Math.max(0, Math.min(e.clientX - dragOffset.x, globalThis.innerWidth - 100));
-        const newY = Math.max(40, Math.min(e.clientY - dragOffset.y, globalThis.innerHeight - 100));
+        const maxX = Math.max(0, (typeof globalThis.innerWidth !== 'undefined' ? globalThis.innerWidth : 1200) - 100);
+        const maxY = Math.max(40, (typeof globalThis.innerHeight !== 'undefined' ? globalThis.innerHeight : 800) - 100);
+        const newX = Math.max(0, Math.min(e.clientX - dragOffset.x, maxX));
+        const newY = Math.max(40, Math.min(e.clientY - dragOffset.y, maxY));
         updatePosition(window.id, { x: newX, y: newY });
       } else if (isResizing) {
         const newW = Math.max(320, resizeStart.w + (e.clientX - resizeStart.x));
@@ -117,7 +120,7 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
           onMouseDown={handleMouseDownHeader}
           className="h-10 px-4 flex items-center justify-between border-b border-border-subtle select-none cursor-grab active:cursor-grabbing bg-surface-interactive/40"
         >
-          {/* Liquid Jewel Window Controls (Intentional Status/Control semantics) */}
+          {/* Liquid Jewel Window Controls */}
           <div className="flex items-center space-x-2">
             <button
               type="button"
@@ -165,8 +168,12 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
           <div className="w-12" aria-hidden="true" />
         </header>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-auto p-4">{children}</div>
+        {/* Content Area with Error Boundary Protection */}
+        <div className="flex-1 overflow-auto p-4">
+          <ErrorBoundary fallbackTitle={`${window.title} Error`}>
+            {children}
+          </ErrorBoundary>
+        </div>
 
         {/* Resize Grip Handle */}
         {!window.isMaximized && (

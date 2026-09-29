@@ -133,6 +133,8 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
   highestZIndex: 25,
 
   openWindow: (id) => {
+    const target = get().windows[id];
+    if (!target) return;
     const nextZ = get().highestZIndex + 1;
     set((state) => ({
       highestZIndex: nextZ,
@@ -150,6 +152,17 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
   },
 
   closeWindow: (id) => {
+    const target = get().windows[id];
+    if (!target) return;
+    const currentWindows = get().windows;
+    const remainingOpenWindows = Object.values(currentWindows).filter(
+      (w) => w.id !== id && w.isOpen && !w.isMinimized
+    );
+    const nextActive =
+      remainingOpenWindows.length > 0
+        ? remainingOpenWindows.reduce((prev, curr) => (curr.zIndex > prev.zIndex ? curr : prev)).id
+        : null;
+
     set((state) => ({
       windows: {
         ...state.windows,
@@ -159,11 +172,22 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
           isMaximized: false,
         },
       },
-      activeWindowId: state.activeWindowId === id ? null : state.activeWindowId,
+      activeWindowId: state.activeWindowId === id ? nextActive : state.activeWindowId,
     }));
   },
 
   minimizeWindow: (id) => {
+    const target = get().windows[id];
+    if (!target) return;
+    const currentWindows = get().windows;
+    const remainingOpenWindows = Object.values(currentWindows).filter(
+      (w) => w.id !== id && w.isOpen && !w.isMinimized
+    );
+    const nextActive =
+      remainingOpenWindows.length > 0
+        ? remainingOpenWindows.reduce((prev, curr) => (curr.zIndex > prev.zIndex ? curr : prev)).id
+        : null;
+
     set((state) => ({
       windows: {
         ...state.windows,
@@ -172,11 +196,13 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
           isMinimized: true,
         },
       },
-      activeWindowId: state.activeWindowId === id ? null : state.activeWindowId,
+      activeWindowId: state.activeWindowId === id ? nextActive : state.activeWindowId,
     }));
   },
 
   maximizeWindow: (id) => {
+    const target = get().windows[id];
+    if (!target) return;
     set((state) => ({
       windows: {
         ...state.windows,
@@ -189,6 +215,8 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
   },
 
   focusWindow: (id) => {
+    const target = get().windows[id];
+    if (!target) return;
     const nextZ = get().highestZIndex + 1;
     set((state) => ({
       highestZIndex: nextZ,
@@ -206,6 +234,8 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
   },
 
   updatePosition: (id, pos) => {
+    const target = get().windows[id];
+    if (!target) return;
     set((state) => ({
       windows: {
         ...state.windows,
@@ -218,6 +248,8 @@ export const useWindowStore = create<WindowStoreState>((set, get) => ({
   },
 
   updateSize: (id, size) => {
+    const target = get().windows[id];
+    if (!target) return;
     set((state) => ({
       windows: {
         ...state.windows,

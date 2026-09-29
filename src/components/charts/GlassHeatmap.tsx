@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityEntry } from '../../types';
+import { getLocalDateStr } from '../../stores/useActivityStore';
 
 interface GlassHeatmapProps {
   activities: ActivityEntry[];
@@ -13,9 +14,9 @@ export const GlassHeatmap: React.FC<GlassHeatmapProps> = ({ activities }) => {
   for (let i = 27; i >= 0; i--) {
     const d = new Date();
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = getLocalDateStr(d);
     const dayActivities = activities.filter(
-      (a) => new Date(a.timestamp).toISOString().split('T')[0] === dateStr
+      (a) => getLocalDateStr(new Date(a.timestamp)) === dateStr
     );
     const totalMinutes = dayActivities.reduce((sum, a) => sum + a.durationMinutes, 0);
 

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useMediaStore } from '../../stores/useMediaStore';
 import { AudioVisualizer } from '../audio/AudioVisualizer';
+import { audioEngine } from '../../services/audioEngine';
 
 export const MusicPlayerApp: React.FC = () => {
   const {
@@ -41,6 +42,7 @@ export const MusicPlayerApp: React.FC = () => {
     if (audioRef.current && currentTrack) {
       audioRef.current.src = currentTrack.url;
       if (isPlaying) {
+        audioEngine.connectMediaElement(audioRef.current);
         audioRef.current.play().catch(() => {});
       }
     }

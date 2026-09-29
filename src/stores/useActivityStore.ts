@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { ActivityEntry, Habit } from '../types';
 
 interface ActivityStoreState {
@@ -21,6 +22,9 @@ interface ActivityStoreState {
 
   // Telemetry Actions
   updateTelemetry: (telemetry: Partial<ActivityStoreState['telemetry']>) => void;
+
+  // Backup / Restore
+  restoreActivityState: (state: { activities?: ActivityEntry[]; habits?: Habit[] }) => void;
 }
 
 export const getLocalDateStr = (d: Date = new Date()): string => {
@@ -28,6 +32,39 @@ export const getLocalDateStr = (d: Date = new Date()): string => {
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
+};
+
+export const calculateHabitStreak = (completedDates: string[], referenceDate: Date = new Date()): number => {
+  if (!completedDates || completedDates.length === 0) return 0;
+  const dateSet = new Set(completedDates);
+  const checkDate = new Date(referenceDate);
+  const todayStr = getLocalDateStr(checkDate);
+
+  let streak = 0;
+  if (dateSet.has(todayStr)) {
+    while (true) {
+      const ds = getLocalDateStr(checkDate);
+      if (dateSet.has(ds)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+  } else {
+    // If today is not checked in yet, check if yesterday was checked in to preserve the ongoing streak
+    checkDate.setDate(checkDate.getDate() - 1);
+    while (true) {
+      const ds = getLocalDateStr(checkDate);
+      if (dateSet.has(ds)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+  }
+  return streak;
 };
 
 const getPastDateStr = (daysAgo: number) => {
@@ -101,88 +138,89 @@ const INITIAL_HABITS: Habit[] = [
   },
 ];
 
-export const useActivityStore = create<ActivityStoreState>((set) => ({
-  activities: INITIAL_ACTIVITIES,
-  habits: INITIAL_HABITS,
-  telemetry: {
-    cpuUsage: 18,
-    memoryUsage: 42,
-    uptimeSeconds: 7420,
-  },
+export const useActivityStore = create<ActivityStoreState>()(
+  persist(
+    (set) => ({
+      activities: INITIAL_ACTIVITIES,
+      habits: INITIAL_HABITS,
+      telemetry: {
+        cpuUsage: 18,
+        memoryUsage: 42,
+        uptimeSeconds: 7420,
+      },
 
-  addActivity: (entry) => {
-    const newEntry: ActivityEntry = {
-      ...entry,
-      id: `act-${Date.now()}`,
-      timestamp: Date.now(),
-    };
-    set((state) => ({ activities: [newEntry, ...state.activities] }));
-  },
+      addActivity: (entry) => {
+        const newEntry: ActivityEntry = {
+          ...entry,
+          id: `act-${Date.now()}`,
+          timestamp: Date.now(),
+        };
+        set((state) => ({ activities: [newEntry, ...state.activities] }));
+      },
 
-  deleteActivity: (id) => {
-    set((state) => ({
-      activities: state.activities.filter((a) => a.id !== id),
-    }));
-  },
+      deleteActivity: (id) => {
+        set((state) => ({
+          activities: state.activities.filter((a) => a.id !== id),
+        }));
+      },
 
-  addHabit: (name, icon, targetPerWeek = 7) => {
-    const newHabit: Habit = {
-      id: `habit-${Date.now()}`,
-      name,
-      icon,
-      targetPerWeek,
-      completedDates: [],
-      streak: 0,
-    };
-    set((state) => ({ habits: [...state.habits, newHabit] }));
-  },
+      addHabit: (name, icon, targetPerWeek = 7) => {
+        const newHabit: Habit = {
+          id: `habit-${Date.now()}`,
+          name,
+          icon,
+          targetPerWeek,
+          completedDates: [],
+          streak: 0,
+        };
+        set((state) => ({ habits: [...state.habits, newHabit] }));
+      },
 
-  toggleHabitCheckin: (habitId, dateStr) => {
-    set((state) => ({
-      habits: state.habits.map((habit) => {
-        if (habit.id !== habitId) return habit;
-        const exists = habit.completedDates.includes(dateStr);
-        const updatedDates = exists
-          ? habit.completedDates.filter((d) => d !== dateStr)
-          : [...habit.completedDates, dateStr];
+      toggleHabitCheckin: (habitId, dateStr) => {
+        set((state) => ({
+          habits: state.habits.map((habit) => {
+            if (habit.id !== habitId) return habit;
+            const exists = habit.completedDates.includes(dateStr);
+            const updatedDates = exists
+              ? habit.completedDates.filter((d) => d !== dateStr)
+              : [...habit.completedDates, dateStr];
 
-        // Recalculate streak
-        let streak = 0;
-        let checkDate = new Date();
-        while (true) {
-          const ds = getLocalDateStr(checkDate);
-          if (updatedDates.includes(ds)) {
-            streak++;
-            checkDate.setDate(checkDate.getDate() - 1);
-          } else {
-            // Check if today was missed but yesterday completed
-            if (streak === 0 && ds === getLocalDateStr(new Date())) {
-              checkDate.setDate(checkDate.getDate() - 1);
-              const yesterdayDs = getLocalDateStr(checkDate);
-              if (updatedDates.includes(yesterdayDs)) {
-                streak++;
-                checkDate.setDate(checkDate.getDate() - 1);
-                continue;
-              }
-            }
-            break;
-          }
-        }
+            const streak = calculateHabitStreak(updatedDates);
+            return { ...habit, completedDates: updatedDates, streak };
+          }),
+        }));
+      },
 
-        return { ...habit, completedDates: updatedDates, streak };
+      deleteHabit: (habitId) => {
+        set((state) => ({
+          habits: state.habits.filter((h) => h.id !== habitId),
+        }));
+      },
+
+      updateTelemetry: (telemetry) => {
+        set((state) => ({
+          telemetry: { ...state.telemetry, ...telemetry },
+        }));
+      },
+
+      restoreActivityState: (payload) => {
+        set((state) => ({
+          activities: Array.isArray(payload.activities) ? payload.activities : state.activities,
+          habits: Array.isArray(payload.habits)
+            ? payload.habits.map((h) => ({
+                ...h,
+                streak: calculateHabitStreak(h.completedDates),
+              }))
+            : state.habits,
+        }));
+      },
+    }),
+    {
+      name: 'aetheros_activity_storage',
+      partialize: (state) => ({
+        activities: state.activities,
+        habits: state.habits,
       }),
-    }));
-  },
-
-  deleteHabit: (habitId) => {
-    set((state) => ({
-      habits: state.habits.filter((h) => h.id !== habitId),
-    }));
-  },
-
-  updateTelemetry: (telemetry) => {
-    set((state) => ({
-      telemetry: { ...state.telemetry, ...telemetry },
-    }));
-  },
-}));
+    }
+  )
+);

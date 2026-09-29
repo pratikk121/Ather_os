@@ -88,9 +88,17 @@ export const TerminalApp: React.FC = () => {
           output = 'Usage: open <notes|tasks|pomodoro|music|ambient|journal|habits|system|settings|files>';
           isError = true;
         } else {
+          const validIds: WindowId[] = [
+            'files', 'terminal', 'notes', 'tasks', 'pomodoro', 'music', 'ambient', 'journal', 'habits', 'system', 'settings'
+          ];
           const appName = args[0].toLowerCase() as WindowId;
-          openWindow(appName);
-          output = `✨ Launched window: [${appName}]`;
+          if (validIds.includes(appName)) {
+            openWindow(appName);
+            output = `✨ Launched window: [${appName}]`;
+          } else {
+            output = `Unknown window target: "${args[0]}". Available: ${validIds.join(', ')}`;
+            isError = true;
+          }
         }
         break;
 
@@ -99,8 +107,17 @@ export const TerminalApp: React.FC = () => {
           output = 'Usage: close <app-id>';
           isError = true;
         } else {
-          closeWindow(args[0].toLowerCase() as WindowId);
-          output = `Closed window: [${args[0]}]`;
+          const validIds: WindowId[] = [
+            'files', 'terminal', 'notes', 'tasks', 'pomodoro', 'music', 'ambient', 'journal', 'habits', 'system', 'settings'
+          ];
+          const appName = args[0].toLowerCase() as WindowId;
+          if (validIds.includes(appName)) {
+            closeWindow(appName);
+            output = `Closed window: [${args[0]}]`;
+          } else {
+            output = `Unknown window target: "${args[0]}". Available: ${validIds.join(', ')}`;
+            isError = true;
+          }
         }
         break;
 
