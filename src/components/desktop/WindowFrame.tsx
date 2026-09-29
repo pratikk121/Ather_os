@@ -14,6 +14,7 @@ interface WindowFrameProps {
 export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) => {
   const { focusWindow, closeWindow, minimizeWindow, maximizeWindow, updatePosition, updateSize, activeWindowId } =
     useWindowStore();
+  const { settings } = useSettingsStore();
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -94,8 +95,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
         height: `${window.size.height}px`,
         zIndex: window.zIndex,
       };
-
-  const { settings } = useSettingsStore();
 
   return (
     <section
