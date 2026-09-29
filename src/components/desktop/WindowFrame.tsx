@@ -25,7 +25,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
 
   const handleMouseDownHeader = (e: React.MouseEvent) => {
     if (window.isMaximized) return;
-    focusWindow(window.id);
     setIsDragging(true);
     setDragOffset({
       x: e.clientX - window.position.x,
@@ -35,7 +34,6 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
 
   const handleMouseDownResize = (e: React.MouseEvent) => {
     e.stopPropagation();
-    focusWindow(window.id);
     setIsResizing(true);
     setResizeStart({
       x: e.clientX,
@@ -47,15 +45,20 @@ export const WindowFrame: React.FC<WindowFrameProps> = ({ window, children }) =>
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      const viewW = typeof globalThis.innerWidth !== 'undefined' ? globalThis.innerWidth : 1200;
+      const viewH = typeof globalThis.innerHeight !== 'undefined' ? globalThis.innerHeight : 800;
+
       if (isDragging) {
-        const maxX = Math.max(0, (typeof globalThis.innerWidth !== 'undefined' ? globalThis.innerWidth : 1200) - 100);
-        const maxY = Math.max(40, (typeof globalThis.innerHeight !== 'undefined' ? globalThis.innerHeight : 800) - 100);
+        const maxX = Math.max(0, viewW - window.size.width);
+        const maxY = Math.max(40, viewH - window.size.height - 70);
         const newX = Math.max(0, Math.min(e.clientX - dragOffset.x, maxX));
         const newY = Math.max(40, Math.min(e.clientY - dragOffset.y, maxY));
         updatePosition(window.id, { x: newX, y: newY });
       } else if (isResizing) {
-        const newW = Math.max(320, resizeStart.w + (e.clientX - resizeStart.x));
-        const newH = Math.max(220, resizeStart.h + (e.clientY - resizeStart.y));
+        const maxW = Math.max(320, viewW - window.position.x - 10);
+        const maxH = Math.max(220, viewH - window.position.y - 70);
+        const newW = Math.max(320, Math.min(resizeStart.w + (e.clientX - resizeStart.x), maxW));
+        const newH = Math.max(220, Math.min(resizeStart.h + (e.clientY - resizeStart.y), maxH));
         updateSize(window.id, { width: newW, height: newH });
       }
     };

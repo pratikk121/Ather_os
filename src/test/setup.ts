@@ -35,6 +35,12 @@ class AudioContextMock {
       getByteFrequencyData: vi.fn((arr) => arr.fill(100)),
     };
   }
+  createMediaElementSource() {
+    return {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+    };
+  }
   createGain() {
     return {
       connect: vi.fn(),

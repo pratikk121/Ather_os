@@ -1,4 +1,4 @@
-import { ThemePreset } from '../types';
+import { ThemePreset, AccentColor } from '../types';
 
 export interface ThemeTokens {
   id: ThemePreset;
@@ -58,6 +58,74 @@ export interface ThemeTokens {
   // Chromatic refraction rim tint
   rimTint: string;
 }
+
+export const ACCENT_COLOR_DEFINITIONS: Record<
+  AccentColor,
+  {
+    primary: string;
+    secondary: string;
+    soft: string;
+    contrast: string;
+    ring: string;
+    selection: string;
+    rim: string;
+  }
+> = {
+  silver: {
+    primary: '#f4f4f5',
+    secondary: '#a1a1aa',
+    soft: 'rgba(255, 255, 255, 0.14)',
+    contrast: '#09090b',
+    ring: 'rgba(255, 255, 255, 0.85)',
+    selection: 'rgba(255, 255, 255, 0.22)',
+    rim: 'rgba(255, 255, 255, 0.25)',
+  },
+  cyan: {
+    primary: '#06b6d4',
+    secondary: '#38bdf8',
+    soft: 'rgba(6, 182, 212, 0.18)',
+    contrast: '#030712',
+    ring: '#06b6d4',
+    selection: 'rgba(6, 182, 212, 0.32)',
+    rim: 'rgba(34, 211, 238, 0.40)',
+  },
+  emerald: {
+    primary: '#10b981',
+    secondary: '#14b8a6',
+    soft: 'rgba(16, 185, 129, 0.18)',
+    contrast: '#022c22',
+    ring: '#10b981',
+    selection: 'rgba(16, 185, 129, 0.32)',
+    rim: 'rgba(52, 211, 153, 0.40)',
+  },
+  amber: {
+    primary: '#f59e0b',
+    secondary: '#f97316',
+    soft: 'rgba(245, 158, 11, 0.18)',
+    contrast: '#451a03',
+    ring: '#f59e0b',
+    selection: 'rgba(245, 158, 11, 0.32)',
+    rim: 'rgba(251, 191, 36, 0.40)',
+  },
+  purple: {
+    primary: '#a855f7',
+    secondary: '#6366f1',
+    soft: 'rgba(168, 85, 247, 0.18)',
+    contrast: '#ffffff',
+    ring: '#a855f7',
+    selection: 'rgba(168, 85, 247, 0.32)',
+    rim: 'rgba(192, 132, 252, 0.40)',
+  },
+  rose: {
+    primary: '#f43f5e',
+    secondary: '#ec4899',
+    soft: 'rgba(244, 63, 94, 0.18)',
+    contrast: '#ffffff',
+    ring: '#f43f5e',
+    selection: 'rgba(244, 63, 94, 0.32)',
+    rim: 'rgba(251, 113, 133, 0.40)',
+  },
+};
 
 export const THEME_PRESETS_DEF: Record<ThemePreset, ThemeTokens> = {
   monochrome: {
@@ -411,12 +479,32 @@ export const THEME_PRESETS_DEF: Record<ThemePreset, ThemeTokens> = {
   },
 };
 
-export const getThemeTokens = (preset: ThemePreset): ThemeTokens => {
-  return THEME_PRESETS_DEF[preset] || THEME_PRESETS_DEF.monochrome;
+export const getThemeTokens = (preset: ThemePreset, accentColor?: AccentColor): ThemeTokens => {
+  const baseTokens = THEME_PRESETS_DEF[preset] || THEME_PRESETS_DEF.monochrome;
+  if (!accentColor || !ACCENT_COLOR_DEFINITIONS[accentColor]) {
+    return baseTokens;
+  }
+
+  // If user has a selected accent color override or is on custom theme, inject the accent palette
+  const accent = ACCENT_COLOR_DEFINITIONS[accentColor];
+  return {
+    ...baseTokens,
+    accentPrimary: accent.primary,
+    accentSecondary: accent.secondary,
+    accentSoft: accent.soft,
+    accentContrast: accent.contrast,
+    focusRing: accent.ring,
+    selectionBg: accent.selection,
+    rimTint: accent.rim,
+  };
 };
 
-export const applyThemeToElement = (element: HTMLElement, preset: ThemePreset) => {
-  const tokens = getThemeTokens(preset);
+export const applyThemeToElement = (
+  element: HTMLElement,
+  preset: ThemePreset,
+  accentColor?: AccentColor
+) => {
+  const tokens = getThemeTokens(preset, accentColor);
   element.setAttribute('data-theme', preset);
 
   // Set CSS Custom Properties on the element

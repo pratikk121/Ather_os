@@ -62,12 +62,12 @@ export const DesktopCanvas: React.FC = () => {
     companionClient.connect();
   }, []);
 
-  // Apply theme tokens on initial mount and when themePreset updates
+  // Apply theme tokens on initial mount and when themePreset or accentColor updates
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      applyThemeToElement(document.documentElement, settings.themePreset);
+      applyThemeToElement(document.documentElement, settings.themePreset, settings.accentColor);
     }
-  }, [settings.themePreset]);
+  }, [settings.themePreset, settings.accentColor]);
 
   // Track cursor position for dynamic rim light
   useEffect(() => {

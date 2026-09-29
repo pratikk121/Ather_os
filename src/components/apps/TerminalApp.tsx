@@ -216,7 +216,7 @@ export const TerminalApp: React.FC = () => {
               <span className="text-status-success">📄 optics-spec.md</span>
               <span className="text-accent-secondary">🎵 lofi-flow.mp3</span>
             </div>
-            <p className="text-[11px] text-content-muted mt-1">Total {notes.length} note files mounted in IndexedDB.</p>
+            <p className="text-[11px] text-content-muted mt-1">Total {notes.length} note files mounted in Local Storage Engine.</p>
           </div>
         );
         break;
@@ -227,7 +227,7 @@ export const TerminalApp: React.FC = () => {
             <p className="text-accent-primary font-bold">System Telemetry Snapshot</p>
             <p>Platform: {navigator.platform} &bull; UserAgent: {navigator.userAgent.slice(0, 40)}...</p>
             <p>Active Windows: {useWindowStore.getState().activeWindowId || 'None'}</p>
-            <p>Companion Bridge: {settings.isCompanionConnected ? '🟢 CONNECTED (Port 3001)' : '🟡 OFFLINE (IndexedDB Mode)'}</p>
+            <p>Companion Bridge: {settings.isCompanionConnected ? '🟢 CONNECTED (Port 3001)' : '🟡 OFFLINE (Local State Engine)'}</p>
           </div>
         );
         break;

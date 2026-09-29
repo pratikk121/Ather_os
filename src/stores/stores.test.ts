@@ -4,6 +4,8 @@ import { useProductivityStore } from './useProductivityStore';
 import { useMediaStore } from './useMediaStore';
 import { useActivityStore, calculateHabitStreak, getLocalDateStr } from './useActivityStore';
 import { useSettingsStore } from './useSettingsStore';
+import { getThemeTokens, applyThemeToElement, ACCENT_COLOR_DEFINITIONS } from '../theme/tokens';
+import { AccentColor } from '../types';
 
 describe('AetherOS Core Stores & Functional Invariants', () => {
   describe('Window Manager Lifecycle & Focus Invariants', () => {
@@ -157,6 +159,27 @@ describe('AetherOS Core Stores & Functional Invariants', () => {
       expect(useActivityStore.getState().activities).toEqual(mockActivities);
       expect(useActivityStore.getState().habits[0].name).toBe('Restored Habit');
       expect(useActivityStore.getState().habits[0].streak).toBe(1);
+    });
+  });
+
+  describe('Theme Token System & Custom Accent Highlight Derivations', () => {
+    const accents: AccentColor[] = ['silver', 'cyan', 'emerald', 'amber', 'purple', 'rose'];
+
+    accents.forEach((accent) => {
+      it(`derives theme tokens correctly when custom accent is ${accent}`, () => {
+        const tokens = getThemeTokens('custom', accent);
+        const expected = ACCENT_COLOR_DEFINITIONS[accent];
+        expect(tokens.accentPrimary).toBe(expected.primary);
+        expect(tokens.accentSecondary).toBe(expected.secondary);
+        expect(tokens.focusRing).toBe(expected.ring);
+        expect(tokens.rimTint).toBe(expected.rim);
+
+        // Verify applying to DOM sets CSS Custom Properties
+        const dummyEl = document.createElement('div');
+        applyThemeToElement(dummyEl, 'custom', accent);
+        expect(dummyEl.style.getPropertyValue('--aether-accent-primary')).toBe(expected.primary);
+        expect(dummyEl.style.getPropertyValue('--aether-focus-ring')).toBe(expected.ring);
+      });
     });
   });
 
