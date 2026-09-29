@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSettingsStore } from '../../stores/useSettingsStore';
 import { useWindowStore } from '../../stores/useWindowStore';
 import { useMediaStore } from '../../stores/useMediaStore';
@@ -58,17 +58,30 @@ export const DesktopCanvas: React.FC = () => {
     isOpen: false,
   });
 
-  const [audioBands, setAudioBands] = useState({ bass: 1, mid: 1, treble: 1 });
+  const sphere1Ref = useRef<HTMLDivElement>(null);
+  const sphere2Ref = useRef<HTMLDivElement>(null);
+  const sphere3Ref = useRef<HTMLDivElement>(null);
 
   // Connect to companion telemetry server
   useEffect(() => {
     companionClient.connect();
   }, []);
 
-  // Real-time audio spectrum analysis for ambient environment pulsing
+  // Real-time audio spectrum analysis directly mutating DOM elements (zero React re-renders)
   useEffect(() => {
     if (!settings.audioReactiveEnv || !isPlaying) {
-      setAudioBands({ bass: 1, mid: 1, treble: 1 });
+      if (sphere1Ref.current) {
+        sphere1Ref.current.style.transform = '';
+        sphere1Ref.current.style.opacity = '';
+      }
+      if (sphere2Ref.current) {
+        sphere2Ref.current.style.transform = '';
+        sphere2Ref.current.style.opacity = '';
+      }
+      if (sphere3Ref.current) {
+        sphere3Ref.current.style.transform = '';
+        sphere3Ref.current.style.opacity = '';
+      }
       return;
     }
 
@@ -92,11 +105,18 @@ export const DesktopCanvas: React.FC = () => {
           for (let i = 24; i < 48; i++) trebleSum += freq[i] || 0;
           const trebleAvg = trebleSum / 24 / 255;
 
-          setAudioBands({
-            bass: 1 + bassAvg * 0.45,
-            mid: 1 + midAvg * 0.35,
-            treble: 1 + trebleAvg * 0.30,
-          });
+          if (sphere1Ref.current) {
+            sphere1Ref.current.style.transform = `scale(${1 + bassAvg * 0.45})`;
+            sphere1Ref.current.style.opacity = `${0.6 + bassAvg * 0.36}`;
+          }
+          if (sphere2Ref.current) {
+            sphere2Ref.current.style.transform = `scale(${1 + midAvg * 0.35})`;
+            sphere2Ref.current.style.opacity = `${0.5 + midAvg * 0.28}`;
+          }
+          if (sphere3Ref.current) {
+            sphere3Ref.current.style.transform = `scale(${1 + trebleAvg * 0.30})`;
+            sphere3Ref.current.style.opacity = `${0.5 + trebleAvg * 0.24}`;
+          }
         }
       } catch {}
       animationFrameId = requestAnimationFrame(updateSpectrum);
@@ -164,32 +184,23 @@ export const DesktopCanvas: React.FC = () => {
       {/* Dynamic Theme-Derived Fluid Light Spheres (Audio Spectrum Responsive) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
-          style={{
-            backgroundColor: 'var(--aether-ambient-glow-1)',
-            transform: `scale(${audioBands.bass})`,
-            opacity: 0.6 + (audioBands.bass - 1) * 0.8,
-          }}
-          className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl transition-transform duration-100 ${
+          ref={sphere1Ref}
+          style={{ backgroundColor: 'var(--aether-ambient-glow-1)' }}
+          className={`absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl will-change-transform ${
             !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />
         <div
-          style={{
-            backgroundColor: 'var(--aether-ambient-glow-2)',
-            transform: `scale(${audioBands.mid})`,
-            opacity: 0.5 + (audioBands.mid - 1) * 0.7,
-          }}
-          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] rounded-full blur-3xl transition-transform duration-100 ${
+          ref={sphere2Ref}
+          style={{ backgroundColor: 'var(--aether-ambient-glow-2)' }}
+          className={`absolute bottom-1/3 right-1/4 w-[28rem] h-[28rem] rounded-full blur-3xl will-change-transform ${
             !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />
         <div
-          style={{
-            backgroundColor: 'var(--aether-ambient-glow-3)',
-            transform: `scale(${audioBands.treble})`,
-            opacity: 0.5 + (audioBands.treble - 1) * 0.6,
-          }}
-          className={`absolute top-1/2 right-1/3 w-80 h-80 rounded-full blur-3xl transition-transform duration-100 ${
+          ref={sphere3Ref}
+          style={{ backgroundColor: 'var(--aether-ambient-glow-3)' }}
+          className={`absolute top-1/2 right-1/3 w-80 h-80 rounded-full blur-3xl will-change-transform ${
             !isAudioPulsing ? 'animate-pulse-slow' : ''
           }`}
         />

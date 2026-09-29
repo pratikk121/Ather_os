@@ -6,6 +6,7 @@ class AudioEngine {
   private ambientGains: Map<string, GainNode> = new Map();
   private ambientNodes: Map<string, { stop: () => void }> = new Map();
   private mediaSources: WeakMap<HTMLMediaElement, MediaElementAudioSourceNode> = new WeakMap();
+  private freqBuffer: Uint8Array | null = null;
 
   private getContext(): AudioContext {
     if (!this.ctx) {
@@ -29,9 +30,11 @@ class AudioEngine {
 
   public getFrequencyData(): Uint8Array {
     const analyser = this.getAnalyser();
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(data);
-    return data;
+    if (!this.freqBuffer || this.freqBuffer.length !== analyser.frequencyBinCount) {
+      this.freqBuffer = new Uint8Array(analyser.frequencyBinCount);
+    }
+    analyser.getByteFrequencyData(this.freqBuffer);
+    return this.freqBuffer;
   }
 
   public connectMediaElement(el: HTMLMediaElement): MediaElementAudioSourceNode | null {
